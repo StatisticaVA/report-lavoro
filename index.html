@@ -102,6 +102,7 @@
     <div class="sezioni">
       <label class="sezione"><input type="radio" name="sezione" value="disoccupazione" checked> Disoccupazione</label>
       <label class="sezione"><input type="radio" name="sezione" value="occupazione"> Occupazione</label>
+      <label class="sezione"><input type="radio" name="sezione" value="attivita"> Attività</label>
     </div>
     <div class="riga" style="margin-top:16px">
       <label class="campo">Anno <select id="anno"></select></label>
@@ -184,9 +185,24 @@
         sempre tra l'anno scelto e quello prima. Le tabelle vengono ricalcolate ogni volta sui dati più recenti: ISTAT può rivedere anche gli anni passati.
         I dati automatici vengono controllati ogni lunedì.</p>
     </details>
+    <details open data-sezione="attivita" hidden>
+      <summary>Attività: tabelle prodotte, dati usati e regole</summary>
+      <ul>
+        <li><b>Istat_attività-sintesi</b>: forze di lavoro (migliaia) e tasso di attività (15-64 anni) di Varese, Lombardia e Italia, per maschi, femmine e totale, nell'anno scelto e in quello prima.</li>
+        <li><b>Istat_attività_tassi</b>: tasso di attività di Varese e Lombardia, per maschi, femmine e totale, dal 2018 all'anno scelto.</li>
+        <li><b>Istat_attività_forze lavoro</b>: forze di lavoro (migliaia) di Varese e Lombardia dal 2018, con la variazione % sull'anno prima (per il 2018 c'è «nd»).</li>
+        <li><b>Istat_attività_forze lavoro_grafico</b>: forze di lavoro di Varese (maschi, femmine, totale) dal 2018, arrotondate alle migliaia, per il grafico.</li>
+        <li><b>Istat_attività_territori</b>: tasso di attività delle 12 province lombarde, della Lombardia e dell'Italia nell'anno scelto.</li>
+        <li><b>Istat_attività_età</b>: tasso di attività per fascia d'età (9 fasce, da 15-24 a 15-89) di Varese e Lombardia, senza arrotondamenti.</li>
+      </ul>
+      <p class="nota">Fonte: ISTAT, Rilevazione sulle forze di lavoro (dati annuali): «Forze di lavoro» (15 anni e più, migliaia) e «Tasso di attività» (15-64 anni; per la tabella per età le singole fasce) (IstatData).
+        Arrotondamenti come la funzione ARROTONDA di Excel; la variazione % delle forze di lavoro è calcolata sui valori già arrotondati alle migliaia, come nei modelli.
+        Nel grafico le forze di lavoro sono arrotondate alle migliaia per tutti gli anni, come nel modello (nel file di Osserva del 2025 le femmine del 2025 erano scritte per errore 117 invece di 177: qui il valore è quello di ISTAT).
+        Le tabelle vengono ricalcolate ogni volta sui dati più recenti: ISTAT può rivedere anche gli anni passati. I dati automatici vengono controllati ogni lunedì.</p>
+    </details>
   </section>
 </main>
-<footer>Fonte: ISTAT – Rilevazione sulle forze di lavoro · elaborazione Camera di Commercio di Varese · versione 1.1</footer>
+<footer>Fonte: ISTAT – Rilevazione sulle forze di lavoro · elaborazione Camera di Commercio di Varese · versione 1.2</footer>
 
 <script id="motore">
 "use strict";
@@ -212,6 +228,9 @@ const FASCE_ETA = ["Y15-24", "Y25-34", "Y15-34", "Y35-49", "Y20-64", "Y15-64", "
 // occupazione: tasso sui 15-64 anni, occupati sui 15-89 anni (come i modelli di Osserva)
 const ETA_TASSO_OCC = "Y15-64", ETA_OCCUPATI = "Y15-89";
 const FASCE_ETA_OCC = ["Y15-24", "Y18-29", "Y15-29", "Y25-34", "Y35-44", "Y45-54", "Y55-64", "Y20-64", "Y15-64", "Y15-89"];
+// attività: tasso di attività sui 15-64 anni, forze di lavoro sui 15-89 anni (come i modelli di Osserva)
+const ETA_TASSO_ATT = "Y15-64", ETA_FORZE = "Y15-89";
+const FASCE_ETA_ATT = ["Y15-24", "Y18-29", "Y25-34", "Y35-44", "Y35-49", "Y45-54", "Y55-64", "Y15-64", "Y15-89"];
 // settori: voci ISTAT dei dati provinciali (Ateco 2007). «Commercio, alberghi e ristoranti» = sezioni G e I; «Altri servizi» = tutti gli altri servizi
 const ATECO_TOTALE = "0010";
 const SETTORI = [["Agricoltura", "A"], ["Industria in senso stretto", "0020"], ["Costruzioni", "F"],
@@ -233,6 +252,13 @@ const TAVOLE = {
   O: { tipo: "O", dataType: null, nome: "occupati", file: "occupazione_occupati.csv",
        dataflow: "IT1,150_938,1.0",
        chiave: () => `A.${[ITALIA, REGIONE, PROVINCIA].join("+")}.1+2+9.${ETA_OCCUPATI}.99.TOTAL.0010.${[ATECO_TOTALE, ...SETTORI.map(s => s[1])].join("+")}.1+2+9.99.99.99.9.9` },
+  // attività: forze di lavoro (migliaia, DATA_TYPE FOR) e tasso di attività (ACT_R)
+  F: { tipo: "F", dataType: "FOR", nome: "forze di lavoro", file: "attivita_forze.csv",
+       dataflow: "IT1,150_908,1.0",
+       chiave: () => `A.${[ITALIA, REGIONE, ...PROVINCE_REGIONE.map(p => p[0])].join("+")}.FOR.1+2+9.${ETA_FORZE}.99.TOTAL` },
+  R: { tipo: "R", dataType: "ACT_R", nome: "tasso di attività", file: "attivita_tassi.csv",
+       dataflow: "IT1,150_916,1.0",
+       chiave: () => `A.${[ITALIA, REGIONE, ...PROVINCE_REGIONE.map(p => p[0])].join("+")}.ACT_R.1+2+9.${FASCE_ETA_ATT.join("+")}.99.TOTAL` },
 };
 const urlIstat = (tavola, annoFine) =>
   `${URL_ISTAT_DATI}${tavola.dataflow}/${tavola.chiave()}?startPeriod=${ANNO_INIZIO}&endPeriod=${annoFine}&format=csvfile`;
@@ -311,7 +337,7 @@ function leggiCsvIstat(testo) {
     valori.set(`${tipo}|${r[iA].trim()}|${r[iS].trim()}|${r[iE].trim()}|${anno}` + (occupati ? `|${r[iT].trim()}|${r[iPos].trim()}` : ""), v);
     tipi.add(tipo); anni.add(anno); n++;
   }
-  if (!n) throw new ErroreDati("Nel file non ci sono valori annuali dei dati usati dalla pagina (tasso di disoccupazione UNEM_R, disoccupati UNEMP, tasso di occupazione EMP_R, occupati).");
+  if (!n) throw new ErroreDati("Nel file non ci sono valori annuali dei dati usati dalla pagina (tasso di disoccupazione UNEM_R, disoccupati UNEMP, tasso di occupazione EMP_R, occupati, forze di lavoro FOR, tasso di attività ACT_R).");
   const ord = [...anni].sort((a, b) => a - b);
   return { valori, tipi: [...tipi], primo: ord[0], ultimo: ord[ord.length - 1], righe: n,
            descr: [...tipi].map(t => TAVOLE[t].nome).join(" e ") };
@@ -323,6 +349,8 @@ class DatiLavoro {
   tasso(area, sesso, anno, eta = ETA_TOTALE) { const v = this.valori.get(`T|${area}|${sesso}|${eta}|${anno}`); return v === undefined ? null : v; }
   disoccupati(area, sesso, anno) { const v = this.valori.get(`D|${area}|${sesso}|${ETA_TOTALE}|${anno}`); return v === undefined ? null : v; }
   tassoOccupazione(area, sesso, anno, eta = ETA_TASSO_OCC) { const v = this.valori.get(`E|${area}|${sesso}|${eta}|${anno}`); return v === undefined ? null : v; }
+  forzeLavoro(area, sesso, anno) { const v = this.valori.get(`F|${area}|${sesso}|${ETA_FORZE}|${anno}`); return v === undefined ? null : v; }
+  tassoAttivita(area, sesso, anno, eta = ETA_TASSO_ATT) { const v = this.valori.get(`R|${area}|${sesso}|${eta}|${anno}`); return v === undefined ? null : v; }
   occupati(area, sesso, anno, ateco = ATECO_TOTALE, posizione = "9") {
     const v = this.valori.get(`O|${area}|${sesso}|${ETA_OCCUPATI}|${anno}|${ateco}|${posizione}`); return v === undefined ? null : v;
   }
@@ -337,6 +365,7 @@ class DatiLavoro {
 const PRINCIPALI = {
   disoccupazione: [["T", (d, a) => d.tasso(PROVINCIA, "9", a)], ["D", (d, a) => d.disoccupati(PROVINCIA, "9", a)]],
   occupazione: [["E", (d, a) => d.tassoOccupazione(PROVINCIA, "9", a)], ["O", (d, a) => d.occupati(PROVINCIA, "9", a)]],
+  attivita: [["R", (d, a) => d.tassoAttivita(PROVINCIA, "9", a)], ["F", (d, a) => d.forzeLavoro(PROVINCIA, "9", a)]],
 };
 // ultimo anno per cui ci sono entrambe le tavole della sezione (totale di Varese)
 function ultimoAnno(dati, sezione = "disoccupazione") {
@@ -534,9 +563,80 @@ function tabOccSettori(D, anno) {
 const TABELLE_OCCUPAZIONE = [["Sintesi", tabOccSintesi], ["Tassi", tabOccTassi], ["Occupati", tabOccOccupati], ["Occupati grafico", tabOccGrafico],
                              ["Territorio", tabOccTerritorio], ["Età", tabOccEta], ["Settori grafico", tabOccSettoriGrafico], ["Settori", tabOccSettori]];
 
+/* ---------- attività (specifica = modelli di Osserva del 2025: file «Istat_attività_…»; tasso di attività 15-64 anni, forze di lavoro in migliaia) */
+function tabAttSintesi(D, anno) {
+  const righe = []; let n = 0;
+  for (const area of [PROVINCIA, REGIONE, ITALIA])
+    for (const [sesso, genere] of SESSI)
+      righe.push([++n, NOMI[area], genere, arrotonda(D.forzeLavoro(area, sesso, anno - 1), 0), arrotonda(D.tassoAttivita(area, sesso, anno - 1), 2),
+                  arrotonda(D.forzeLavoro(area, sesso, anno), 0), arrotonda(D.tassoAttivita(area, sesso, anno), 2)]);
+  return { foglio: "Foglio2", nomeFile: "Istat_attività-sintesi.xlsx", righe, altezzaIntest: 28.8, intestACapoDa: 4,   // nel modello il nome ha il trattino e solo le colonne D–G vanno a capo
+    intest: ["Ordine", "Territorio", "Genere", "Forze lavoro periodo passato (migliaia)", "Tasso di attività periodo passato", "Forze lavoro periodo recente (migliaia)", "Tasso di attività periodo recente"],
+    colonne: [G, G, G, ["0", null], ["0.0", null], ["0", null], ["0.0", null]],
+    larghezze: { B: 10.33, C: 9.44, D: 25.66, E: 17.89, F: 20.44, G: 17.44 } };
+}
+function tabAttTassi(D, anno) {
+  const righe = [];
+  for (const [sesso, genere] of SESSI)
+    for (let y = ANNO_INIZIO; y <= anno; y++)
+      righe.push([genere, y, arrotonda(D.tassoAttivita(PROVINCIA, sesso, y), 2), arrotonda(D.tassoAttivita(REGIONE, sesso, y), 2)]);
+  return { foglio: "Foglio1", nomeFile: "Istat_attività_tassi.xlsx", righe, stileIntest: true,
+    intest: ["Genere", "Anno", NOMI[PROVINCIA], NOMI[REGIONE]],
+    colonne: [["General", SX], ["General", SX], ["0.0", DX], ["0.0", DX]],
+    larghezze: { A: 11.89 } };
+}
+function tabAttForzeLavoro(D, anno) {
+  const righe = [];
+  for (const [sesso, genere] of SESSI)
+    for (let y = ANNO_INIZIO; y <= anno; y++) {
+      const riga = [genere, y];
+      for (const area of [PROVINCIA, REGIONE]) {
+        const cur = D.forzeLavoro(area, sesso, y);
+        riga.push(arrotonda(cur, 0), y === ANNO_INIZIO ? "nd" : variazioneArrotondata(cur, D.forzeLavoro(area, sesso, y - 1)));   // 2018: «nd» come nel modello
+      }
+      righe.push(riga);
+    }
+  const p = NOMI[PROVINCIA], r = NOMI[REGIONE];
+  return { foglio: "Foglio1", nomeFile: "Istat_attività_forze lavoro.xlsx", righe, stileIntest: true, altezzaIntest: 74.25,
+    intest: ["Genere", "Genere e anno", `${p} forze di lavoro (in migliaia)`, `${p} tasso di variazione %`, `${r} forze di lavoro (in migliaia)`, `${r} tasso di variazione %`],
+    colonne: [["General", SX], ["General", SX], ["0", null], ["0.00", null], ["0", null], ["0.00", null]],
+    larghezze: { A: 14.44, C: 10.89, D: 20.55, E: 12.44, F: 15.89 } };
+}
+function tabAttGrafico(D, anno) {
+  const righe = [];
+  // forze di lavoro arrotondate alle migliaia per tutti gli anni, come il modello (il modello 2025 aveva per errore 117 invece di 177 per le femmine)
+  for (let y = ANNO_INIZIO; y <= anno; y++) righe.push([y, ...SESSI.map(([s]) => arrotonda(D.forzeLavoro(PROVINCIA, s, y), 0))]);
+  return { foglio: "Foglio1", nomeFile: "Istat_attività_forze lavoro_grafico.xlsx", righe, stileIntest: true,
+    intest: ["Anno", "Maschi", "Femmine", "Totale"],
+    colonne: [["General", SX], ["0", null], ["0", null], ["0", null]],
+    larghezze: { B: 10.89, C: 11.55 } };
+}
+function tabAttTerritori(D, anno) {
+  const aree = [...PROVINCE_REGIONE, [REGIONE, NOMI[REGIONE]], [ITALIA, NOMI[ITALIA]]];
+  const righe = aree.map(([area, nome], i) => [i + 1, nome, ...SESSI.map(([s]) => arrotonda(D.tassoAttivita(area, s, anno), 2))]);
+  return { foglio: "Foglio1", nomeFile: "Istat_attività_territori.xlsx", righe, stileIntest: true,
+    intest: ["Ordine", "Territorio", "Maschi", "Femmine", "Totale"],
+    colonne: [G, ["General", SX], ["0.0", null], ["0.0", null], ["0.0", null]],
+    larghezze: { B: 24.44, C: 9.11 } };
+}
+function tabAttEta(D, anno) {
+  const righe = []; let n = 0;
+  for (const area of [PROVINCIA, REGIONE])          // in questo modello viene prima Varese, poi la Lombardia
+    for (const eta of FASCE_ETA_ATT)
+      righe.push([++n, NOMI[area], eta.slice(1) + " anni  ", D.tassoAttivita(area, "1", anno, eta), D.tassoAttivita(area, "2", anno, eta),
+                  D.tassoAttivita(area, "9", anno, eta), D.tassoAttivita(area, "9", anno - 1, eta)]);   // due spazi finali, come il modello
+  return { foglio: "Foglio1", nomeFile: "Istat_attività_età.xlsx", righe, stileIntest: true, altezzaIntest: 28.8,
+    intest: ["Ordine", "Territorio", "Territorio e fasce d'età", `Maschi ${anno}`, `Femmine ${anno}`, `Totale ${anno}`, `Totale ${anno - 1}`],
+    colonne: [G, ["General", SX], ["General", SX], ["0.0", null], ["0.0", null], ["0.0", null], ["0.0", null]],   // valori ISTAT non arrotondati (mostrati con 1 decimale)
+    larghezze: { B: 18.44, C: 19.89, E: 9.89, F: 9.89 } };
+}
+const TABELLE_ATTIVITA = [["Sintesi", tabAttSintesi], ["Tassi", tabAttTassi], ["Forze lavoro", tabAttForzeLavoro],
+                          ["Forze lavoro grafico", tabAttGrafico], ["Territori", tabAttTerritori], ["Età", tabAttEta]];
+
 const SEZIONI = {
   disoccupazione: { nome: "Disoccupazione", tavole: ["T", "D"], tabelle: TABELLE, cartella: "Report_disoccupazione_" },
   occupazione: { nome: "Occupazione", tavole: ["E", "O"], tabelle: TABELLE_OCCUPAZIONE, cartella: "Report_occupazione_" },
+  attivita: { nome: "Attività", tavole: ["F", "R"], tabelle: TABELLE_ATTIVITA, cartella: "Report_attivita_" },
 };
 
 /* ------------------------------------------------------------------ generazione completa */
@@ -583,7 +683,7 @@ function nuovoRegistroStili() {
     xml() {
       const nf = [...personalizzati].map(([f, id]) => `<numFmt numFmtId="${id}" formatCode="${xmlEsc(f)}"/>`).join("");
       const xf = xfs.map(x => `<xf numFmtId="${x.numId}" fontId="${x.bold ? 1 : 0}" fillId="0" borderId="0" xfId="0"${x.numId ? ' applyNumberFormat="1"' : ""}${x.bold ? ' applyFont="1"' : ""}${x.al ? ' applyAlignment="1"' : ""}>`
-        + (x.al ? `<alignment horizontal="${x.al[0]}" vertical="${x.al[1]}"${x.al[2] ? ' wrapText="1"' : ""}/>` : "") + "</xf>").join("");
+        + (x.al ? `<alignment${x.al[0] ? ` horizontal="${x.al[0]}"` : ""}${x.al[1] ? ` vertical="${x.al[1]}"` : ""}${x.al[2] ? ' wrapText="1"' : ""}/>` : "") + "</xf>").join("");
       return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
 ${nf ? `<numFmts count="${personalizzati.size}">${nf}</numFmts>` : ""}<fonts count="2"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="11"/><name val="Calibri"/><family val="2"/></font></fonts>
@@ -607,7 +707,7 @@ function foglioXml(tab, reg) {
   let righe = `<row r="1"${tab.altezzaIntest ? ` ht="${tab.altezzaIntest}" customHeight="1"` : ""}>`;
   tab.intest.forEach((h, j) => {
     const fmt = (tab.formatiIntest && tab.formatiIntest[j + 1]) || "General";
-    const s = tab.stileIntest ? reg.stile(fmt, true, HEAD[2]) : reg.stile(fmt, false, null);
+    const s = tab.stileIntest ? reg.stile(fmt, true, HEAD[2]) : reg.stile(fmt, false, tab.intestACapoDa && j + 1 >= tab.intestACapoDa ? [null, null, true] : null);
     righe += cella(colonna(j + 1) + "1", s, h);
   });
   righe += "</row>";
@@ -683,7 +783,7 @@ function creaZip(voci, data = new Date()) {
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { ErroreDati, TAVOLE, TABELLE, TABELLE_OCCUPAZIONE, SEZIONI, SETTORI, POSIZIONI, PROVINCE_REGIONE, FASCE_ETA, FASCE_ETA_OCC, ANNO_INIZIO,
+  module.exports = { ErroreDati, TAVOLE, TABELLE, TABELLE_OCCUPAZIONE, TABELLE_ATTIVITA, SEZIONI, SETTORI, POSIZIONI, PROVINCE_REGIONE, FASCE_ETA, FASCE_ETA_OCC, FASCE_ETA_ATT, ANNO_INIZIO,
                      URL_DATI_ONLINE, arrotonda, variazioneArrotondata, variazione, quota, parseCsv, leggiCsvIstat, DatiLavoro, ultimoAnno, controllaAnno,
                      generaReport, creaXlsx, creaZip, urlIstat };
 }
@@ -839,8 +939,9 @@ if (typeof module !== "undefined" && module.exports) {
     const riga = (nome, ok, dett) => `<tr><td>${esc(nome)}</td><td><span class="badge ${ok ? "warn" : "ok"}">${ok ? "con celle vuote" : "pronta"}</span></td><td class="dett">${esc(dett)}</td></tr>`;
     const dett = { "Sintesi": `Varese, Lombardia, Italia: ${anno - 1} e ${anno}`, "Tassi": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}`,
                    "Disoccupati": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}, con variazione %`, "Disoccupati grafico": `Varese, ${ANNO_INIZIO}–${anno}, con i decimali`,
-                   "Territori": `12 province, Lombardia, Italia, ${anno}`, "Età": `${stato.sezione === "occupazione" ? 10 : 8} fasce d'età, Lombardia e Varese, ${anno}`,
+                   "Territori": `12 province, Lombardia, Italia, ${anno}`, "Età": `${{ disoccupazione: 8, occupazione: 10, attivita: 9 }[stato.sezione]} fasce d'età, ${stato.sezione === "attivita" ? "Varese e Lombardia" : "Lombardia e Varese"}, ${anno}`,
                    "Occupati": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}, con variazione %`, "Occupati grafico": `Varese, ${ANNO_INIZIO}–${anno}, con i decimali`,
+                   "Forze lavoro": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}, con variazione %`, "Forze lavoro grafico": `Varese, ${ANNO_INIZIO}–${anno}, arrotondate alle migliaia`,
                    "Territorio": `12 province, Lombardia, Italia, ${anno}`, "Settori grafico": `Varese, ${anno}: 5 settori e peso %`,
                    "Settori": `Varese e Lombardia, ${anno}: settori e tipologia d'impiego, peso % e variazione sul ${anno - 1}` };
     const tabelle = SEZIONI[stato.sezione].tabelle;

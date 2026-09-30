@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scarica da ISTAT i dati annuali della disoccupazione e dell'occupazione e salva in dati/ solo quello che serve alla pagina «Lavoro».
+"""Scarica da ISTAT i dati annuali di disoccupazione, occupazione e attività e salva in dati/ solo quello che serve alla pagina «Lavoro».
 
 Lo usa l'aggiornamento automatico su GitHub (.github/workflows/aggiorna-dati.yml, ogni lunedì), ma si può lanciare
 anche a mano:  python3 aggiorna_dati.py        Solo libreria standard di Python (niente da installare).
@@ -41,6 +41,8 @@ FASCE_OCC = ["Y15-24", "Y18-29", "Y15-29", "Y25-34", "Y35-44", "Y45-54", "Y55-64
 # occupati: totale (0010), agricoltura (A), industria in senso stretto (0020), costruzioni (F),
 # commercio, alberghi e ristoranti (0026), altri servizi (0025); posizione: 1 dipendenti, 2 indipendenti, 9 totale
 ATECO_OCC = ["0010", "A", "0020", "F", "0026", "0025"]
+# attività: tasso di attività (ACT_R) per queste fasce d'età; forze di lavoro (FOR) sui 15-89 anni
+FASCE_ATT = ["Y15-24", "Y18-29", "Y25-34", "Y35-44", "Y35-49", "Y45-54", "Y55-64", "Y15-64", "Y15-89"]
 COLONNE = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
 INDISPENSABILI = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE"]
 COLONNE_OCC = ["REF_AREA", "SEX", "AGE", "ECON_ACTIVITY_NACE_2007", "POSIZ_PROF", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
@@ -64,6 +66,14 @@ TAVOLE = [
                 "ECON_ACTIVITY_NACE_2007": set(ATECO_OCC), "POSIZ_PROF": {"1", "2", "9"}, "PROF_STATUS": {"99"},
                 "OCCUPATION_2001": {"99"}, "OCCUPATION_2011": {"99"}, "FULL_PART_TIME": {"9"}, "PERM_TEMP_EMPLOYEES": {"9"}},
      "settori_attesi": set(ATECO_OCC)},
+    {"codice": "attivita_forze", "nome": "Forze di lavoro in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,150_908,1.0", "tipo": "FOR",
+     "chiave": f"A.{'+'.join(AREE)}.FOR.{SESSI}.Y15-89.99.TOTAL",
+     "filtri": {"AGE": {"Y15-89"}, "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}}},
+    {"codice": "attivita_tassi", "nome": "Tasso di attività (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,150_916,1.0", "tipo": "ACT_R",
+     "chiave": f"A.{'+'.join(AREE)}.ACT_R.{SESSI}.{'+'.join(FASCE_ATT)}.99.TOTAL",
+     "filtri": {"AGE": set(FASCE_ATT), "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}}},
 ]
 TERRITORI_ATTESI = {"IT", "ITC4", "ITC41"}
 ACCEPT_CSV = "application/vnd.sdmx.data+csv;version=1.0.0, text/csv"
@@ -168,7 +178,7 @@ def testo_csv(righe, colonne=COLONNE):
 
 
 def main():
-    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati della disoccupazione e dell'occupazione")
+    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati di disoccupazione, occupazione e attività")
     arg.add_argument("--esito", help="file JSON in cui scrivere l'esito (lo legge segnala_problemi.py)")
     esito_path = arg.parse_args().esito
     prova = os.environ.get("PROVA_ERRORE", "").lower() == "true"

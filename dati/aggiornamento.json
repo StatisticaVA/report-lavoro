@@ -31,5 +31,21 @@
   "ultimo_aggiornamento_istat": "2026-09-11T08:43:00.884Z",
   "dati_modificati": "2026-09-30T09:11:00Z"
  },
- "controllato": "2026-09-30T10:23:48Z"
+ "controllato": "2026-09-30T10:23:48Z",
+ "attivita_forze": {
+  "nome": "Forze di lavoro in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-09-30T10:49:08Z",
+  "ultimo_anno": 2025,
+  "righe": 336,
+  "ultimo_aggiornamento_istat": "2026-09-11T08:03:48.665Z",
+  "dati_modificati": "2026-09-30T10:49:08Z"
+ },
+ "attivita_tassi": {
+  "nome": "Tasso di attività (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-09-30T10:49:08Z",
+  "ultimo_anno": 2025,
+  "righe": 3024,
+  "ultimo_aggiornamento_istat": "2026-09-11T08:48:36.536Z",
+  "dati_modificati": "2026-09-30T10:49:08Z"
+ }
 }
