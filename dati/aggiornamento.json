@@ -1,7 +1,7 @@
 {
  "disoccupazione_tassi": {
   "nome": "Tasso di disoccupazione (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T08:44:32Z",
+  "scaricato": "2026-09-30T08:46:17Z",
   "ultimo_anno": 2025,
   "righe": 2683,
   "ultimo_aggiornamento_istat": "2026-09-11T08:54:28.185Z",
@@ -15,5 +15,5 @@
   "ultimo_aggiornamento_istat": "2026-09-11T08:51:07.720Z",
   "dati_modificati": "2026-09-30T08:14:18Z"
  },
- "controllato": "2026-09-30T08:44:32Z"
+ "controllato": "2026-09-30T08:46:17Z"
 }
