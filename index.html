@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report Lavoro ISTAT</title>
+<style>
+  :root {
+    --bg: #eef1f8; --surface: #ffffff; --surface-2: #f7f9fd; --line: #e3e8f2; --line-2: #d5dcea;
+    --primary: #2c6bed; --primary-d: #1e54c8; --primary-soft: #e7eefe;
+    --navy: #16315e; --text: #1a2334; --muted: #69748a;
+    --ok: #1b8a4b; --ok-soft: #e3f4ea; --err: #c0392b; --err-soft: #fdecea; --warn-soft: #fbeddd; --warn: #8a4b12;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { background: linear-gradient(90deg, var(--navy), var(--primary)); color: #fff; padding: 22px 16px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding-inline: 16px; }
+  header .wrap { padding-inline: 0; }
+  header h1 { margin: 0; font-size: 1.5rem; }
+  header p { margin: 4px 0 0; color: #c5d6f2; font-size: .95rem; }
+  main { padding-block: 20px 40px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+  .card h2 { margin: 0 0 12px; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .card h3 { margin: 18px 0 8px; font-size: .95rem; }
+  .riga { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  label.campo { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: .9rem; }
+  select { font: inherit; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: var(--surface-2); color: var(--text); min-width: 130px; }
+  button { font: inherit; font-weight: 700; border-radius: 10px; padding: 10px 18px; cursor: pointer; border: 1px solid transparent; }
+  .primario { background: var(--primary); color: #fff; }
+  .primario:hover { background: var(--primary-d); }
+  .secondario { background: var(--surface-2); color: var(--primary-d); border-color: var(--line-2); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .spazio { flex: 1 1 auto; }
+  .nota { color: var(--muted); font-size: .88rem; margin: 10px 0 0; }
+  #log { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-height: 70px; max-height: 360px; overflow: auto;
+         font: 13px/1.55 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; margin: 0; }
+  .ok { color: var(--ok); } .err { color: var(--err); } .muted { color: var(--muted); } .warn { color: var(--warn); }
+  [hidden] { display: none !important; }
+  .sezioni { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sezione { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 14px; background: var(--surface-2); cursor: pointer; font-weight: 600; }
+  .sezione:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); }
+  .sezione.off { opacity: .55; cursor: not-allowed; font-weight: 400; }
+  .fonte { display: flex; gap: 12px; align-items: flex-start; border-radius: 10px; padding: 12px 14px; border: 1px solid var(--line); background: var(--surface-2); }
+  .fonte.ok { border-color: #9fd3b4; background: var(--ok-soft); color: var(--text); }
+  .fonte.warn { border-color: #e0a15a; background: var(--warn-soft); color: var(--text); }
+  .fonte .icona { font-size: 1.3rem; line-height: 1.2; }
+  .fonte b { display: block; }
+  .fonte .dett { font-size: .86rem; color: var(--muted); }
+  .passi { margin: 8px 0 0; padding-left: 22px; font-size: .92rem; }
+  .passi li { margin: 4px 0; }
+  a.bottone { display: inline-block; background: var(--surface); color: var(--primary-d); border: 1px solid var(--line-2); padding: 7px 14px; border-radius: 9px; font-weight: 700; text-decoration: none; }
+  a.bottone:hover { border-color: var(--primary); }
+  .drop { display: block; border: 2px dashed var(--line-2); border-radius: 12px; padding: 16px; background: var(--surface-2); cursor: pointer; margin-top: 12px; text-align: center; }
+  .drop:hover, .drop.sopra { border-color: var(--primary); background: var(--primary-soft); }
+  .drop .descr { font-size: .84rem; color: var(--muted); }
+  .drop input { display: none; }
+  .lista-file { list-style: none; padding: 0; margin: 10px 0 0; font-size: .88rem; }
+  .lista-file li { display: flex; justify-content: space-between; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .lista-file li.errore { color: var(--err); }
+  .togli { background: none; border: 0; padding: 0 2px; font-size: 1rem; line-height: 1; color: var(--muted); cursor: pointer; }
+  .togli:hover { color: var(--err); }
+  table.controllo { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  table.controllo td { padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: top; }
+  table.controllo td:first-child { white-space: nowrap; font-weight: 600; }
+  table.controllo td:nth-child(2) { white-space: nowrap; }
+  table.controllo .dett { color: var(--muted); font-size: .82rem; width: 100%; }
+  /* telefono: nome del file, stato e dettaglio uno sotto l'altro (i nomi lunghi non fanno scorrere la pagina di lato) */
+  @media (max-width: 600px) {
+    table.controllo, table.controllo tbody, table.controllo tr, table.controllo td { display: block; width: auto; }
+    table.controllo tr { border-top: 1px solid var(--line); padding: 6px 0; }
+    table.controllo td { border-top: 0; padding: 2px 4px; }
+    table.controllo td:first-child { white-space: normal; overflow-wrap: anywhere; }
+  }
+  .badge { display: inline-block; font-size: .74rem; border-radius: 999px; padding: 1px 9px; background: var(--line); color: var(--muted); white-space: nowrap; font-weight: 600; }
+  .badge.ok { background: var(--ok-soft); color: var(--ok); }
+  .badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .badge.err { background: var(--err-soft); color: var(--err); }
+  .servono { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: .9rem; }
+  .pronto { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--ok-soft); color: var(--ok); font-size: .9rem; font-weight: 600; }
+  .file { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .file:last-child { border-bottom: 0; }
+  .file span { overflow-wrap: anywhere; }
+  a.scarica { color: var(--primary); font-weight: 700; text-decoration: none; white-space: nowrap; }
+  a.scarica:hover { text-decoration: underline; }
+  a.zip { display: inline-block; background: var(--primary); color: #fff; padding: 10px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; margin: 0 8px 8px 0; }
+  a.zip:hover { background: var(--primary-d); }
+  ul { padding-left: 20px; margin: 8px 0; }
+  code { font: 600 .84rem ui-monospace, Menlo, Consolas, monospace; }
+  footer { color: var(--muted); font-size: .8rem; text-align: center; padding-bottom: 24px; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>💼 Report Lavoro – ISTAT</h1>
+  <p>Varese · Lombardia · Italia — tabelle Excel per Osserva dai dati ISTAT della Rilevazione sulle forze di lavoro</p>
+</div></header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>1 · Sezione e anno</h2>
+    <div class="sezioni">
+      <label class="sezione"><input type="radio" name="sezione" value="disoccupazione" checked> Disoccupazione</label>
+    </div>
+    <div class="riga" style="margin-top:16px">
+      <label class="campo">Anno <select id="anno"></select></label>
+    </div>
+    <p class="nota" id="notaPeriodo">Dati annuali: si sceglie solo l'anno. Le serie partono sempre dal 2018.</p>
+  </section>
+
+  <section class="card">
+    <h2>2 · Dati ISTAT</h2>
+    <div id="fonte" class="fonte"><span class="icona">⏳</span><div><b>Cerco i dati aggiornati automaticamente…</b></div></div>
+    <h3>Se i dati automatici mancano o non sono aggiornati</h3>
+    <ol class="passi">
+      <li>Scarica da ISTAT i due file (si salvano nei Download; ogni clic scarica un file CSV):
+        <span id="linkIstat"></span></li>
+      <li>Trascina qui sotto i due file scaricati.</li>
+    </ol>
+    <label class="drop" id="drop">
+      <input type="file" id="scegli" multiple accept=".csv,.txt">
+      <b>Trascina qui i file CSV di ISTAT</b> oppure clicca per sceglierli
+      <div class="descr">Vanno bene anche i file scaricati da IstatData in formato SDMX-CSV. I dati dei file caricati prevalgono su quelli automatici.
+        I file restano sul tuo computer.</div>
+    </label>
+    <ul class="lista-file" id="listaFile"></ul>
+  </section>
+
+  <section class="card">
+    <h2>3 · Controllo e tabelle</h2>
+    <div id="controllo"></div>
+    <div class="riga" style="margin-top:14px">
+      <span class="spazio"></span>
+      <button id="genera" class="primario" disabled>⬇ Genera tabelle</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Stato</h2>
+    <pre id="log"><span class="muted">In attesa dei dati.</span></pre>
+  </section>
+
+  <section class="card" id="risultati" hidden>
+    <h2 id="titoloRisultati">File pronti</h2>
+    <a id="zip" class="zip" href="#">⬇ Scarica tutto (ZIP)</a>
+    <div id="elenco"></div>
+  </section>
+
+  <section class="card">
+    <h2>Come funziona</h2>
+    <details open data-sezione="disoccupazione">
+      <summary>Disoccupazione: tabelle prodotte, dati usati e regole</summary>
+      <ul>
+        <li><b>Istat_disoccupazione_sintesi</b>: disoccupati (migliaia) e tasso di disoccupazione di Varese, Lombardia e Italia, per maschi, femmine e totale, nell'anno scelto e in quello prima.</li>
+        <li><b>Istat_disoccupazione_tassi</b>: tasso di disoccupazione di Varese e Lombardia, per maschi, femmine e totale, dal 2018 all'anno scelto.</li>
+        <li><b>Istat_disoccupazione_disoccupati</b>: disoccupati (migliaia) di Varese e Lombardia dal 2018, con la variazione % sull'anno prima (il 2018 vale 0).</li>
+        <li><b>Istat_disoccupazione_disoccupati_grafico</b>: disoccupati di Varese (maschi, femmine, totale) dal 2018, con i decimali, per il grafico.</li>
+        <li><b>Istat_disoccupazione_territori</b>: tasso di disoccupazione delle 12 province lombarde, della Lombardia e dell'Italia nell'anno scelto.</li>
+        <li><b>Istat_disoccupazione_eta</b>: tasso di disoccupazione per fascia d'età (15-24, 25-34, 15-34, 35-49, 20-64, 15-64, 15-74, 50-74) di Lombardia e Varese, senza arrotondamenti.</li>
+      </ul>
+      <p class="nota">Fonte: ISTAT, Rilevazione sulle forze di lavoro (dati annuali, età 15-74 anni salvo la tabella per età): «Tasso di disoccupazione» e «Disoccupati – dati provinciali» (IstatData).
+        Arrotondamenti come la funzione ARROTONDA di Excel; la variazione % dei disoccupati è calcolata sui valori già arrotondati alle migliaia, come nei modelli.
+        Nomi dei file, fogli, intestazioni e formati sono quelli dei modelli di Osserva. Le tabelle vengono ricalcolate ogni volta sui dati più recenti: ISTAT può rivedere anche gli anni passati.</p>
+      <p class="nota">ISTAT pubblica i dati annuali provinciali una volta l'anno (in genere tra marzo e aprile, per l'anno precedente) e può rivederli in autunno.
+        I dati automatici vengono controllati ogni lunedì; se l'anno non è ancora pubblicato la pagina lo dice.</p>
+    </details>
+  </section>
+</main>
+<footer>Fonte: ISTAT – Rilevazione sulle forze di lavoro · elaborazione Camera di Commercio di Varese · versione 1.0</footer>
+
+<script id="motore">
+"use strict";
+/* ==========================================================================
+   MOTORE (nessuna libreria esterna: lettura CSV, calcoli, Excel e ZIP)
+   Stesse regole del programma Python «report_disoccupazione.py» (cartella 3_Estrattore_Python_con_Disoccupazione).
+   ========================================================================== */
+class ErroreDati extends Error {}
+
+// dati scaricati da ISTAT dall'aggiornamento automatico (GitHub Actions): stessa cartella del sito, oppure il sito pubblicato
+const URL_DATI_ONLINE = "https://statisticava.github.io/report-lavoro/dati/";
+const URL_ISTAT_DATI = "https://esploradati.istat.it/SDMXWS/rest/data/";
+const ANNO_INIZIO = 2018;                                   // le serie partono sempre da qui
+const PROVINCIA = "ITC41", REGIONE = "ITC4", ITALIA = "IT"; // ISTAT: Italia = IT
+const ETA_TOTALE = "Y15-74";
+const PROVINCE_REGIONE = [
+  ["ITC41", "Varese"], ["ITC42", "Como"], ["ITC44", "Sondrio"], ["ITC45", "Milano"], ["ITC46", "Bergamo"], ["ITC47", "Brescia"],
+  ["ITC48", "Pavia"], ["ITC4A", "Cremona"], ["ITC4B", "Mantova"], ["ITC43", "Lecco"], ["ITC49", "Lodi"], ["IT108", "Monza e Brianza"],
+];
+const NOMI = { [PROVINCIA]: "Varese", [REGIONE]: "Lombardia", [ITALIA]: "Italia" };
+const SESSI = [["1", "Maschi"], ["2", "Femmine"], ["9", "Totale"]];
+const FASCE_ETA = ["Y15-24", "Y25-34", "Y15-34", "Y35-49", "Y20-64", "Y15-64", "Y15-74", "Y50-74"];
+
+// le due tavole ISTAT (richiesta SDMX identica a quella del programma Python)
+const TAVOLE = {
+  T: { tipo: "T", dataType: "UNEM_R", nome: "tasso di disoccupazione", file: "disoccupazione_tassi.csv",
+       dataflow: "IT1,151_914,1.0",
+       chiave: () => `A.${[ITALIA, REGIONE, ...PROVINCE_REGIONE.map(p => p[0])].join("+")}.UNEM_R.1+2+9.${FASCE_ETA.join("+")}.99.TOTAL.TOTAL` },
+  D: { tipo: "D", dataType: "UNEMP", nome: "disoccupati", file: "disoccupazione_disoccupati.csv",
+       dataflow: "IT1,151_929_DF_DCCV_DISOCCUPT1_7,1.0",
+       chiave: () => `A.${[ITALIA, REGIONE, ...PROVINCE_REGIONE.map(p => p[0])].join("+")}.UNEMP.1+2+9.${ETA_TOTALE}.99.TOTAL.99.TOTAL` },
+};
+const urlIstat = (tavola, annoFine) =>
+  `${URL_ISTAT_DATI}${tavola.dataflow}/${tavola.chiave()}?startPeriod=${ANNO_INIZIO}&endPeriod=${annoFine}&format=csvfile`;
+
+/* ------------------------------------------------------------------ arrotondamenti (come ROUND di Excel) */
+// metà lontano da zero, su 15 cifre significative (come Decimal(format(v, ".15g")) + ROUND_HALF_UP del programma Python)
+function arrotonda(v, cifre) {
+  if (v === null || v === undefined || !Number.isFinite(v)) return null;
+  const a = Math.abs(v);
+  if (a < 1e-6) return 0;
+  const r = Number(Math.round(Number(`${Number(a.toPrecision(15))}e${cifre}`)) + `e-${cifre}`);
+  return v < 0 && r !== 0 ? -r : r;
+}
+// formula del modello: ROUND(ROUND(rec;0)/ROUND(prec;0)*100-100; 2), sui valori già arrotondati alle migliaia
+function variazioneArrotondata(recente, precedente) {
+  const r = arrotonda(recente, 0), p = arrotonda(precedente, 0);
+  if (r === null || p === null || p === 0) return null;
+  return arrotonda(r / p * 100 - 100, 2);
+}
+
+/* ------------------------------------------------------------------ lettura CSV ISTAT */
+function parseCsv(testo) {
+  if (testo.charCodeAt(0) === 0xFEFF) testo = testo.slice(1);
+  const primaRiga = testo.split(/\r?\n/, 1)[0];
+  const sep = [",", ";", "\t"].map(c => [c, primaRiga.split(c).length]).sort((a, b) => b[1] - a[1])[0][0];
+  const righe = [];
+  let riga = [], campo = "", tra = false;
+  for (let i = 0; i < testo.length; i++) {
+    const c = testo[i];
+    if (tra) {
+      if (c === '"') { if (testo[i + 1] === '"') { campo += '"'; i++; } else tra = false; } else campo += c;
+    } else if (c === '"') tra = true;
+    else if (c === sep) { riga.push(campo); campo = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && testo[i + 1] === "\n") i++;
+      riga.push(campo); campo = "";
+      if (riga.length > 1 || riga[0] !== "") righe.push(riga);
+      riga = [];
+    } else campo += c;
+  }
+  if (campo !== "" || riga.length) { riga.push(campo); righe.push(riga); }
+  return righe;
+}
+
+// dimensioni "di contorno": nel file scaricato dal portale ci sono, e devono avere il valore «totale»
+const DIMENSIONI_TOTALE = { FREQ: "A", EDU_LEV_HIGHEST: "99", CITIZENSHIP: "TOTAL", DURATION_UNEMPLOYMENT: "TOTAL", LABPROF_STATUS_A: "99" };
+
+// CSV SDMX di ISTAT (file automatico o file scaricato dal link «csvfile» del servizio SDMX): le colonne si riconoscono dal nome
+function leggiCsvIstat(testo) {
+  const righe = parseCsv(testo);
+  if (!righe.length) throw new ErroreDati("Il file è vuoto.");
+  const testa = righe[0].map(s => s.trim());
+  const pos = n => testa.indexOf(n);
+  const obbl = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE"];
+  const mancano = obbl.filter(n => pos(n) < 0);
+  if (mancano.length)
+    throw new ErroreDati(`Non è un file CSV dei dati ISTAT (mancano le colonne ${mancano.join(", ")}). Servono i file scaricati con i link del punto 2.`);
+  const [iA, iT, iS, iE, iP, iV] = obbl.map(pos);
+  const filtri = Object.entries(DIMENSIONI_TOTALE).filter(([n]) => pos(n) >= 0).map(([n, v]) => [pos(n), v]);
+  const valori = new Map(), tipi = new Set(), anni = new Set();
+  let n = 0;
+  for (const r of righe.slice(1)) {
+    if (r.length < testa.length) continue;
+    const tipo = r[iT] === TAVOLE.T.dataType ? "T" : r[iT] === TAVOLE.D.dataType ? "D" : null;
+    if (!tipo || !/^\d{4}$/.test(r[iP].trim())) continue;
+    if (filtri.some(([j, v]) => r[j].trim() !== v)) continue;
+    const v = r[iV].trim() === "" ? NaN : Number(r[iV]);
+    if (!Number.isFinite(v)) continue;
+    const anno = Number(r[iP]);
+    valori.set(`${tipo}|${r[iA].trim()}|${r[iS].trim()}|${r[iE].trim()}|${anno}`, v);
+    tipi.add(tipo); anni.add(anno); n++;
+  }
+  if (!n) throw new ErroreDati("Nel file non ci sono valori annuali del tasso di disoccupazione (UNEM_R) né dei disoccupati (UNEMP).");
+  const ord = [...anni].sort((a, b) => a - b);
+  return { valori, tipi: [...tipi], primo: ord[0], ultimo: ord[ord.length - 1], righe: n,
+           descr: [...tipi].map(t => TAVOLE[t].nome).join(" e ") };
+}
+
+class DatiLavoro {
+  constructor() { this.valori = new Map(); }
+  aggiungi(letto) { for (const [k, v] of letto.valori) this.valori.set(k, v); }
+  tasso(area, sesso, anno, eta = ETA_TOTALE) { const v = this.valori.get(`T|${area}|${sesso}|${eta}|${anno}`); return v === undefined ? null : v; }
+  disoccupati(area, sesso, anno) { const v = this.valori.get(`D|${area}|${sesso}|${ETA_TOTALE}|${anno}`); return v === undefined ? null : v; }
+  anni(tipo, area) {
+    const s = new Set();
+    for (const k of this.valori.keys()) { const p = k.split("|"); if (p[0] === tipo && p[1] === area) s.add(Number(p[4])); }
+    return [...s].sort((a, b) => a - b);
+  }
+}
+
+// ultimo anno per cui ci sono sia il tasso sia i disoccupati (totale di Varese)
+function ultimoAnno(dati) {
+  const ok = dati.anni("T", PROVINCIA).filter(a => dati.tasso(PROVINCIA, "9", a) !== null && dati.disoccupati(PROVINCIA, "9", a) !== null);
+  return ok.length ? ok[ok.length - 1] : null;
+}
+function controllaAnno(dati, anno) {
+  if (!Number.isInteger(anno) || anno <= ANNO_INIZIO)
+    return { ok: false, errore: `L'anno deve essere successivo al ${ANNO_INIZIO} (serve anche l'anno precedente).` };
+  const ultimo = ultimoAnno(dati);
+  for (const [t, v] of [["T", dati.tasso(PROVINCIA, "9", anno)], ["D", dati.disoccupati(PROVINCIA, "9", anno)]]) {
+    if (v === null) {
+      const anni = dati.anni(t, PROVINCIA);
+      return { ok: false, ultimo, errore: `ISTAT non ha ancora pubblicato i dati annuali ${anno} (${TAVOLE[t].nome})` + (anni.length ? ` (ultimo anno disponibile: ${anni[anni.length - 1]}).` : ".") };
+    }
+  }
+  return { ok: true, ultimo };
+}
+
+/* ------------------------------------------------------------------ tabelle (specifica = modelli fatti a mano) */
+const SX = ["left", "center", true], DX = ["right", "center", true];   // allineamenti dei modelli: testo a sinistra, numeri a destra
+const G = ["General", null];
+// tab: {foglio, nomeFile, intest, righe, colonne:[[formato, allineamento]], larghezze:{A:…}, stileIntest, altezzaIntest, formatiIntest:{j:fmt}, formatiCelle:{"riga,col":fmt}}
+const contaVuoti = righe => righe.reduce((n, r) => n + r.filter(v => v === null).length, 0);
+
+function tabSintesi(D, anno) {
+  const righe = [];
+  for (const area of [PROVINCIA, REGIONE, ITALIA])
+    for (const [sesso, genere] of SESSI)
+      righe.push([NOMI[area], genere, arrotonda(D.disoccupati(area, sesso, anno - 1), 0), arrotonda(D.tasso(area, sesso, anno - 1), 2),
+                  arrotonda(D.disoccupati(area, sesso, anno), 0), arrotonda(D.tasso(area, sesso, anno), 2)]);
+  const formatiCelle = {};
+  for (let r = 8; r <= 10; r++) formatiCelle[`${r},3`] = "#,##0";     // nel modello i disoccupati «periodo passato» dell'Italia hanno il separatore delle migliaia
+  return { foglio: "Foglio1", nomeFile: "Istat_disoccupazione_sintesi.xlsx", righe, formatiCelle, stileIntest: true, altezzaIntest: 38.45,
+    intest: ["Territori", "Genere", "Disoccupati periodo passato", "Tasso di disoccupazione periodo passato", "Disoccupati periodo recente", "Tasso di disoccupazione periodo recente"],
+    colonne: [["General", SX], ["General", SX], ["0", null], ["0.0", null], ["0", null], ["0.0", null]],
+    larghezze: { A: 13.43, B: 15.14, C: 17.43, D: 22.86, E: 17.43, F: 22.86 } };
+}
+function tabTassi(D, anno) {
+  const righe = []; let n = 0;
+  for (const [sesso, genere] of SESSI)
+    for (let y = ANNO_INIZIO; y <= anno; y++) { n++; righe.push([n, genere, y, arrotonda(D.tasso(PROVINCIA, sesso, y), 2), arrotonda(D.tasso(REGIONE, sesso, y), 2)]); }
+  return { foglio: "Foglio2", nomeFile: "Istat_disoccupazione_tassi.xlsx", righe, formatiIntest: { 4: "0.0", 5: "0.0" },
+    intest: ["Ordine", "Genere", "Anno", NOMI[PROVINCIA], NOMI[REGIONE]],
+    colonne: [G, G, G, ["0.0", null], ["0.0", null]] };
+}
+function tabDisoccupati(D, anno) {
+  const righe = []; let n = 0;
+  for (const [sesso, genere] of SESSI)
+    for (let y = ANNO_INIZIO; y <= anno; y++) {
+      n++;
+      const riga = [n, genere, y];
+      for (const area of [PROVINCIA, REGIONE]) {
+        const cur = D.disoccupati(area, sesso, y);
+        const v = y === ANNO_INIZIO ? 0 : variazioneArrotondata(cur, D.disoccupati(area, sesso, y - 1));
+        riga.push(arrotonda(cur, 0), v);
+      }
+      righe.push(riga);
+    }
+  const p = NOMI[PROVINCIA], r = NOMI[REGIONE];
+  return { foglio: "Foglio1", nomeFile: "Istat_disoccupazione_disoccupati.xlsx", righe, stileIntest: true, altezzaIntest: 51.6,
+    intest: [null, "Genere", "Anno", `${p} disoccupati (migliaia)`, `${p} t.var.%`, `${r} disoccupati (migliaia)`, `${r} t.var.%`],   // la cella A1 è vuota, come nel modello
+    colonne: [G, ["General", SX], ["General", SX], ["0", DX], ["0.00", DX], ["0", DX], ["0.00", DX]],
+    larghezze: { B: 11.86, D: 14.57, E: 12.14, F: 17.86, G: 12.14 } };
+}
+function tabDisoccupatiGrafico(D, anno) {
+  const righe = [];
+  for (let y = ANNO_INIZIO, n = 1; y <= anno; y++, n++) righe.push([n, y, ...SESSI.map(([s]) => D.disoccupati(PROVINCIA, s, y))]);
+  return { foglio: "Foglio1", nomeFile: "Istat_disoccupazione_disoccupati_grafico.xlsx", righe, stileIntest: true, altezzaIntest: 45.0,
+    intest: ["Ordine", "Anno", "Disoccupati maschi (migliaia)", "Disoccupati femmine (migliaia)", "Totale (migliaia)"],   // valori ISTAT con i decimali (scelta dell'utente)
+    colonne: [G, ["General", SX], ["0.000", DX], ["0.000", DX], ["0.000", DX]],
+    larghezze: { C: 12.43, D: 12.86 } };
+}
+function tabTerritori(D, anno) {
+  const aree = [...PROVINCE_REGIONE, [REGIONE, NOMI[REGIONE]], [ITALIA, NOMI[ITALIA]]];
+  const righe = aree.map(([area, nome], i) => [i + 1, nome, ...SESSI.map(([s]) => arrotonda(D.tasso(area, s, anno), 2))]);
+  return { foglio: "Foglio1", nomeFile: "Istat_disoccupazione_territori.xlsx", righe, stileIntest: true, altezzaIntest: 30.0,
+    intest: ["Ordine", "Territorio", "Maschi", "Femmine", "Totale"],
+    colonne: [G, ["General", SX], ["0.0", SX], ["0.0", SX], ["0.0", SX]],
+    larghezze: { B: 27.86 } };
+}
+function tabEta(D, anno) {
+  const righe = [];
+  for (const area of [REGIONE, PROVINCIA])
+    for (const eta of FASCE_ETA)
+      righe.push([NOMI[area], eta.slice(1) + " anni", D.tasso(area, "1", anno, eta), D.tasso(area, "2", anno, eta), D.tasso(area, "9", anno, eta), D.tasso(area, "9", anno - 1, eta)]);
+  return { foglio: "Foglio2", nomeFile: "Istat_disoccupazione_eta.xlsx", righe,
+    intest: ["Territorio", "Territorio e fasce d'età", `Maschi ${anno}`, `Femmine ${anno}`, `Totale ${anno}`, `Totale ${anno - 1}`],
+    colonne: [G, G, ["0.00", null], ["0.00", null], ["0.00", null], ["0.00", null]],   // valori ISTAT non arrotondati
+    larghezze: { A: 10.29, B: 21.14, C: 11.57, D: 14.0, E: 11.0 } };
+}
+const TABELLE = [["Sintesi", tabSintesi], ["Tassi", tabTassi], ["Disoccupati", tabDisoccupati],
+                 ["Disoccupati grafico", tabDisoccupatiGrafico], ["Territori", tabTerritori], ["Età", tabEta]];
+
+/* ------------------------------------------------------------------ generazione completa */
+function generaReport(dati, anno, ctx = {}) {
+  const log = ctx.log || (() => {});
+  anno = Number(anno);
+  const c = controllaAnno(dati, anno);
+  if (!c.ok) throw new ErroreDati(c.errore);
+  const file = [], errori = [];
+  for (const [nome, fn] of TABELLE) {
+    try {
+      const tab = fn(dati, anno);
+      tab.mancanti = contaVuoti(tab.righe);
+      file.push({ nome: tab.nomeFile, dati: creaXlsx(tab), tab });
+      log(tab.nomeFile, "ok");
+      if (tab.mancanti) log(`${nome}: ${tab.mancanti} valori non pubblicati da ISTAT (celle vuote)`, "muted");
+    } catch (e) { errori.push(nome); log(`${nome}: ${e.message}`, "err"); }
+  }
+  return { cartella: `Report_disoccupazione_${anno}`, file, errori };
+}
+
+/* ------------------------------------------------------------------ Excel (.xlsx) con gli stili dei modelli */
+const enc = new TextEncoder();
+const xmlEsc = s => String(s).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "")
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+function colonna(n) { let s = ""; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); } return s; }
+function colDaLettere(l) { let n = 0; for (let i = 0; i < l.length; i++) n = n * 26 + l.charCodeAt(i) - 64; return n; }
+
+// registro degli stili di una cartella di lavoro: (formato numerico, grassetto, allineamento) -> indice di cellXfs
+function nuovoRegistroStili() {
+  const predefiniti = { "General": 0, "0": 1, "0.00": 2, "#,##0": 3 };
+  const personalizzati = new Map(), xfs = [{ numId: 0, bold: false, al: null }], indice = new Map([["General|0|", 0]]);
+  return {
+    stile(fmt, bold, al) {
+      const chiave = `${fmt}|${bold ? 1 : 0}|${al ? al.join(",") : ""}`;
+      if (indice.has(chiave)) return indice.get(chiave);
+      let numId = predefiniti[fmt];
+      if (numId === undefined) { if (!personalizzati.has(fmt)) personalizzati.set(fmt, 164 + personalizzati.size); numId = personalizzati.get(fmt); }
+      xfs.push({ numId, bold: !!bold, al });
+      indice.set(chiave, xfs.length - 1);
+      return xfs.length - 1;
+    },
+    xml() {
+      const nf = [...personalizzati].map(([f, id]) => `<numFmt numFmtId="${id}" formatCode="${xmlEsc(f)}"/>`).join("");
+      const xf = xfs.map(x => `<xf numFmtId="${x.numId}" fontId="${x.bold ? 1 : 0}" fillId="0" borderId="0" xfId="0"${x.numId ? ' applyNumberFormat="1"' : ""}${x.bold ? ' applyFont="1"' : ""}${x.al ? ' applyAlignment="1"' : ""}>`
+        + (x.al ? `<alignment horizontal="${x.al[0]}" vertical="${x.al[1]}"${x.al[2] ? ' wrapText="1"' : ""}/>` : "") + "</xf>").join("");
+      return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+${nf ? `<numFmts count="${personalizzati.size}">${nf}</numFmts>` : ""}<fonts count="2"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font><font><b/><sz val="11"/><name val="Calibri"/><family val="2"/></font></fonts>
+<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="${xfs.length}">${xf}</cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
+</styleSheet>`;
+    },
+  };
+}
+
+const HEAD = ["General", true, ["center", "center", true]];    // intestazione: grassetto, centrata, a capo
+function foglioXml(tab, reg) {
+  const attr = (ref, s) => `<c r="${ref}"${s ? ` s="${s}"` : ""}`;
+  const testo = (ref, s, t) => `${attr(ref, s)} t="inlineStr"><is><t xml:space="preserve">${xmlEsc(t)}</t></is></c>`;
+  const cella = (ref, s, v) => v === null || v === undefined ? (s ? `${attr(ref, s)}/>` : "")
+    : typeof v === "number" ? (Number.isFinite(v) ? `${attr(ref, s)}><v>${String(Object.is(v, -0) ? 0 : v)}</v></c>` : (s ? `${attr(ref, s)}/>` : ""))
+    : testo(ref, s, v);
+  let righe = `<row r="1"${tab.altezzaIntest ? ` ht="${tab.altezzaIntest}" customHeight="1"` : ""}>`;
+  tab.intest.forEach((h, j) => {
+    const fmt = (tab.formatiIntest && tab.formatiIntest[j + 1]) || "General";
+    const s = tab.stileIntest ? reg.stile(fmt, true, HEAD[2]) : reg.stile(fmt, false, null);
+    righe += cella(colonna(j + 1) + "1", s, h);
+  });
+  righe += "</row>";
+  tab.righe.forEach((r, i) => {
+    const nr = i + 2;
+    righe += `<row r="${nr}">` + r.map((v, j) => {
+      const [fmt, al] = tab.colonne[j];
+      const f = (tab.formatiCelle && tab.formatiCelle[`${nr},${j + 1}`]) || fmt;
+      return cella(colonna(j + 1) + nr, reg.stile(f, false, al), v);
+    }).join("") + "</row>";
+  });
+  const cols = Object.entries(tab.larghezze || {}).sort((a, b) => colDaLettere(a[0]) - colDaLettere(b[0]))
+    .map(([l, w]) => { const n = colDaLettere(l); return `<col min="${n}" max="${n}" width="${w}" customWidth="1"/>`; }).join("");
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheetFormatPr defaultRowHeight="15"/>
+${cols ? `<cols>${cols}</cols>` : ""}<sheetData>${righe}</sheetData>
+</worksheet>`;
+}
+
+// tab -> file .xlsx (un foglio)
+function creaXlsx(tab) {
+  const reg = nuovoRegistroStili();
+  const foglio = foglioXml(tab, reg);      // prima il foglio: registra gli stili usati
+  const parti = [
+    ["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>`],
+    ["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+    ["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="${xmlEsc(tab.foglio)}" sheetId="1" r:id="rId1"/></sheets></workbook>`],
+    ["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ["xl/styles.xml", reg.xml()],
+    ["xl/worksheets/sheet1.xml", foglio],
+  ];
+  return creaZip(parti.map(([nome, t]) => ({ nome, dati: enc.encode(t) })));
+}
+
+/* ------------------------------------------------------------------ ZIP (senza compressione) */
+const CRC_TAB = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(b) { let c = 0xFFFFFFFF; for (let i = 0; i < b.length; i++) c = CRC_TAB[(c ^ b[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+function creaZip(voci, data = new Date()) {
+  const ora = ((data.getHours() << 11) | (data.getMinutes() << 5) | Math.floor(data.getSeconds() / 2)) & 0xFFFF;
+  const giorno = (((data.getFullYear() - 1980) << 9) | ((data.getMonth() + 1) << 5) | data.getDate()) & 0xFFFF;
+  const parti = [], centrale = [];
+  let offset = 0;
+  for (const v of voci) {
+    const nome = enc.encode(v.nome), crc = crc32(v.dati), dim = v.dati.length;
+    const lh = new DataView(new ArrayBuffer(30));
+    lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+    lh.setUint16(10, ora, true); lh.setUint16(12, giorno, true); lh.setUint32(14, crc, true);
+    lh.setUint32(18, dim, true); lh.setUint32(22, dim, true); lh.setUint16(26, nome.length, true); lh.setUint16(28, 0, true);
+    parti.push(new Uint8Array(lh.buffer), nome, v.dati);
+    const ch = new DataView(new ArrayBuffer(46));
+    ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true);
+    ch.setUint16(10, 0, true); ch.setUint16(12, ora, true); ch.setUint16(14, giorno, true); ch.setUint32(16, crc, true);
+    ch.setUint32(20, dim, true); ch.setUint32(24, dim, true); ch.setUint16(28, nome.length, true);
+    ch.setUint32(42, offset, true);
+    centrale.push(new Uint8Array(ch.buffer), nome);
+    offset += 30 + nome.length + dim;
+  }
+  const dimCentrale = centrale.reduce((s, a) => s + a.length, 0);
+  const fine = new DataView(new ArrayBuffer(22));
+  fine.setUint32(0, 0x06054b50, true); fine.setUint16(8, voci.length, true); fine.setUint16(10, voci.length, true);
+  fine.setUint32(12, dimCentrale, true); fine.setUint32(16, offset, true);
+  const tutte = [...parti, ...centrale, new Uint8Array(fine.buffer)];
+  const out = new Uint8Array(tutte.reduce((s, a) => s + a.length, 0));
+  let p = 0;
+  for (const a of tutte) { out.set(a, p); p += a.length; }
+  return out;
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { ErroreDati, TAVOLE, TABELLE, PROVINCE_REGIONE, FASCE_ETA, ANNO_INIZIO, URL_DATI_ONLINE, arrotonda, variazioneArrotondata, parseCsv,
+                     leggiCsvIstat, DatiLavoro, ultimoAnno, controllaAnno, generaReport, creaXlsx, creaZip, urlIstat };
+}
+</script>
+
+<script>
+"use strict";
+/* ==========================================================================
+   INTERFACCIA
+   ========================================================================== */
+(function () {
+  const $ = id => document.getElementById(id);
+  const XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const stato = { auto: new Map(), autoInfo: null, cerco: true, file: [], dati: new DatiLavoro(), sceltaUtente: false, url: [] };
+
+  function log(msg, tag) {
+    const el = $("log");
+    if (el.dataset.vuoto !== "no") { el.textContent = ""; el.dataset.vuoto = "no"; }
+    const riga = document.createElement("span");
+    const sim = tag === "ok" ? "✓ " : tag === "err" ? "✗ " : tag === "warn" ? "⚠ " : tag === "muted" ? "ℹ " : "";
+    riga.className = tag || "";
+    riga.textContent = sim + msg + "\n";
+    el.appendChild(riga);
+    el.scrollTop = el.scrollHeight;
+  }
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const fmtData = d => d.toLocaleDateString("it-IT") + " alle " + d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+
+  /* ---------- anno */
+  function riempiAnni(ultimo) {
+    const sel = $("anno"), attuale = sel.value;
+    sel.innerHTML = "";
+    const massimo = ultimo || new Date().getFullYear() - 1;
+    for (let a = massimo; a > ANNO_INIZIO; a--) sel.add(new Option(String(a), String(a)));
+    if (attuale && [...sel.options].some(o => o.value === attuale)) sel.value = attuale;
+  }
+  function annoPredefinito() {
+    const u = ultimoAnno(stato.dati);
+    riempiAnni(u);
+    if (u && !stato.sceltaUtente) $("anno").value = String(u);
+  }
+
+  /* ---------- dati */
+  function ricostruisci() {
+    const d = new DatiLavoro();
+    for (const a of stato.auto.values()) d.aggiungi(a);
+    for (const f of stato.file) if (f.valori) d.aggiungi(f);
+    stato.dati = d;
+    $("risultati").hidden = true;      // i file generati prima potrebbero non corrispondere più ai dati
+    annoPredefinito();
+    aggiorna();
+  }
+
+  // all'apertura carica i due file dei dati (dati/…csv nella stessa cartella, oppure dal sito pubblicato)
+  async function caricaAutomatici() {
+    const basi = location.protocol === "file:" ? [URL_DATI_ONLINE] : ["dati/", URL_DATI_ONLINE];
+    for (const tavola of Object.values(TAVOLE)) {
+      for (const base of basi) {
+        try {
+          const r = await fetch(base + tavola.file, { cache: "no-store" });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const letto = leggiCsvIstat(await r.text());
+          if (!stato.autoInfo) {
+            try { const ri = await fetch(base + "aggiornamento.json", { cache: "no-store" }); if (ri.ok) stato.autoInfo = await ri.json(); } catch (e) { /* facoltativo */ }
+          }
+          stato.auto.set(tavola.tipo, letto);
+          log(`Dati automatici caricati: ${tavola.nome}, ${letto.primo}–${letto.ultimo}.`, "ok");
+          break;
+        } catch (e) { /* si prova l'indirizzo successivo */ }
+      }
+      if (!stato.auto.has(tavola.tipo)) log(`Dati automatici (${tavola.nome}) non raggiungibili: scarica i file da ISTAT e trascinali nella pagina (punto 2).`, "warn");
+    }
+    stato.cerco = false;
+    ricostruisci();
+  }
+
+  function mostraFonte() {
+    const el = $("fonte");
+    const annoFine = new Date().getFullYear();
+    $("linkIstat").innerHTML = Object.values(TAVOLE).map(t =>
+      `<a class="bottone" href="${esc(urlIstat(t, annoFine))}" rel="noopener">⬇ Scarica ${esc(t.nome)} da ISTAT</a>`).join(" ");
+    const mancanti = Object.values(TAVOLE).filter(t => !stato.auto.has(t.tipo));
+    if (!mancanti.length) {
+      const ultimi = Object.values(TAVOLE).map(t => stato.auto.get(t.tipo).ultimo);
+      const info = stato.autoInfo || {};
+      const agg = Object.values(TAVOLE).map(t => info[t.file.replace(/\.csv$/, "")] && info[t.file.replace(/\.csv$/, "")].ultimo_aggiornamento_istat).filter(Boolean).sort().pop();
+      const contr = info.controllato ? new Date(info.controllato) : null;
+      el.className = "fonte ok";
+      el.innerHTML = `<span class="icona">✅</span><div><b>Dati automatici: tasso di disoccupazione e disoccupati, dal ${ANNO_INIZIO} al ${Math.min(...ultimi)}</b>
+        <span class="dett">${agg ? `Ultimo aggiornamento dei dati da parte di ISTAT: ${esc(new Date(agg).toLocaleDateString("it-IT"))}. ` : ""}${contr ? `Ultimo controllo automatico: ${esc(fmtData(contr))}. ` : ""}
+        Si aggiornano da soli (controllo ogni lunedì).</span></div>`;
+    } else if (stato.cerco) {
+      el.className = "fonte";
+      el.innerHTML = `<span class="icona">⏳</span><div><b>Cerco i dati aggiornati automaticamente…</b></div>`;
+    } else {
+      el.className = "fonte warn";
+      el.innerHTML = `<span class="icona">⚠️</span><div><b>Dati automatici (${esc(mancanti.map(t => t.nome).join(" e "))}) non disponibili</b>
+        <span class="dett">${location.protocol === "file:" ? "La pagina è aperta dal computer e il sito con i dati automatici non risponde. " : ""}Scarica i file da ISTAT e trascinali qui sotto (passi 1 e 2).</span></div>`;
+    }
+  }
+
+  function mostraFile() {
+    const ul = $("listaFile");
+    ul.innerHTML = "";
+    stato.file.forEach((f, i) => {
+      const li = document.createElement("li");
+      if (f.errore) li.className = "errore";
+      li.innerHTML = `<span>${f.errore ? "✗" : "✓"} <b>${esc(f.nome)}</b> — ${f.errore ? esc(f.errore) : `${esc(f.descr)}, ${f.primo}–${f.ultimo}`}</span>`;
+      const b = document.createElement("button");
+      b.className = "togli"; b.title = "Togli"; b.textContent = "✕";
+      b.onclick = () => { stato.file.splice(i, 1); mostraFile(); ricostruisci(); };
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+  }
+
+  async function caricaFile(lista) {
+    for (const file of lista) {
+      log(`Leggo ${file.name}…`, "muted");
+      await new Promise(r => setTimeout(r, 20));
+      try {
+        if (/\.(xlsx?|zip|7z)$/i.test(file.name)) throw new ErroreDati("Servono i file CSV scaricati con i link del punto 2, non file Excel o ZIP.");
+        const letto = leggiCsvIstat(await file.text());
+        stato.file = stato.file.filter(f => f.nome !== file.name);
+        stato.file.push({ nome: file.name, ...letto });
+        log(`${file.name}: ${letto.descr}, ${letto.primo}–${letto.ultimo}.`, "ok");
+      } catch (e) {
+        stato.file.push({ nome: file.name, errore: e instanceof ErroreDati ? e.message : `Errore di lettura: ${e.message}` });
+        log(`${file.name}: ${e.message}`, "err");
+      }
+    }
+    mostraFile();
+    ricostruisci();
+  }
+
+  /* ---------- controllo */
+  function aggiorna() {
+    mostraFonte();
+    const anno = Number($("anno").value);
+    const el = $("controllo");
+    if (!stato.dati.valori.size || !anno) {
+      el.innerHTML = `<p class="nota" style="margin-top:0">Nessun dato caricato.</p>`;
+      $("genera").disabled = true;
+      return;
+    }
+    const c = controllaAnno(stato.dati, anno);
+    if (!c.ok) {
+      el.innerHTML = `<div class="servono">${esc(c.errore)}</div>`;
+      $("genera").disabled = true;
+      return;
+    }
+    const riga = (nome, ok, dett) => `<tr><td>${esc(nome)}</td><td><span class="badge ${ok ? "warn" : "ok"}">${ok ? "con celle vuote" : "pronta"}</span></td><td class="dett">${esc(dett)}</td></tr>`;
+    const dett = { "Sintesi": `Varese, Lombardia, Italia: ${anno - 1} e ${anno}`, "Tassi": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}`,
+                   "Disoccupati": `Varese e Lombardia, ${ANNO_INIZIO}–${anno}, con variazione %`, "Disoccupati grafico": `Varese, ${ANNO_INIZIO}–${anno}, con i decimali`,
+                   "Territori": `12 province, Lombardia, Italia, ${anno}`, "Età": `8 fasce d'età, Lombardia e Varese, ${anno}` };
+    let html = `<table class="controllo">`, vuote = [];
+    for (const [nome, fn] of TABELLE) {
+      let t;
+      try { t = fn(stato.dati, anno); } catch (e) { html += `<tr><td>${esc(nome)}</td><td><span class="badge err">non si può fare</span></td><td class="dett">${esc(e.message)}</td></tr>`; continue; }
+      const n = contaVuoti(t.righe);
+      if (n) vuote.push(`${nome} (${n})`);
+      html += riga(t.nomeFile.replace(/\.xlsx$/, ""), n, `${dett[nome]}${n ? ` — ${n} valori non pubblicati da ISTAT` : ""}`);
+    }
+    html += `</table>`;
+    if (vuote.length) html += `<div class="servono">Mancano alcuni valori (celle vuote): ${esc(vuote.join(", "))}.</div>`;
+    html += `<div class="pronto">Tutto pronto per il ${anno}: ${TABELLE.length} tabelle di disoccupazione.</div>`;
+    el.innerHTML = html;
+    $("genera").disabled = false;
+  }
+
+  /* ---------- generazione */
+  function genera() {
+    const anno = Number($("anno").value);
+    stato.url.forEach(u => URL.revokeObjectURL(u)); stato.url = [];
+    $("risultati").hidden = true;
+    try {
+      log(`Genero le tabelle di disoccupazione del ${anno}…`);
+      const esito = generaReport(stato.dati, anno, { log });
+      const elenco = $("elenco");
+      elenco.innerHTML = "";
+      for (const f of esito.file) {
+        const url = URL.createObjectURL(new Blob([f.dati], { type: XLSX }));
+        stato.url.push(url);
+        const div = document.createElement("div");
+        div.className = "file";
+        div.innerHTML = `<span>${esc(f.nome)}</span>`;
+        const a = document.createElement("a");
+        a.className = "scarica"; a.href = url; a.download = f.nome; a.textContent = "⬇ Scarica";
+        div.appendChild(a);
+        elenco.appendChild(div);
+      }
+      const zip = creaZip(esito.file.map(f => ({ nome: `${esito.cartella}/${f.nome}`, dati: f.dati })));
+      const urlZip = URL.createObjectURL(new Blob([zip], { type: "application/zip" }));
+      stato.url.push(urlZip);
+      $("zip").href = urlZip; $("zip").download = `${esito.cartella}.zip`;
+      $("titoloRisultati").textContent = `File pronti — Disoccupazione, anno ${anno}`;
+      $("risultati").hidden = false;
+      log(esito.errori.length ? `Fatto: ${esito.file.length} file; non riuscite: ${esito.errori.join(", ")}.` : `Fatto: ${esito.file.length} file.`, esito.errori.length ? "warn" : "ok");
+    } catch (e) {
+      log(e instanceof ErroreDati ? e.message : `Errore inatteso: ${e.message}`, "err");
+      if (!(e instanceof ErroreDati)) console.error(e);
+    }
+  }
+
+  /* ---------- eventi */
+  $("anno").onchange = () => { stato.sceltaUtente = true; $("risultati").hidden = true; aggiorna(); };
+  $("genera").onclick = genera;
+  $("scegli").onchange = e => { caricaFile([...e.target.files]); e.target.value = ""; };
+  const drop = $("drop");
+  drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("sopra"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("sopra"));
+  drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("sopra"); caricaFile([...e.dataTransfer.files]); });
+  // file lasciati fuori dal riquadro: stessi effetti, invece di aprirli nel browser
+  window.addEventListener("dragover", e => e.preventDefault());
+  window.addEventListener("drop", e => { if (!drop.contains(e.target)) { e.preventDefault(); caricaFile([...e.dataTransfer.files]); } });
+
+  riempiAnni();
+  aggiorna();
+  caricaAutomatici();
+})();
+</script>
+</body>
+</html>

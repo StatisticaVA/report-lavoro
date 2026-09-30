@@ -1,2 +1,50 @@
-Report Lavoro - repository di PROVA (per verificare che GitHub riesca a scaricare da ISTAT).
-Il sito vero (pagina «Lavoro», sezione Disoccupazione) arrivera' qui.
+REPORT LAVORO – ISTAT (Varese · Lombardia · Italia)
+====================================================
+Versione 1.0 – 30/09/2026. Sezioni pronte: DISOCCUPAZIONE. (Altre sezioni del lavoro verranno aggiunte nella stessa pagina.)
+
+A COSA SERVE
+Crea le 6 tabelle Excel per Osserva sulla disoccupazione, con i dati ISTAT della Rilevazione sulle forze di lavoro
+(dati annuali, provinciali): «Tasso di disoccupazione» e «Disoccupati – dati provinciali» (IstatData).
+Non serve installare niente: è una pagina web che funziona nel browser (Chrome, Edge, Firefox, Safari).
+Fa le stesse tabelle del programma Python «Report Disoccupazione» / ReportISTAT.exe (verificato cella per cella), ma senza
+scaricare niente da ISTAT a mano.
+
+COME SI USA (una volta all'anno, quando ISTAT pubblica i dati)
+1. Apri la pagina (sito pubblicato oppure doppio clic su index.html).
+2. Guarda il riquadro «2 · Dati ISTAT»:
+   - se è VERDE («Dati automatici: … dal 2018 al 2025») i dati sono già caricati, non devi fare niente;
+   - se è ARANCIONE, oppure l'ultimo anno indicato è vecchio (ISTAT ha pubblicato ma i dati automatici non sono ancora arrivati):
+       a) clicca i due pulsanti «Scarica … da ISTAT»: il browser salva due file .csv nella cartella Download;
+       b) trascina i due file nel riquadro tratteggiato (o clicca il riquadro e scegli i file). Non serve aprirli.
+3. Scegli l'anno (la pagina propone da sola l'ultimo disponibile). Gli anni che ISTAT non ha ancora pubblicato non compaiono.
+4. Nel riquadro «3 · Controllo e tabelle» controlla che le 6 tabelle siano «pronte» e premi «Genera tabelle».
+5. Scarica i file uno per uno oppure tutti insieme con «Scarica tutto (ZIP)».
+
+TABELLE PRODOTTE (nomi, fogli, intestazioni e formati come i modelli di Osserva, in formato .xlsx)
+- Istat_disoccupazione_sintesi.xlsx                 Varese, Lombardia, Italia × maschi, femmine, totale: disoccupati e tasso, anno scelto e anno prima
+- Istat_disoccupazione_tassi.xlsx                   tasso di disoccupazione di Varese e Lombardia dal 2018 all'anno scelto
+- Istat_disoccupazione_disoccupati.xlsx             disoccupati (migliaia) di Varese e Lombardia dal 2018, con variazione % (il 2018 vale 0)
+- Istat_disoccupazione_disoccupati_grafico.xlsx     disoccupati di Varese dal 2018, con i decimali (per il grafico)
+- Istat_disoccupazione_territori.xlsx               tasso di disoccupazione di 12 province, Lombardia e Italia nell'anno scelto
+- Istat_disoccupazione_eta.xlsx                     tasso per fascia d'età (8 fasce), Lombardia e Varese, senza arrotondamenti
+Arrotondamenti come ARROTONDA di Excel; la variazione % dei disoccupati è calcolata sui valori già arrotondati alle migliaia
+(come nei modelli). I numeri sono salvati come numeri veri (non testo). Le serie partono sempre dal 2018.
+
+QUANDO ESCONO I DATI
+ISTAT pubblica i dati annuali provinciali una volta l'anno, in genere tra marzo e aprile, per l'anno precedente (il 2025 è uscito
+nella primavera 2026), e può rivederli in autunno (l'ultimo aggiornamento delle tavole è dell'11/09/2026). Il calendario ufficiale
+non lo conosciamo: per questo i dati automatici vengono controllati OGNI LUNEDÌ. Se scegli un anno non ancora pubblicato la
+pagina lo dice («ISTAT non ha ancora pubblicato i dati annuali …»). Le tabelle vengono ricalcolate ogni volta sui dati più
+recenti: ISTAT può rivedere anche gli anni passati.
+
+COME FUNZIONA (per chi vuole saperlo)
+La pagina non può scaricare i dati da ISTAT da sola: il servizio ISTAT non permette la lettura da una pagina web. Per questo un
+programma automatico su GitHub (aggiorna_dati.py, ogni lunedì) scarica i dati e li salva nella cartella dati/ del sito; la pagina
+li legge da lì. I file che carichi tu restano sul tuo computer e prevalgono sui dati automatici.
+Se l'aggiornamento automatico si rompe (ISTAT non risponde, tavola cambiata…) arriva un'e-mail chiara all'indirizzo dell'account
+GitHub; se ISTAT non ha pubblicato dati nuovi non arriva niente. I dati già salvati non vengono mai cancellati.
+
+SITO E DATI
+Sito: https://statisticava.github.io/report-lavoro/   (repository StatisticaVA/report-lavoro)
+Controllo manuale dell'aggiornamento: scheda «Actions» del repository → «Aggiorna dati ISTAT» → «Run workflow».
+Documentazione tecnica: HANDOVER.md §20 (nella cartella «finale» del computer, non pubblicata).

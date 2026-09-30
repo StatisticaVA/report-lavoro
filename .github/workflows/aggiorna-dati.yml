@@ -1,27 +1,69 @@
-# PROVA: controlla che i server di GitHub riescano a scaricare i dati da ISTAT.
-# Si lancia solo a mano: scheda «Actions» → «Aggiorna dati ISTAT» → «Run workflow».
+# Aggiornamento automatico dei dati ISTAT usati dalla pagina «Lavoro».
+# ISTAT pubblica i dati annuali provinciali una volta l'anno (in genere tra marzo e aprile) e può rivederli in
+# autunno (l'ultimo aggiornamento delle tavole è dell'11/09/2026): il controllo gira OGNI LUNEDÌ alle 6 UTC (8 in Italia).
+# Si può lanciare anche a mano: scheda «Actions» → «Aggiorna dati ISTAT» → «Run workflow»
+# (spuntando «Prova» si simula un problema, per controllare che l'e-mail di avviso arrivi).
+# Avviso per e-mail SOLO se qualcosa non funziona (ISTAT che non risponde, tavola cambiata…): segnala_problemi.py
+# apre una segnalazione (issue) chiara in italiano, che GitHub manda per e-mail; quando torna tutto a posto la chiude
+# da solo. Se ISTAT non ha pubblicato dati nuovi non arriva nessuna e-mail.
 name: Aggiorna dati ISTAT
 
 on:
+  schedule:
+    - cron: "0 6 * * 1"
   workflow_dispatch:
+    inputs:
+      prova:
+        description: "Prova: simula un problema per controllare che l'e-mail di avviso arrivi"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
+  pages: write
+  issues: write
 
 jobs:
   aggiorna:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+
       - name: Scarica da ISTAT
-        run: |
-          echo "Indirizzo del server GitHub: $(curl -s -m 10 https://api.ipify.org || echo n.d.)"
-          python3 aggiorna_dati.py | tee "$RUNNER_TEMP/log.txt"
-          { echo '### Esito scarico ISTAT'; echo '```'; cat "$RUNNER_TEMP/log.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+        id: scarica
+        env:
+          PROVA_ERRORE: ${{ inputs.prova }}
+        run: python3 aggiorna_dati.py --esito "$RUNNER_TEMP/esito.json"
+
       - name: Salva i dati nel repository
+        id: salva
+        if: steps.scarica.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add dati
-          if git diff --cached --quiet; then echo "Nessuna modifica."; else git commit -m "Dati ISTAT aggiornati il $(date -u +%Y-%m-%d)" && git push; fi
+          # se è cambiata solo la data dell'ultimo controllo (aggiornamento.json) si salva solo nel primo lunedì del mese
+          # o se lanciato a mano: un salvataggio al mese tiene attivo il repository (GitHub ferma i cron dopo 60 giorni
+          # senza modifiche)
+          cambiati="$(git diff --cached --name-only)"
+          if [ "$cambiati" = "dati/aggiornamento.json" ] && [ "$((10#$(date -u +%d)))" -gt 7 ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Dati ISTAT invariati: niente da salvare."
+            git reset -q
+          fi
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica."
+          else
+            git commit -m "Dati ISTAT aggiornati il $(date -u +%Y-%m-%d)"
+            git push
+            # ricostruisce il sito GitHub Pages con i dati nuovi
+            gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Richiesta di build di Pages non riuscita (il sito si aggiorna comunque al prossimo push)."
+          fi
+
+      - name: Avvisa per e-mail se qualcosa non ha funzionato
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 segnala_problemi.py --esito "$RUNNER_TEMP/esito.json" --scarica "${{ steps.scarica.outcome }}" --salva "${{ steps.salva.outcome }}"
