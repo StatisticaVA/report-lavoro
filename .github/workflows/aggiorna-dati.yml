@@ -1,0 +1,27 @@
+# PROVA: controlla che i server di GitHub riescano a scaricare i dati da ISTAT.
+# Si lancia solo a mano: scheda «Actions» → «Aggiorna dati ISTAT» → «Run workflow».
+name: Aggiorna dati ISTAT
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scarica da ISTAT
+        run: |
+          echo "Indirizzo del server GitHub: $(curl -s -m 10 https://api.ipify.org || echo n.d.)"
+          python3 aggiorna_dati.py | tee "$RUNNER_TEMP/log.txt"
+          { echo '### Esito scarico ISTAT'; echo '```'; cat "$RUNNER_TEMP/log.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Salva i dati nel repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dati
+          if git diff --cached --quiet; then echo "Nessuna modifica."; else git commit -m "Dati ISTAT aggiornati il $(date -u +%Y-%m-%d)" && git push; fi

@@ -1,0 +1,2 @@
+Report Lavoro - repository di PROVA (per verificare che GitHub riesca a scaricare da ISTAT).
+Il sito vero (pagina «Lavoro», sezione Disoccupazione) arrivera' qui.
