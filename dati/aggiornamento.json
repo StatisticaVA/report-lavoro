@@ -1,0 +1,19 @@
+{
+ "controllato": "2026-09-30T08:09:08Z",
+ "tavole": {
+  "disoccupazione_tassi.csv": {
+   "righe": 2683,
+   "primo_anno": 2018,
+   "ultimo_anno": 2025,
+   "territori": 14,
+   "ultimo_aggiornamento_istat": "2026-09-11T08:54:28.185Z"
+  },
+  "disoccupazione_disoccupati.csv": {
+   "righe": 336,
+   "primo_anno": 2018,
+   "ultimo_anno": 2025,
+   "territori": 14,
+   "ultimo_aggiornamento_istat": "2026-09-11T08:51:07.720Z"
+  }
+ }
+}
