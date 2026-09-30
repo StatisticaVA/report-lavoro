@@ -1,7 +1,7 @@
 {
  "disoccupazione_tassi": {
   "nome": "Tasso di disoccupazione (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:23:48Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 2683,
   "ultimo_aggiornamento_istat": "2026-09-11T08:54:28.185Z",
@@ -9,7 +9,7 @@
  },
  "disoccupazione_disoccupati": {
   "nome": "Disoccupati in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:23:48Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 336,
   "ultimo_aggiornamento_istat": "2026-09-11T08:51:07.720Z",
@@ -17,7 +17,7 @@
  },
  "occupazione_tassi": {
   "nome": "Tasso di occupazione (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:23:48Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 3360,
   "ultimo_aggiornamento_istat": "2026-09-11T08:04:59.701Z",
@@ -25,16 +25,16 @@
  },
  "occupazione_occupati": {
   "nome": "Occupati in migliaia per settore e posizione (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:23:48Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 944,
   "ultimo_aggiornamento_istat": "2026-09-11T08:43:00.884Z",
   "dati_modificati": "2026-09-30T09:11:00Z"
  },
- "controllato": "2026-09-30T10:23:48Z",
+ "controllato": "2026-09-30T10:58:37Z",
  "attivita_forze": {
   "nome": "Forze di lavoro in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:49:08Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 336,
   "ultimo_aggiornamento_istat": "2026-09-11T08:03:48.665Z",
@@ -42,7 +42,7 @@
  },
  "attivita_tassi": {
   "nome": "Tasso di attività (Rilevazione sulle forze di lavoro, dati annuali)",
-  "scaricato": "2026-09-30T10:49:08Z",
+  "scaricato": "2026-09-30T10:58:37Z",
   "ultimo_anno": 2025,
   "righe": 3024,
   "ultimo_aggiornamento_istat": "2026-09-11T08:48:36.536Z",
