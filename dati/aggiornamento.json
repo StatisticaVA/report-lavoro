@@ -15,5 +15,21 @@
   "ultimo_aggiornamento_istat": "2026-09-11T08:51:07.720Z",
   "dati_modificati": "2026-09-30T08:14:18Z"
  },
+ "occupazione_tassi": {
+  "nome": "Tasso di occupazione (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-09-30T09:11:00Z",
+  "ultimo_anno": 2025,
+  "righe": 3360,
+  "ultimo_aggiornamento_istat": null,
+  "dati_modificati": "2026-09-30T09:11:00Z"
+ },
+ "occupazione_occupati": {
+  "nome": "Occupati in migliaia per settore e posizione (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-09-30T09:11:00Z",
+  "ultimo_anno": 2025,
+  "righe": 944,
+  "ultimo_aggiornamento_istat": null,
+  "dati_modificati": "2026-09-30T09:11:00Z"
+ },
  "controllato": "2026-09-30T08:47:12Z"
 }

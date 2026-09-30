@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scarica da ISTAT i dati annuali della disoccupazione e salva in dati/ solo quello che serve alla pagina «Lavoro».
+"""Scarica da ISTAT i dati annuali della disoccupazione e dell'occupazione e salva in dati/ solo quello che serve alla pagina «Lavoro».
 
 Lo usa l'aggiornamento automatico su GitHub (.github/workflows/aggiorna-dati.yml, ogni lunedì), ma si può lanciare
 anche a mano:  python3 aggiorna_dati.py        Solo libreria standard di Python (niente da installare).
@@ -9,8 +9,9 @@ Perché serve: il servizio ISTAT (SDMXWS di IstatData) non permette a una pagina
 
 Per ogni tavola di TAVOLE:
   1. scarica il CSV SDMX (Rilevazione sulle forze di lavoro, dati annuali dal 2018): Varese, Lombardia, Italia e le
-     12 province lombarde; la richiesta è la stessa del programma Python «Report Disoccupazione»;
-  2. controlla che sia quello atteso (colonne, tipo di dato, territori) e che non sia più vecchio di quello salvato;
+     12 province lombarde; per la disoccupazione la richiesta è la stessa del programma Python «Report Disoccupazione»;
+  2. controlla che sia quello atteso (colonne, tipo di dato, territori, settori) e che non sia più vecchio di quello salvato;
+     tiene solo le righe utili (classificazioni di contorno al totale);
   3. scrive dati/<tavola>.csv (solo le colonne utili) e aggiorna dati/aggiornamento.json (con la data di ultimo
      aggiornamento dichiarata da ISTAT).
 Se per una tavola qualcosa non va, il suo file NON viene toccato e il problema viene scritto nel file di esito (--esito):
@@ -36,6 +37,13 @@ PROVINCE = ["ITC41", "ITC42", "ITC44", "ITC45", "ITC46", "ITC47", "ITC48", "ITC4
 AREE = ["IT", "ITC4"] + PROVINCE          # Italia, Lombardia, province lombarde (ISTAT: Italia = IT)
 SESSI = "1+2+9"                            # maschi, femmine, totale
 FASCE = "+".join(["Y15-24", "Y25-34", "Y15-34", "Y35-49", "Y20-64", "Y15-64", "Y15-74", "Y50-74"])
+FASCE_OCC = ["Y15-24", "Y18-29", "Y15-29", "Y25-34", "Y35-44", "Y45-54", "Y55-64", "Y20-64", "Y15-64", "Y15-89"]
+# occupati: totale (0010), agricoltura (A), industria in senso stretto (0020), costruzioni (F),
+# commercio, alberghi e ristoranti (0026), altri servizi (0025); posizione: 1 dipendenti, 2 indipendenti, 9 totale
+ATECO_OCC = ["0010", "A", "0020", "F", "0026", "0025"]
+COLONNE = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
+INDISPENSABILI = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE"]
+COLONNE_OCC = ["REF_AREA", "SEX", "AGE", "ECON_ACTIVITY_NACE_2007", "POSIZ_PROF", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
 TAVOLE = [
     {"codice": "disoccupazione_tassi", "nome": "Tasso di disoccupazione (Rilevazione sulle forze di lavoro, dati annuali)",
      "dataflow": "IT1,151_914,1.0", "tipo": "UNEM_R",
@@ -43,9 +51,20 @@ TAVOLE = [
     {"codice": "disoccupazione_disoccupati", "nome": "Disoccupati in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
      "dataflow": "IT1,151_929_DF_DCCV_DISOCCUPT1_7,1.0", "tipo": "UNEMP",
      "chiave": f"A.{'+'.join(AREE)}.UNEMP.{SESSI}.Y15-74.99.TOTAL.99.TOTAL"},
+    {"codice": "occupazione_tassi", "nome": "Tasso di occupazione (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,150_915,1.0", "tipo": "EMP_R",
+     "chiave": f"A.{'+'.join(AREE)}.EMP_R.{SESSI}.{'+'.join(FASCE_OCC)}.99.TOTAL",
+     "filtri": {"AGE": set(FASCE_OCC), "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}}},
+    # la tavola degli occupati non ha la colonna DATA_TYPE
+    {"codice": "occupazione_occupati", "nome": "Occupati in migliaia per settore e posizione (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,150_938,1.0", "tipo": None,
+     "chiave": f"A.IT+ITC4+ITC41.{SESSI}.Y15-89.99.TOTAL.0010.{'+'.join(ATECO_OCC)}.{SESSI}.99.99.99.9.9",
+     "colonne": COLONNE_OCC, "indispensabili": COLONNE_OCC[:-1],
+     "filtri": {"AGE": {"Y15-89"}, "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}, "ECON_ACTIVITY_NACE_2002": {"0010"},
+                "ECON_ACTIVITY_NACE_2007": set(ATECO_OCC), "POSIZ_PROF": {"1", "2", "9"}, "PROF_STATUS": {"99"},
+                "OCCUPATION_2001": {"99"}, "OCCUPATION_2011": {"99"}, "FULL_PART_TIME": {"9"}, "PERM_TEMP_EMPLOYEES": {"9"}},
+     "settori_attesi": set(ATECO_OCC)},
 ]
-COLONNE = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
-INDISPENSABILI = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE"]
 TERRITORI_ATTESI = {"IT", "ITC4", "ITC41"}
 ACCEPT_CSV = "application/vnd.sdmx.data+csv;version=1.0.0, text/csv"
 
@@ -84,35 +103,48 @@ def scarica(url, accept, pause):
 
 
 def leggi_dati(dati, tavola):
-    """CSV di ISTAT -> (righe tenute come liste di COLONNE, ultimo anno)."""
+    """CSV di ISTAT -> (righe tenute come liste delle colonne della tavola, ultimo anno)."""
+    colonne = tavola.get("colonne", COLONNE)
+    indispensabili = tavola.get("indispensabili", INDISPENSABILI)
+    filtri = tavola.get("filtri", {})
     testo = dati.decode("utf-8-sig", "replace")
     inizio = testo[:200].strip().replace("\n", " ")
     prima = testo.split("\n", 1)[0]
-    if not any(c in prima for c in INDISPENSABILI):       # nessuna colonna riconoscibile: non è il CSV dei dati (es. pagina di manutenzione)
+    if not any(c in prima for c in indispensabili):       # nessuna colonna riconoscibile: non è il CSV dei dati (es. pagina di manutenzione)
         raise Problema("risposta", f"ISTAT ha risposto, ma non con il file CSV dei dati (inizio della risposta: «{inizio[:120]}»)")
     lettore = csv.DictReader(io.StringIO(testo))
-    mancano = [c for c in INDISPENSABILI if c not in (lettore.fieldnames or [])]
+    mancano = [c for c in indispensabili + list(filtri) if c not in (lettore.fieldnames or [])]
     if mancano:
-        raise Problema("formato", f"nel CSV mancano le colonne {', '.join(mancano)} (ISTAT ha cambiato la tavola)")
+        raise Problema("formato", f"nel CSV mancano le colonne {', '.join(dict.fromkeys(mancano))} (ISTAT ha cambiato la tavola)")
     righe = []
     for r in lettore:
         if r["OBS_VALUE"] in ("", None):
             continue
-        if r["DATA_TYPE"] != tavola["tipo"]:
+        if tavola["tipo"] and r["DATA_TYPE"] != tavola["tipo"]:
             raise Problema("formato", f"nel CSV c'è il tipo di dato «{r['DATA_TYPE']}» invece di «{tavola['tipo']}» (ISTAT ha cambiato la tavola)")
+        if any(r[c] not in ammessi for c, ammessi in filtri.items()):     # classificazioni di contorno diverse dal totale: non servono
+            continue
         try:
             float(r["OBS_VALUE"])
-            anno = int(r["TIME_PERIOD"])
+            int(r["TIME_PERIOD"])
         except ValueError:
             raise Problema("formato", f"valore o periodo non numerico nel CSV (periodo «{r['TIME_PERIOD']}», valore «{r['OBS_VALUE']}»)")
-        righe.append([r.get(c, "") or "" for c in COLONNE])
+        righe.append([r.get(c, "") or "" for c in colonne])
     if not righe:
         raise Problema("formato", "nel CSV non ci sono valori")
     territori = {r[0] for r in righe}
     if not TERRITORI_ATTESI <= territori:
         raise Problema("formato", f"nel CSV mancano i territori {', '.join(sorted(TERRITORI_ATTESI - territori))} (Italia, Lombardia o Varese)")
-    righe.sort(key=lambda r: (r[0], r[2], r[3], r[4]))
-    return righe, max(int(r[4]) for r in righe)
+    if tavola.get("settori_attesi"):
+        i = colonne.index("ECON_ACTIVITY_NACE_2007")
+        manca = tavola["settori_attesi"] - {r[i] for r in righe if r[0] == "ITC41"}
+        if manca:
+            raise Problema("formato", f"nel CSV mancano per Varese i settori Ateco {', '.join(sorted(manca))} (ISTAT ha cambiato la tavola)")
+    # ordine: tutte le colonne di classificazione (senza tipo di dato, valore e stato), periodo compreso
+    chiave = [j for j, c in enumerate(colonne) if c not in ("DATA_TYPE", "OBS_VALUE", "OBS_STATUS")]
+    righe.sort(key=lambda r: [r[j] for j in chiave])
+    iP = colonne.index("TIME_PERIOD")
+    return righe, max(int(r[iP]) for r in righe)
 
 
 def ultimo_aggiornamento(dataflow):
@@ -127,16 +159,16 @@ def ultimo_aggiornamento(dataflow):
         return None
 
 
-def testo_csv(righe):
+def testo_csv(righe, colonne=COLONNE):
     buf = io.StringIO()
     w = csv.writer(buf, lineterminator="\n")
-    w.writerow(COLONNE)
+    w.writerow(colonne)
     w.writerows(righe)
     return buf.getvalue()
 
 
 def main():
-    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati della disoccupazione")
+    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati della disoccupazione e dell'occupazione")
     arg.add_argument("--esito", help="file JSON in cui scrivere l'esito (lo legge segnala_problemi.py)")
     esito_path = arg.parse_args().esito
     prova = os.environ.get("PROVA_ERRORE", "").lower() == "true"
@@ -174,7 +206,7 @@ def main():
             time.sleep(PAUSA_ISTAT)
             agg = ultimo_aggiornamento(t["dataflow"])
             percorso = os.path.join(CARTELLA, f"{cod}.csv")
-            nuovo = testo_csv(righe)
+            nuovo = testo_csv(righe, t.get("colonne", COLONNE))
             vecchio = open(percorso, encoding="utf-8").read() if os.path.exists(percorso) else None
             cambiato = vecchio != nuovo
             if cambiato:

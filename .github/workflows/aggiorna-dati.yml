@@ -1,4 +1,4 @@
-# Aggiornamento automatico dei dati ISTAT usati dalla pagina «Lavoro».
+# Aggiornamento automatico dei dati ISTAT usati dalla pagina «Lavoro» (disoccupazione e occupazione: 4 tavole).
 # ISTAT pubblica i dati annuali provinciali una volta l'anno (in genere tra marzo e aprile) e può rivederli in
 # autunno (l'ultimo aggiornamento delle tavole è dell'11/09/2026): il controllo gira OGNI LUNEDÌ alle 6 UTC (8 in Italia).
 # Si può lanciare anche a mano: scheda «Actions» → «Aggiorna dati ISTAT» → «Run workflow»
