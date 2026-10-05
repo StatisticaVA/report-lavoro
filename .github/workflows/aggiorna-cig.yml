@@ -1,0 +1,79 @@
+# Aggiornamento automatico dei dati INPS usati dalla sezione «Cassa integrazione» della pagina «Lavoro» (3 file: cig_territori, cig_classi, cig_varese_mensile).
+# L'INPS pubblica i dati una volta al mese, di solito nei primi giorni del mese per il mese precedente (il 02/10/2026 sono arrivati i dati fino a giugno 2026):
+# il controllo gira OGNI GIORNO DAL 2 AL 12 DEL MESE alle 6 UTC (8 in Italia). Se la data di aggiornamento dichiarata dall'INPS non è cambiata
+# il programma non scarica niente (due richieste in tutto); se è cambiata scarica tutto (circa 40 richieste, 5-10 minuti).
+# Si può lanciare anche a mano: scheda «Actions» → «Aggiorna dati INPS (cassa integrazione)» → «Run workflow»
+# («Forza» scarica comunque; «Prova» simula un problema, per controllare che l'e-mail di avviso arrivi).
+# Avviso per e-mail SOLO se qualcosa non funziona (INPS che non risponde, tavola cambiata, numeri incoerenti…): segnala_problemi.py --fonte inps
+# apre una segnalazione (issue) in italiano, che GitHub manda per e-mail; quando torna tutto a posto la chiude da sola.
+name: Aggiorna dati INPS (cassa integrazione)
+
+on:
+  schedule:
+    - cron: "0 6 2-12 * *"
+  workflow_dispatch:
+    inputs:
+      forza:
+        description: "Forza: scarica anche se l'INPS non segnala novità"
+        type: boolean
+        default: false
+      prova:
+        description: "Prova: simula un problema per controllare che l'e-mail di avviso arrivi"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  issues: write
+
+# un solo aggiornamento alla volta (anche con quello dei dati ISTAT): evita che due salvataggi si incrocino
+concurrency:
+  group: aggiorna-dati
+  cancel-in-progress: false
+
+jobs:
+  aggiorna:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scarica dall'INPS
+        id: scarica
+        env:
+          PROVA_ERRORE: ${{ inputs.prova }}
+          FORZA: ${{ inputs.forza }}
+        run: python3 aggiorna_cig.py --esito "$RUNNER_TEMP/esito.json" $([ "$FORZA" = "true" ] && echo --forza)
+
+      - name: Salva i dati nel repository
+        id: salva
+        if: steps.scarica.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dati
+          # se è cambiata solo la data dell'ultimo controllo (aggiornamento.json) non si salva: ci pensa l'aggiornamento mensile dei dati ISTAT
+          # (un salvataggio al mese tiene attivo il repository: GitHub ferma i cron dopo 60 giorni senza modifiche)
+          cambiati="$(git diff --cached --name-only)"
+          if [ "$cambiati" = "dati/aggiornamento.json" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Dati INPS invariati: niente da salvare."
+            git reset -q
+          fi
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica."
+          else
+            git commit -m "Dati INPS (cassa integrazione) aggiornati il $(date -u +%Y-%m-%d)"
+            git pull --rebase -q
+            git push
+            # ricostruisce il sito GitHub Pages con i dati nuovi
+            gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Richiesta di build di Pages non riuscita (il sito si aggiorna comunque al prossimo push)."
+          fi
+
+      - name: Avvisa per e-mail se qualcosa non ha funzionato
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 segnala_problemi.py --fonte inps --esito "$RUNNER_TEMP/esito.json" --scarica "${{ steps.scarica.outcome }}" --salva "${{ steps.salva.outcome }}"

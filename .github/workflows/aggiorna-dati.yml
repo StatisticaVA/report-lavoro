@@ -23,6 +23,11 @@ permissions:
   pages: write
   issues: write
 
+# un solo aggiornamento alla volta (anche con quello dei dati INPS): evita che due salvataggi si incrocino
+concurrency:
+  group: aggiorna-dati
+  cancel-in-progress: false
+
 jobs:
   aggiorna:
     runs-on: ubuntu-latest
@@ -57,6 +62,7 @@ jobs:
             echo "Nessuna modifica."
           else
             git commit -m "Dati ISTAT aggiornati il $(date -u +%Y-%m-%d)"
+            git pull --rebase -q
             git push
             # ricostruisce il sito GitHub Pages con i dati nuovi
             gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Richiesta di build di Pages non riuscita (il sito si aggiorna comunque al prossimo push)."

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Report Lavoro ISTAT</title>
+<title>Report Lavoro</title>
 <style>
   :root {
     --bg: #eef1f8; --surface: #ffffff; --surface-2: #f7f9fd; --line: #e3e8f2; --line-2: #d5dcea;
@@ -92,8 +92,8 @@
 </head>
 <body>
 <header><div class="wrap">
-  <h1>💼 Report Lavoro – ISTAT</h1>
-  <p>Varese · Lombardia · Italia — tabelle Excel per Osserva dai dati ISTAT della Rilevazione sulle forze di lavoro</p>
+  <h1>💼 Report Lavoro – ISTAT e INPS</h1>
+  <p>Varese · Lombardia · Italia — tabelle Excel per Osserva dai dati ISTAT sulle forze di lavoro e dai dati INPS sulla cassa integrazione</p>
 </div></header>
 
 <main class="wrap">
@@ -104,26 +104,28 @@
       <label class="sezione"><input type="radio" name="sezione" value="occupazione"> Occupazione</label>
       <label class="sezione"><input type="radio" name="sezione" value="attivita"> Attività</label>
       <label class="sezione"><input type="radio" name="sezione" value="inattivita"> Inattività</label>
+      <label class="sezione"><input type="radio" name="sezione" value="cig"> Cassa integrazione</label>
     </div>
     <div class="riga" style="margin-top:16px">
       <label class="campo">Anno <select id="anno"></select></label>
+      <label class="campo" id="campoTrim" hidden>Trimestre <select id="trimestre"></select></label>
     </div>
     <p class="nota" id="notaPeriodo">Dati annuali: si sceglie solo l'anno. Le serie partono sempre dal 2018.</p>
   </section>
 
   <section class="card">
-    <h2>2 · Dati ISTAT</h2>
+    <h2 id="titoloDati">2 · Dati ISTAT</h2>
     <div id="fonte" class="fonte"><span class="icona">⏳</span><div><b>Cerco i dati aggiornati automaticamente…</b></div></div>
     <h3>Se i dati automatici mancano o non sono aggiornati</h3>
     <ol class="passi">
-      <li>Scarica da ISTAT i due file della sezione scelta (si salvano nei Download; ogni clic scarica un file CSV):
+      <li><span id="passo1">Scarica da ISTAT i due file della sezione scelta (si salvano nei Download; ogni clic scarica un file CSV):</span>
         <span id="linkIstat"></span></li>
-      <li>Trascina qui sotto i due file scaricati.</li>
+      <li id="passo2">Trascina qui sotto i due file scaricati.</li>
     </ol>
     <label class="drop" id="drop">
       <input type="file" id="scegli" multiple accept=".csv,.txt">
-      <b>Trascina qui i file CSV di ISTAT</b> oppure clicca per sceglierli
-      <div class="descr">Vanno bene anche i file scaricati da IstatData in formato SDMX-CSV. I dati dei file caricati prevalgono su quelli automatici.
+      <b id="dropTitolo">Trascina qui i file CSV di ISTAT</b> oppure clicca per sceglierli
+      <div class="descr" id="dropDescr">Vanno bene anche i file scaricati da IstatData in formato SDMX-CSV. I dati dei file caricati prevalgono su quelli automatici.
         I file restano sul tuo computer.</div>
     </label>
     <ul class="lista-file" id="listaFile"></ul>
@@ -216,9 +218,26 @@
         Nel grafico gli inattivi hanno i decimali per tutti gli anni (nel file di Osserva del 2025 gli anni passati erano interi e solo il 2025 aveva i decimali).
         Le tabelle vengono ricalcolate ogni volta sui dati più recenti: ISTAT può rivedere anche gli anni passati. I dati automatici vengono controllati ogni lunedì.</p>
     </details>
+    <details open data-sezione="cig" hidden>
+      <summary>Cassa integrazione: tabelle prodotte, dati usati e regole</summary>
+      <ul>
+        <li><b>CIG_sintesi</b>: ore autorizzate di Varese, Lombardia e Italia per tipo di intervento (ordinaria, straordinaria, deroga, totale), dal 1° gennaio a fine trimestre, nell'anno scelto e in quello prima, con la variazione %.</li>
+        <li><b>CIG_territori_CIGO, _CIGS, _CIGD, _CIG_TOTALE</b>: ore delle 12 province lombarde, della Lombardia e dell'Italia, con il peso % sul totale regionale e la variazione % sull'anno prima. Nella riga <b>ITALIA*</b> il peso è quello della Lombardia sull'Italia.</li>
+        <li><b>CIG_settori_CIGO, _CIGS, _DEROGA, _TOTALE</b>: ore di Varese per classe di attività economica (codice statistico contributivo INPS), con peso % sul totale e variazione % sull'anno prima.</li>
+        <li><b>CIG_tempo_TRIMESTRE</b>: ore di Varese di ogni <b>singolo trimestre</b> (non cumulato) dal I trimestre 2021 al trimestre scelto, con la variazione % sullo stesso trimestre dell'anno prima.</li>
+        <li><b>CIG_tempo_ANNO</b>: ore di Varese di ogni anno dal 2009 all'ultimo anno completo.</li>
+      </ul>
+      <p class="nota">Fonte: INPS, Osservatorio sulle ore autorizzate di cassa integrazione guadagni, classificazione secondo il codice statistico contributivo INPS.
+        Le ore autorizzate sono <b>flussi</b> mensili: sintesi, territori e settori sono <b>cumulati da gennaio a fine trimestre</b> (II trimestre = gennaio–giugno) e confrontati con lo stesso periodo dell'anno prima;
+        le tabelle nel tempo usano il trimestre singolo e l'anno. Le percentuali hanno sempre 2 decimali e sono calcolate sulle ore intere; <b>n.d.</b> = non calcolabile (il periodo di confronto vale zero).
+        Il totale è la somma di ordinaria, straordinaria e deroga; la Lombardia è la somma delle 12 province.</p>
+      <p class="nota">I dati sono ricalcolati ogni volta sui numeri più recenti dell'INPS, che può rivedere anche i periodi passati (l'INPS ha riletto i propri archivi il 9 aprile 2026),
+        quindi i valori di anni già pubblicati possono differire di poco da quelli delle tabelle precedenti. Le serie 2009–2022 vengono dalla sezione «old» dell'Osservatorio, ferma dal 2020.
+        L'INPS pubblica i dati una volta al mese, di solito nei primi giorni del mese per il mese precedente; i dati automatici vengono controllati ogni giorno dal 2 al 12 del mese.</p>
+    </details>
   </section>
 </main>
-<footer>Fonte: ISTAT – Rilevazione sulle forze di lavoro · elaborazione Camera di Commercio di Varese · versione 1.3</footer>
+<footer>Fonti: ISTAT – Rilevazione sulle forze di lavoro; INPS – Osservatorio sulla cassa integrazione guadagni · elaborazione Camera di Commercio di Varese · versione 1.4</footer>
 
 <script id="motore">
 "use strict";
@@ -737,12 +756,247 @@ function tabInattEta(D, anno) {
 const TABELLE_INATTIVITA = [["Sintesi", tabInattSintesi], ["Tassi", tabInattTassi], ["Inattivi", tabInattInattivi],
                             ["Inattivi grafico", tabInattGrafico], ["Territorio", tabInattTerritorio], ["Età", tabInattEta]];
 
+/* ------------------------------------------------------------------ cassa integrazione (INPS) */
+// Ore autorizzate di CIG (Osservatorio INPS, classificazione per codice statistico contributivo). Sono flussi mensili:
+// sintesi, territori e settori sono CUMULATI da gennaio a fine trimestre (l'aggiornamento automatico scarica già i cumulati),
+// le tabelle nel tempo usano i mesi (trimestre singolo o anno).
+const CIG_TIPI = ["Ordinaria", "Straordinaria", "Deroga"];
+const CIG_PERIODI = ["gen-mar", "gen-giu", "gen-set", "gen-dic"];
+const CIG_ROMANI = ["I", "II", "III", "IV"];
+const CIG_PROVINCE = ["Milano", "Bergamo", "Brescia", "Como", "Cremona", "Lecco", "Lodi", "Mantova", "Monza e della Brianza", "Pavia", "Sondrio", "Varese"];
+// classi di attività economica: [nome INPS, nome mostrato nelle tabelle]; l'INPS scrive «Attivita'» senza accento e lascia aperta una parentesi
+const CIG_CLASSI = [
+  ["Attivita' economiche connesse con l'agricoltura", "Attività economiche connesse con l'agricoltura"],
+  ["Estrazione minerali metalliferi e non"], ["Legno"], ["Alimentari"], ["Metallurgiche"], ["Meccaniche"], ["Tessili"], ["Abbigliamento"],
+  ["Chimica, petrolchimica, gomma e materie plastiche"], ["Pelli, cuoio e calzature"], ["Lavorazione minerali non metalliferi"],
+  ["Carta, stampa ed editoria"], ["Installazione impianti per l'edilizia"], ["Energia elettrica, gas e acqua"], ["Trasporti e comunicazioni"],
+  ["Tabacchicoltura"], ["Servizi"], ["Varie"], ["Commercio all'ingrosso"], ["Commercio al minuto"],
+  ["Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",
+   "Attività varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private)"],
+  ["Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)"],
+  ["Alberghi, pubblici esercizi e attivita' similari", "Alberghi, pubblici esercizi e attività similari"],
+  ["Industria edile"], ["Artigianato edile"], ["Industria lapidei"], ["Artigianato lapidei"], ["Altro"],
+];
+const nomeClasseCig = inps => (CIG_CLASSI.find(c => c[0] === inps) || [inps, inps])[1] || inps;
+// i tre file di dati dell'aggiornamento automatico (aggiorna_cig.py); la chiave è la lettera usata dalla pagina
+const TAVOLE_CIG = {
+  CT: { tipo: "CT", nome: "ore autorizzate per provincia lombarda, Lombardia e Italia", file: "cig_territori.csv", info: "cig_territori", colonna: "territorio" },
+  CC: { tipo: "CC", nome: "ore autorizzate di Varese per classe di attività economica", file: "cig_classi.csv", info: "cig_classi", colonna: "classe" },
+  CM: { tipo: "CM", nome: "ore autorizzate di Varese per mese", file: "cig_varese_mensile.csv", info: "cig_varese_mensile", colonna: "mese" },
+};
+const URL_INPS_OSSERVATORIO = "https://servizi2.inps.it/servizi/osservatoristatistici/5/74/82/86/o/512";
+const MESI_IT = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre"];
+const nomePeriodoCig = (anno, q) => `${CIG_ROMANI[q - 1]} trimestre ${anno}`;
+
+// CSV dei dati INPS salvati dall'aggiornamento automatico (colonne riconosciute dal nome)
+function leggiCsvCig(testo) {
+  const righe = parseCsv(testo);
+  if (!righe.length) throw new ErroreDati("Il file è vuoto.");
+  const testa = righe[0].map(s => s.trim());
+  const tipo = testa.includes("territorio") ? "CT" : testa.includes("classe") ? "CC" : testa.includes("mese") ? "CM" : null;
+  const attese = { CT: ["anno", "periodo", "tipo", "territorio", "ore"], CC: ["anno", "periodo", "tipo", "classe", "ore"], CM: ["anno", "mese", "tipo", "ore"] };
+  if (!tipo || attese[tipo].some(n => !testa.includes(n)))
+    throw new ErroreDati("Non è un file dei dati INPS sulla cassa integrazione (servono i file cig_territori.csv, cig_classi.csv e cig_varese_mensile.csv).");
+  const pos = n => testa.indexOf(n);
+  const valori = new Map(), anni = new Set();
+  for (const r of righe.slice(1)) {
+    if (r.length < testa.length) continue;
+    const anno = Number(r[pos("anno")]), ore = Number(r[pos("ore")]), t = r[pos("tipo")].trim();
+    const per = Number(r[pos(tipo === "CM" ? "mese" : "periodo")]);
+    if (!Number.isInteger(anno) || !Number.isFinite(ore) || !CIG_TIPI.includes(t) || !Number.isInteger(per)) continue;
+    valori.set(tipo === "CM" ? `${anno}|${per}|${t}` : `${anno}|${per}|${t}|${r[pos(tipo === "CT" ? "territorio" : "classe")].trim()}`, ore);
+    anni.add(anno);
+  }
+  if (!valori.size) throw new ErroreDati("Nel file non ci sono valori validi.");
+  const ord = [...anni].sort((a, b) => a - b);
+  return { cig: true, tipo, valori, tipi: [tipo], primo: ord[0], ultimo: ord[ord.length - 1], righe: valori.size, descr: TAVOLE_CIG[tipo].nome };
+}
+
+class DatiCig {
+  constructor() { this.t = new Map(); this.c = new Map(); this.m = new Map(); }
+  aggiungi(letto) {
+    const dove = letto.tipo === "CT" ? this.t : letto.tipo === "CC" ? this.c : this.m;
+    for (const [k, v] of letto.valori) dove.set(k, v);
+  }
+  get vuoto() { return !this.t.size && !this.c.size && !this.m.size; }
+  // ore cumulate da gennaio a fine trimestre; tipo null = totale dei tre tipi (null se manca un dato)
+  territorio(terr, tipo, anno, q) {
+    if (tipo) { const v = this.t.get(`${anno}|${q}|${tipo}|${terr}`); return v === undefined ? null : v; }
+    let s = 0;
+    for (const t of CIG_TIPI) { const v = this.territorio(terr, t, anno, q); if (v === null) return null; s += v; }
+    return s;
+  }
+  classe(inps, tipo, anno, q) { const v = this.c.get(`${anno}|${q}|${tipo}|${inps}`); return v === undefined ? null : v; }
+  // classi che l'INPS mostra per quel tipo di intervento (nell'ordine dell'INPS)
+  classiTipo(tipo, anno, q) { return CIG_CLASSI.map(c => c[0]).filter(n => this.c.has(`${anno}|${q}|${tipo}|${n}`)); }
+  mese(tipo, anno, mese) {
+    if (tipo) { const v = this.m.get(`${anno}|${mese}|${tipo}`); return v === undefined ? null : v; }
+    let s = 0;
+    for (const t of CIG_TIPI) { const v = this.mese(t, anno, mese); if (v === null) return null; s += v; }
+    return s;
+  }
+  haPeriodo(anno, q) { return this.t.has(`${anno}|${q}|Ordinaria|Italia`); }
+  periodi() {   // [anno, trimestre] pubblicati, in ordine
+    const s = new Set();
+    for (const k of this.t.keys()) { const p = k.split("|"); if (p[2] === "Ordinaria" && p[3] === "Italia") s.add(p[0] * 10 + Number(p[1])); }
+    return [...s].sort((a, b) => a - b).map(n => [Math.floor(n / 10), n % 10]);
+  }
+  primoAnnoMensile() { let m = Infinity; for (const k of this.m.keys()) m = Math.min(m, Number(k.split("|")[0])); return m; }
+}
+// periodi per cui c'è anche il confronto con lo stesso periodo dell'anno prima
+const periodiCig = dati => dati.periodi().filter(([a, q]) => dati.haPeriodo(a - 1, q));
+function ultimoPeriodoCig(dati) { const p = periodiCig(dati); return p.length ? p[p.length - 1] : null; }
+function controllaPeriodoCig(dati, anno, q) {
+  if (dati.vuoto) return { ok: false, errore: "Non ci sono dati dell'INPS: servono i file cig_territori.csv, cig_classi.csv e cig_varese_mensile.csv." };
+  for (const [t, k] of [["CT", "t"], ["CC", "c"], ["CM", "m"]])
+    if (!dati[k].size) return { ok: false, errore: `Mancano i dati INPS «${TAVOLE_CIG[t].nome}» (file ${TAVOLE_CIG[t].file}).` };
+  if (!Number.isInteger(anno) || ![1, 2, 3, 4].includes(q)) return { ok: false, errore: "Anno o trimestre non validi." };
+  const ultimo = ultimoPeriodoCig(dati);
+  const fine = ultimo ? ` (ultimo periodo disponibile: ${nomePeriodoCig(ultimo[0], ultimo[1])}).` : ".";
+  if (!dati.haPeriodo(anno, q)) return { ok: false, ultimo, errore: `L'INPS non ha ancora pubblicato i dati del ${nomePeriodoCig(anno, q)}${fine}` };
+  if (!dati.haPeriodo(anno - 1, q))
+    return { ok: false, ultimo, errore: `Manca il ${nomePeriodoCig(anno - 1, q)}, che serve per il confronto: nei dati automatici i territori e i settori partono dal 2023${fine}` };
+  return { ok: true, ultimo };
+}
+
+// variazione % come nei modelli (ROUND(rec/prec*100-100; 2) sulle ore intere); periodo di confronto a zero: 0 se anche l'attuale è zero, altrimenti n.d.
+function varCig(rec, prec) {
+  if (rec === null || prec === null) return null;
+  if (prec === 0) return rec === 0 ? 0 : "n.d.";
+  return arrotonda(rec / prec * 100 - 100, 2);
+}
+function pesoCig(v, tot) {
+  if (v === null || tot === null) return null;
+  if (tot === 0) return v === 0 ? 0 : "n.d.";
+  return arrotonda(v / tot * 100, 2);
+}
+const richiesto = (v, cosa) => { if (v === null) throw new ErroreDati(`Mancano i dati INPS: ${cosa}.`); return v; };
+const oreTerr = (D, terr, tipo, anno, q) => richiesto(D.territorio(terr, tipo, anno, q), `${terr}, ${tipo ? tipo.toLowerCase() : "totale"}, ${nomePeriodoCig(anno, q)}`);
+const NOMI_TIPO_CIG = { Ordinaria: "Ordinaria", Straordinaria: "Straordinaria", Deroga: "Deroga" };
+
+function tabCigSintesi(D, anno, q) {
+  const per = CIG_PERIODI[q - 1], righe = []; let n = 0;
+  for (const [etichetta, terr] of [["VARESE", "Varese"], ["LOMBARDIA", "Lombardia"], ["ITALIA", "Italia"]])
+    for (const tipo of [...CIG_TIPI, null]) {
+      const p = oreTerr(D, terr, tipo, anno - 1, q), r = oreTerr(D, terr, tipo, anno, q);
+      righe.push([++n, etichetta, tipo || "TOTALE", p, r, varCig(r, p)]);
+    }
+  return { foglio: "Foglio1", nomeFile: "CIG_sintesi.xlsx", righe, stileIntest: true, altezzaIntest: 30,
+    intest: ["Ordinamento", "Territori", "Tipo variabili", `${per} ${anno - 1}`, `${per} ${anno}`, "T.var.%"],
+    colonne: [G, G, G, ["0", DXR], ["0", DXR], ["0.00", DXR]],
+    larghezze: { A: 13, B: 14, C: 16, D: 16, E: 16, F: 11 } };
+}
+
+function tabCigTerritori(tipo, nomeFile, etichetta) {
+  return function (D, anno, q) {
+    const righe = []; let n = 0;
+    const nomi = [...CIG_PROVINCE.map(p => [p, p]), ["LOMBARDIA", "Lombardia"], ["ITALIA*", "Italia"]];
+    const lom = oreTerr(D, "Lombardia", tipo, anno, q), ita = oreTerr(D, "Italia", tipo, anno, q);
+    for (const [mostrato, terr] of nomi) {
+      const r = oreTerr(D, terr, tipo, anno, q), p = oreTerr(D, terr, tipo, anno - 1, q);
+      // il peso è sul totale regionale; la riga Italia* mostra invece il peso della Lombardia sull'Italia (come sul sito di Osserva)
+      const peso = terr === "Italia" ? pesoCig(lom, ita) : pesoCig(r, lom);
+      righe.push([++n, mostrato, r, peso, varCig(r, p)]);
+    }
+    return { foglio: "Foglio1", nomeFile, righe, stileIntest: true, altezzaIntest: 45,
+      intest: ["Ordinamento", "Territorio", etichetta, "Peso % sul tot regionale", "T.var% tendenziale"],
+      colonne: [G, G, ["0", DXR], ["0.00", DXR], ["0.00", DXR]],
+      larghezze: { A: 13, B: 24, C: 14, D: 17, E: 17 } };
+  };
+}
+
+function tabCigSettori(tipo, nomeFile, etichetta) {
+  return function (D, anno, q) {
+    const per = CIG_PERIODI[q - 1];
+    const tipi = tipo ? [tipo] : CIG_TIPI;
+    for (const t of tipi)
+      for (const a of [anno - 1, anno])
+        if (!D.classiTipo(t, a, q).length)
+          throw new ErroreDati(`I settori di Varese (${t.toLowerCase()}, ${nomePeriodoCig(a, q)}) non sono disponibili: l'INPS non li mostra per riservatezza o non sono stati scaricati.`);
+    // classi mostrate: quelle dell'INPS per quel tipo di intervento; per il totale tutte e 28
+    const classi = tipo ? D.classiTipo(tipo, anno, q) : CIG_CLASSI.map(c => c[0]);
+    const val = (inps, a) => tipi.reduce((s, t) => s + (D.classe(inps, t, a, q) || 0), 0);
+    const righe = classi.map(inps => [nomeClasseCig(inps), val(inps, anno - 1), val(inps, anno)]);
+    const totP = righe.reduce((s, r) => s + r[1], 0), totR = righe.reduce((s, r) => s + r[2], 0);
+    righe.push(["Totale", totP, totR]);
+    const out = righe.map((r, i) => [i + 1, r[0], r[1], r[2], r[0] === "Totale" ? (totR > 0 ? 100 : 0) : pesoCig(r[2], totR), varCig(r[2], r[1])]);
+    const passato = tipo ? `${etichetta} periodo passato` : `${per} ${anno - 1}`, recente = tipo ? `${etichetta} periodo recente` : `${per} ${anno}`;
+    return { foglio: "Foglio1", nomeFile, righe: out, stileIntest: true, altezzaIntest: 45,
+      intest: ["Ordinamento", "Settore", passato, recente, "Peso % sul totale", "T.var% tendenziale"],
+      colonne: [G, G, ["0", DXR], ["0", DXR], ["0.00", DXR], ["0.00", DXR]],
+      larghezze: { A: 13, B: 95, C: 22, D: 22, E: 17, F: 17 } };
+  };
+}
+
+// ore di Varese di un trimestre singolo / di un anno, dai mesi
+function oreVareseMesi(D, tipo, anno, mesi) {
+  let s = 0;
+  for (const m of mesi) { const v = D.mese(tipo, anno, m); if (v === null) return null; s += v; }
+  return s;
+}
+const MESI_TRIM = q => [3 * q - 2, 3 * q - 1, 3 * q];
+const MESI_ANNO = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+function tabCigTempoTrimestre(D, anno, q) {
+  const righe = []; let n = 0;
+  const trim = (tipo, a, k) => richiesto(oreVareseMesi(D, tipo, a, MESI_TRIM(k)), `Varese, ${tipo ? tipo.toLowerCase() : "totale"}, ${nomePeriodoCig(a, k)} (mesi mancanti)`);
+  for (let a = 2021; a <= anno; a++)
+    for (let k = 1; k <= 4; k++) {
+      if (a === anno && k > q) break;
+      const riga = [++n, a, `${CIG_ROMANI[k - 1]} trim '${String(a).slice(2)}`];
+      for (const tipo of [...CIG_TIPI, null]) {
+        const cur = trim(tipo, a, k);
+        riga.push(cur, varCig(cur, oreVareseMesi(D, tipo, a - 1, MESI_TRIM(k))));
+      }
+      righe.push(riga);
+    }
+  return { foglio: "Foglio1", nomeFile: "CIG_tempo_TRIMESTRE.xlsx", righe, stileIntest: true, altezzaIntest: 45,
+    intest: ["Ordinamento", "Anno", "Trimestre", "CIGO", "T.var% tend. CIGO", "CIGS", "T.var% tend. CIGS", "Deroga", "T.var% tend. DEROGA", "Totale", "T.var% tend. TOTALE"],
+    colonne: [G, G, G, ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR]],
+    larghezze: { A: 13, B: 8, C: 14, D: 13, E: 15, F: 13, G: 15, H: 13, I: 15, J: 13, K: 15 } };
+}
+
+function tabCigTempoAnno(D, anno, q) {
+  const righe = []; let n = 0;
+  const ultimoAnno = q === 4 ? anno : anno - 1;       // solo anni completi
+  const primo = D.primoAnnoMensile();
+  const ann = (tipo, a) => richiesto(oreVareseMesi(D, tipo, a, MESI_ANNO), `Varese, ${tipo ? tipo.toLowerCase() : "totale"}, anno ${a} (mesi mancanti)`);
+  for (let a = primo; a <= ultimoAnno; a++) {
+    const riga = [++n, a];
+    for (const tipo of [...CIG_TIPI, null]) {
+      const cur = ann(tipo, a);
+      riga.push(cur, a === primo ? "n.d." : varCig(cur, ann(tipo, a - 1)));      // per il primo anno manca l'anno prima
+    }
+    righe.push(riga);
+  }
+  return { foglio: "Foglio1", nomeFile: "CIG_tempo_ANNO.xlsx", righe, stileIntest: true, altezzaIntest: 30,
+    intest: ["Ordinamento", "Anno", "CIGO", "T.var% CIGO", "CIGS", "T.var% CIGS", "Deroga", "T.var% Deroga", "Totale", "T.var% Totale"],
+    colonne: [G, G, ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR], ["0", DXR], ["0.00", DXR]],
+    larghezze: { A: 13, B: 8, C: 13, D: 13, E: 13, F: 13, G: 13, H: 13, I: 13, J: 13 } };
+}
+
+const TABELLE_CIG = [
+  ["Sintesi", tabCigSintesi],
+  ["Territori CIGO", tabCigTerritori("Ordinaria", "CIG_territori_CIGO.xlsx", "CIGO")],
+  ["Territori CIGS", tabCigTerritori("Straordinaria", "CIG_territori_CIGS.xlsx", "CIGS")],
+  ["Territori CIGD", tabCigTerritori("Deroga", "CIG_territori_CIGD.xlsx", "CIGD")],
+  ["Territori totale", tabCigTerritori(null, "CIG_territori_CIG_TOTALE.xlsx", "CIG totale")],
+  ["Settori CIGO", tabCigSettori("Ordinaria", "CIG_settori_CIGO.xlsx", "CIGO")],
+  ["Settori CIGS", tabCigSettori("Straordinaria", "CIG_settori_CIGS.xlsx", "CIGS")],
+  ["Settori Deroga", tabCigSettori("Deroga", "CIG_settori_DEROGA.xlsx", "Deroga")],
+  ["Settori totale", tabCigSettori(null, "CIG_settori_TOTALE.xlsx", "CIG totale")],
+  ["Tempo trimestre", tabCigTempoTrimestre],
+  ["Tempo anno", tabCigTempoAnno],
+];
+
 const SEZIONI = {
   disoccupazione: { nome: "Disoccupazione", tavole: ["T", "D"], tabelle: TABELLE, cartella: "Report_disoccupazione_" },
   occupazione: { nome: "Occupazione", tavole: ["E", "O"], tabelle: TABELLE_OCCUPAZIONE, cartella: "Report_occupazione_" },
   attivita: { nome: "Attività", tavole: ["F", "R"], tabelle: TABELLE_ATTIVITA, cartella: "Report_attivita_" },
   inattivita: { nome: "Inattività", tavole: ["I", "N"], tabelle: TABELLE_INATTIVITA, cartella: "Report_inattivita_" },
+  cig: { nome: "Cassa integrazione", fonte: "inps", tavole: ["CT", "CC", "CM"], tabelle: TABELLE_CIG, cartella: "Report_cassa_integrazione_" },
 };
+const TAVOLE_TUTTE = { ...TAVOLE, ...TAVOLE_CIG };
 
 /* ------------------------------------------------------------------ generazione completa */
 function generaReport(dati, anno, ctx = {}) {
@@ -762,6 +1016,24 @@ function generaReport(dati, anno, ctx = {}) {
     } catch (e) { errori.push(nome); log(`${nome}: ${e.message}`, "err"); }
   }
   return { cartella: `${SEZIONI[sezione].cartella}${anno}`, file, errori };
+}
+
+// cassa integrazione: anno + trimestre (ore cumulate da gennaio a fine trimestre)
+function generaReportCig(dati, anno, trimestre, ctx = {}) {
+  const log = ctx.log || (() => {});
+  anno = Number(anno); trimestre = Number(trimestre);
+  const c = controllaPeriodoCig(dati, anno, trimestre);
+  if (!c.ok) throw new ErroreDati(c.errore);
+  const file = [], errori = [];
+  for (const [nome, fn] of SEZIONI.cig.tabelle) {
+    try {
+      const tab = fn(dati, anno, trimestre);
+      tab.mancanti = contaVuoti(tab.righe);
+      file.push({ nome: tab.nomeFile, dati: creaXlsx(tab), tab });
+      log(tab.nomeFile, "ok");
+    } catch (e) { errori.push(nome); log(`${nome}: ${e.message}`, "err"); }
+  }
+  return { cartella: `${SEZIONI.cig.cartella}${anno}_T${trimestre}`, file, errori };
 }
 
 /* ------------------------------------------------------------------ Excel (.xlsx) con gli stili dei modelli */
@@ -890,7 +1162,8 @@ function creaZip(voci, data = new Date()) {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = { ErroreDati, TAVOLE, TABELLE, TABELLE_OCCUPAZIONE, TABELLE_ATTIVITA, TABELLE_INATTIVITA, SEZIONI, SETTORI, POSIZIONI, PROVINCE_REGIONE, FASCE_ETA, FASCE_ETA_OCC, FASCE_ETA_ATT, FASCE_ETA_INATT, ANNO_INIZIO,
                      URL_DATI_ONLINE, arrotonda, variazioneArrotondata, variazione, quota, parseCsv, leggiCsvIstat, DatiLavoro, ultimoAnno, controllaAnno,
-                     generaReport, creaXlsx, creaZip, urlIstat };
+                     generaReport, creaXlsx, creaZip, urlIstat,
+                     CIG_TIPI, CIG_PROVINCE, CIG_CLASSI, CIG_PERIODI, TAVOLE_CIG, TABELLE_CIG, leggiCsvCig, DatiCig, periodiCig, ultimoPeriodoCig, controllaPeriodoCig, generaReportCig, varCig, pesoCig };
 }
 </script>
 
@@ -902,8 +1175,9 @@ if (typeof module !== "undefined" && module.exports) {
 (function () {
   const $ = id => document.getElementById(id);
   const XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  const stato = { auto: new Map(), autoInfo: null, cerco: true, file: [], dati: new DatiLavoro(), sceltaUtente: false, url: [], sezione: "disoccupazione" };
-  const tavoleSezione = () => SEZIONI[stato.sezione].tavole.map(t => TAVOLE[t]);
+  const stato = { auto: new Map(), autoInfo: null, cerco: true, file: [], dati: new DatiLavoro(), cig: new DatiCig(), sceltaUtente: false, url: [], sezione: "disoccupazione" };
+  const tavoleSezione = () => SEZIONI[stato.sezione].tavole.map(t => TAVOLE_TUTTE[t]);
+  const èCig = () => stato.sezione === "cig";
 
   function log(msg, tag) {
     const el = $("log");
@@ -926,7 +1200,26 @@ if (typeof module !== "undefined" && module.exports) {
     for (let a = massimo; a > ANNO_INIZIO; a--) sel.add(new Option(String(a), String(a)));
     if (attuale && [...sel.options].some(o => o.value === attuale)) sel.value = attuale;
   }
+  // cassa integrazione: anni e trimestri per cui ci sono i dati e il confronto con l'anno prima
+  function riempiTrimestri() {
+    const sel = $("trimestre"), attuale = sel.value, anno = Number($("anno").value);
+    sel.innerHTML = "";
+    const qs = periodiCig(stato.cig).filter(([a]) => a === anno).map(([, q]) => q).sort((x, y) => y - x);
+    for (const q of qs) sel.add(new Option(`${CIG_ROMANI[q - 1]} trimestre (${CIG_PERIODI[q - 1]})`, String(q)));
+    if (attuale && [...sel.options].some(o => o.value === attuale)) sel.value = attuale;
+  }
+  function periodiPredefiniti() {
+    const p = periodiCig(stato.cig), sel = $("anno"), attuale = sel.value;
+    sel.innerHTML = "";
+    for (const a of [...new Set(p.map(x => x[0]))].sort((x, y) => y - x)) sel.add(new Option(String(a), String(a)));
+    if (attuale && [...sel.options].some(o => o.value === attuale)) sel.value = attuale;
+    const u = ultimoPeriodoCig(stato.cig);
+    if (u && !stato.sceltaUtente) sel.value = String(u[0]);
+    riempiTrimestri();
+    if (u && !stato.sceltaUtente) $("trimestre").value = String(u[1]);
+  }
   function annoPredefinito() {
+    if (èCig()) return periodiPredefiniti();
     const u = ultimoAnno(stato.dati, stato.sezione);
     riempiAnni(u);
     if (u && !stato.sceltaUtente) $("anno").value = String(u);
@@ -934,24 +1227,29 @@ if (typeof module !== "undefined" && module.exports) {
 
   /* ---------- dati */
   function ricostruisci() {
-    const d = new DatiLavoro();
-    for (const a of stato.auto.values()) d.aggiungi(a);
-    for (const f of stato.file) if (f.valori) d.aggiungi(f);
-    stato.dati = d;
+    const d = new DatiLavoro(), dc = new DatiCig();
+    for (const a of [...stato.auto.values(), ...stato.file]) if (a.valori) (a.cig ? dc : d).aggiungi(a);
+    stato.dati = d; stato.cig = dc;
     $("risultati").hidden = true;      // i file generati prima potrebbero non corrispondere più ai dati
     annoPredefinito();
     aggiorna();
   }
 
   // all'apertura carica i file dei dati di tutte le sezioni (dati/…csv nella stessa cartella, oppure dal sito pubblicato)
+  // file di dati: quelli della cassa integrazione (INPS) hanno le colonne «anno» e «ore», quelli ISTAT il formato SDMX-CSV
+  function leggiFileDati(testo) {
+    const prima = testo.split(/\r?\n/, 1)[0].replace(/^\uFEFF/, "");
+    return /(^|[,;\t])anno([,;\t]|$)/.test(prima) && /(^|[,;\t])ore([,;\t]|$)/.test(prima) ? leggiCsvCig(testo) : leggiCsvIstat(testo);
+  }
+
   async function caricaAutomatici() {
     const basi = location.protocol === "file:" ? [URL_DATI_ONLINE] : ["dati/", URL_DATI_ONLINE];
-    for (const tavola of Object.values(TAVOLE)) {
+    for (const tavola of Object.values(TAVOLE_TUTTE)) {
       for (const base of basi) {
         try {
           const r = await fetch(base + tavola.file, { cache: "no-store" });
           if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          const letto = leggiCsvIstat(await r.text());
+          const letto = leggiFileDati(await r.text());
           if (!stato.autoInfo) {
             try { const ri = await fetch(base + "aggiornamento.json", { cache: "no-store" }); if (ri.ok) stato.autoInfo = await ri.json(); } catch (e) { /* facoltativo */ }
           }
@@ -960,13 +1258,38 @@ if (typeof module !== "undefined" && module.exports) {
           break;
         } catch (e) { /* si prova l'indirizzo successivo */ }
       }
-      if (!stato.auto.has(tavola.tipo)) log(`Dati automatici (${tavola.nome}) non raggiungibili: scarica i file da ISTAT e trascinali nella pagina (punto 2).`, "warn");
+      if (!stato.auto.has(tavola.tipo)) log(`Dati automatici (${tavola.nome}) non raggiungibili: scarica i file e trascinali nella pagina (punto 2).`, "warn");
     }
     stato.cerco = false;
     ricostruisci();
   }
 
+  function mostraFonteCig() {
+    const el = $("fonte");
+    $("linkIstat").innerHTML = tavoleSezione().map(t => `<a class="bottone" href="${esc(URL_DATI_ONLINE + t.file)}" rel="noopener">⬇ ${esc(t.file)}</a>`).join(" ")
+      + ` <a class="bottone" href="${esc(URL_INPS_OSSERVATORIO)}" rel="noopener">Apri l'Osservatorio INPS</a>`;
+    const mancanti = tavoleSezione().filter(t => !stato.auto.has(t.tipo));
+    if (!mancanti.length) {
+      const info = stato.autoInfo || {}, i = info.cig_territori || {};
+      const [a, m] = (i.ultimo_mese || "").split("-");
+      const u = ultimoPeriodoCig(stato.cig);
+      const contr = info.controllato_cig ? new Date(info.controllato_cig) : null;
+      el.className = "fonte ok";
+      el.innerHTML = `<span class="icona">✅</span><div><b>Dati automatici INPS: ore autorizzate di cassa integrazione fino a ${m ? esc(MESI_IT[Number(m) - 1]) + " " + esc(a) : esc(u ? nomePeriodoCig(u[0], u[1]) : "—")}</b>
+        <span class="dett">${i.ultimo_aggiornamento_inps ? `Ultimo aggiornamento dei dati da parte dell'INPS: ${esc(new Date(i.ultimo_aggiornamento_inps).toLocaleDateString("it-IT"))}. ` : ""}${contr ? `Ultimo controllo automatico: ${esc(fmtData(contr))}. ` : ""}
+        Si aggiornano da soli (controllo ogni giorno dal 2 al 12 del mese).</span></div>`;
+    } else if (stato.cerco) {
+      el.className = "fonte";
+      el.innerHTML = `<span class="icona">⏳</span><div><b>Cerco i dati aggiornati automaticamente…</b></div>`;
+    } else {
+      el.className = "fonte warn";
+      el.innerHTML = `<span class="icona">⚠️</span><div><b>Dati automatici INPS (${esc(mancanti.map(t => t.file).join(", "))}) non disponibili</b>
+        <span class="dett">${location.protocol === "file:" ? "La pagina è aperta dal computer e il sito con i dati automatici non risponde. " : ""}Scarica i file con i pulsanti qui sotto e trascinali nel riquadro tratteggiato (passi 1 e 2).</span></div>`;
+    }
+  }
+
   function mostraFonte() {
+    if (èCig()) return mostraFonteCig();
     const el = $("fonte");
     const annoFine = new Date().getFullYear();
     $("linkIstat").innerHTML = tavoleSezione().map(t =>
@@ -1011,8 +1334,8 @@ if (typeof module !== "undefined" && module.exports) {
       log(`Leggo ${file.name}…`, "muted");
       await new Promise(r => setTimeout(r, 20));
       try {
-        if (/\.(xlsx?|zip|7z)$/i.test(file.name)) throw new ErroreDati("Servono i file CSV scaricati con i link del punto 2, non file Excel o ZIP.");
-        const letto = leggiCsvIstat(await file.text());
+        if (/\.(xlsx?|zip|7z)$/i.test(file.name)) throw new ErroreDati("Servono i file CSV dei dati (punto 2), non file Excel o ZIP.");
+        const letto = leggiFileDati(await file.text());
         stato.file = stato.file.filter(f => f.nome !== file.name);
         stato.file.push({ nome: file.name, ...letto });
         log(`${file.name}: ${letto.descr}, ${letto.primo}–${letto.ultimo}.`, "ok");
@@ -1026,7 +1349,48 @@ if (typeof module !== "undefined" && module.exports) {
   }
 
   /* ---------- controllo */
+  function aggiornaCig() {
+    mostraFonte();
+    const anno = Number($("anno").value), q = Number($("trimestre").value);
+    const el = $("controllo");
+    if (stato.cig.vuoto || !anno || !q) {
+      el.innerHTML = `<p class="nota" style="margin-top:0">Nessun dato caricato.</p>`;
+      $("genera").disabled = true;
+      return;
+    }
+    const c = controllaPeriodoCig(stato.cig, anno, q);
+    if (!c.ok) {
+      el.innerHTML = `<div class="servono">${esc(c.errore)}</div>`;
+      $("genera").disabled = true;
+      return;
+    }
+    const per = CIG_PERIODI[q - 1];
+    const dett = { "Sintesi": `Varese, Lombardia, Italia: ${per} ${anno - 1} e ${anno}`,
+                   "Territori CIGO": `12 province, Lombardia, Italia: ordinaria`, "Territori CIGS": `12 province, Lombardia, Italia: straordinaria`,
+                   "Territori CIGD": `12 province, Lombardia, Italia: deroga`, "Territori totale": `12 province, Lombardia, Italia: totale`,
+                   "Settori CIGO": `Varese per classe di attività: ordinaria`, "Settori CIGS": `Varese per classe di attività: straordinaria`,
+                   "Settori Deroga": `Varese per classe di attività: deroga`, "Settori totale": `Varese per classe di attività: totale`,
+                   "Tempo trimestre": `Varese, singoli trimestri dal I trimestre 2021 al ${nomePeriodoCig(anno, q)}`,
+                   "Tempo anno": `Varese, anni dal ${stato.cig.primoAnnoMensile()} al ${q === 4 ? anno : anno - 1}` };
+    let html = `<table class="controllo">`, problemi = 0;
+    for (const [nome, fn] of SEZIONI.cig.tabelle) {
+      try {
+        const t = fn(stato.cig, anno, q);
+        html += `<tr><td>${esc(t.nomeFile.replace(/\.xlsx$/, ""))}</td><td><span class="badge ok">pronta</span></td><td class="dett">${esc(dett[nome])}</td></tr>`;
+      } catch (e) {
+        problemi++;
+        html += `<tr><td>${esc(nome)}</td><td><span class="badge err">non si può fare</span></td><td class="dett">${esc(e.message)}</td></tr>`;
+      }
+    }
+    html += `</table>`;
+    html += problemi ? `<div class="servono">${problemi} tabelle non si possono fare con i dati disponibili: le altre si generano lo stesso.</div>`
+      : `<div class="pronto">Tutto pronto per il ${esc(nomePeriodoCig(anno, q))}: ${SEZIONI.cig.tabelle.length} tabelle di cassa integrazione.</div>`;
+    el.innerHTML = html;
+    $("genera").disabled = false;
+  }
+
   function aggiorna() {
+    if (èCig()) return aggiornaCig();
     mostraFonte();
     const anno = Number($("anno").value);
     const el = $("controllo");
@@ -1073,8 +1437,9 @@ if (typeof module !== "undefined" && module.exports) {
     $("risultati").hidden = true;
     try {
       const nomeSez = SEZIONI[stato.sezione].nome;
-      log(`Genero le tabelle di ${nomeSez.toLowerCase()} del ${anno}…`);
-      const esito = generaReport(stato.dati, anno, { log, sezione: stato.sezione });
+      const q = Number($("trimestre").value);
+      log(èCig() ? `Genero le tabelle di cassa integrazione del ${nomePeriodoCig(anno, q)}…` : `Genero le tabelle di ${nomeSez.toLowerCase()} del ${anno}…`);
+      const esito = èCig() ? generaReportCig(stato.cig, anno, q, { log }) : generaReport(stato.dati, anno, { log, sezione: stato.sezione });
       const elenco = $("elenco");
       elenco.innerHTML = "";
       for (const f of esito.file) {
@@ -1092,7 +1457,7 @@ if (typeof module !== "undefined" && module.exports) {
       const urlZip = URL.createObjectURL(new Blob([zip], { type: "application/zip" }));
       stato.url.push(urlZip);
       $("zip").href = urlZip; $("zip").download = `${esito.cartella}.zip`;
-      $("titoloRisultati").textContent = `File pronti — ${nomeSez}, anno ${anno}`;
+      $("titoloRisultati").textContent = èCig() ? `File pronti — ${nomeSez}, ${nomePeriodoCig(anno, q)}` : `File pronti — ${nomeSez}, anno ${anno}`;
       $("risultati").hidden = false;
       log(esito.errori.length ? `Fatto: ${esito.file.length} file; non riuscite: ${esito.errori.join(", ")}.` : `Fatto: ${esito.file.length} file.`, esito.errori.length ? "warn" : "ok");
     } catch (e) {
@@ -1102,11 +1467,27 @@ if (typeof module !== "undefined" && module.exports) {
   }
 
   /* ---------- eventi */
-  $("anno").onchange = () => { stato.sceltaUtente = true; $("risultati").hidden = true; aggiorna(); };
+  $("anno").onchange = () => { stato.sceltaUtente = true; $("risultati").hidden = true; if (èCig()) riempiTrimestri(); aggiorna(); };
+  $("trimestre").onchange = () => { stato.sceltaUtente = true; $("risultati").hidden = true; aggiorna(); };
+  // testi che cambiano fra le fonti: ISTAT (anno) e INPS (anno + trimestre)
+  function adattaFonte() {
+    const cig = èCig();
+    $("campoTrim").hidden = !cig;
+    $("titoloDati").textContent = cig ? "2 · Dati INPS" : "2 · Dati ISTAT";
+    $("notaPeriodo").textContent = cig ? "Dati INPS mensili: si sceglie anno e trimestre. Le ore sono cumulate dal 1° gennaio a fine trimestre e confrontate con lo stesso periodo dell'anno prima."
+                                       : "Dati annuali: si sceglie solo l'anno. Le serie partono sempre dal 2018.";
+    $("passo1").textContent = cig ? "Scarica i tre file dei dati dal sito (ogni clic scarica o apre un file CSV; se si apre, salvalo con «Salva con nome»):"
+                                  : "Scarica da ISTAT i due file della sezione scelta (si salvano nei Download; ogni clic scarica un file CSV):";
+    $("passo2").textContent = cig ? "Trascina qui sotto i tre file scaricati." : "Trascina qui sotto i due file scaricati.";
+    $("dropTitolo").textContent = cig ? "Trascina qui i file CSV dei dati INPS" : "Trascina qui i file CSV di ISTAT";
+    $("dropDescr").textContent = cig ? "Servono i tre file cig_territori.csv, cig_classi.csv e cig_varese_mensile.csv. I dati dei file caricati prevalgono su quelli automatici. I file restano sul tuo computer."
+                                     : "Vanno bene anche i file scaricati da IstatData in formato SDMX-CSV. I dati dei file caricati prevalgono su quelli automatici. I file restano sul tuo computer.";
+  }
   // cambio di sezione: anni, dati richiesti, link ISTAT, controllo e spiegazione della sezione scelta
   function cambiaSezione() {
     stato.sezione = document.querySelector('input[name="sezione"]:checked').value;
     document.querySelectorAll("details[data-sezione]").forEach(d => { d.hidden = d.dataset.sezione !== stato.sezione; });
+    adattaFonte();
     stato.sceltaUtente = false;
     $("risultati").hidden = true;
     annoPredefinito();
@@ -1126,7 +1507,8 @@ if (typeof module !== "undefined" && module.exports) {
   // il browser può ricordare la sezione scelta prima di ricaricare la pagina
   stato.sezione = document.querySelector('input[name="sezione"]:checked').value;
   document.querySelectorAll("details[data-sezione]").forEach(d => { d.hidden = d.dataset.sezione !== stato.sezione; });
-  riempiAnni();
+  adattaFonte();
+  if (èCig()) periodiPredefiniti(); else riempiAnni();
   aggiorna();
   caricaAutomatici();
 })();

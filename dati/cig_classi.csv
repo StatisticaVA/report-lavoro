@@ -1,0 +1,855 @@
+anno,periodo,tipo,classe,ore
+2023,1,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,1,Ordinaria,Estrazione minerali metalliferi e non,0
+2023,1,Ordinaria,Legno,0
+2023,1,Ordinaria,Alimentari,41664
+2023,1,Ordinaria,Metallurgiche,252482
+2023,1,Ordinaria,Meccaniche,462762
+2023,1,Ordinaria,Tessili,262740
+2023,1,Ordinaria,Abbigliamento,41388
+2023,1,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",895416
+2023,1,Ordinaria,"Pelli, cuoio e calzature",320
+2023,1,Ordinaria,Lavorazione minerali non metalliferi,0
+2023,1,Ordinaria,"Carta, stampa ed editoria",110656
+2023,1,Ordinaria,Installazione impianti per l'edilizia,3020
+2023,1,Ordinaria,"Energia elettrica, gas e acqua",302
+2023,1,Ordinaria,Trasporti e comunicazioni,0
+2023,1,Ordinaria,Tabacchicoltura,0
+2023,1,Ordinaria,Servizi,0
+2023,1,Ordinaria,Varie,6448
+2023,1,Ordinaria,Industria edile,61344
+2023,1,Ordinaria,Artigianato edile,12922
+2023,1,Ordinaria,Industria lapidei,112
+2023,1,Ordinaria,Artigianato lapidei,0
+2023,1,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,1,Straordinaria,Estrazione minerali metalliferi e non,0
+2023,1,Straordinaria,Legno,0
+2023,1,Straordinaria,Alimentari,0
+2023,1,Straordinaria,Metallurgiche,0
+2023,1,Straordinaria,Meccaniche,174590
+2023,1,Straordinaria,Tessili,455928
+2023,1,Straordinaria,Abbigliamento,16640
+2023,1,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",0
+2023,1,Straordinaria,"Pelli, cuoio e calzature",0
+2023,1,Straordinaria,Lavorazione minerali non metalliferi,0
+2023,1,Straordinaria,"Carta, stampa ed editoria",0
+2023,1,Straordinaria,Installazione impianti per l'edilizia,0
+2023,1,Straordinaria,"Energia elettrica, gas e acqua",0
+2023,1,Straordinaria,Trasporti e comunicazioni,4420
+2023,1,Straordinaria,Tabacchicoltura,0
+2023,1,Straordinaria,Servizi,0
+2023,1,Straordinaria,Varie,0
+2023,1,Straordinaria,Commercio all'ingrosso,0
+2023,1,Straordinaria,Commercio al minuto,91866
+2023,1,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",414708
+2023,1,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,1,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,1,Straordinaria,Industria edile,0
+2023,1,Straordinaria,Industria lapidei,0
+2023,1,Straordinaria,Altro,0
+2023,1,Deroga,Alimentari,0
+2023,1,Deroga,Metallurgiche,0
+2023,1,Deroga,Meccaniche,0
+2023,1,Deroga,"Carta, stampa ed editoria",0
+2023,1,Deroga,Trasporti e comunicazioni,0
+2023,1,Deroga,Servizi,0
+2023,1,Deroga,Varie,0
+2023,1,Deroga,Commercio all'ingrosso,0
+2023,1,Deroga,Commercio al minuto,0
+2023,1,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2023,1,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,1,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,1,Deroga,Altro,0
+2023,2,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,2,Ordinaria,Estrazione minerali metalliferi e non,0
+2023,2,Ordinaria,Legno,0
+2023,2,Ordinaria,Alimentari,72326
+2023,2,Ordinaria,Metallurgiche,552482
+2023,2,Ordinaria,Meccaniche,962852
+2023,2,Ordinaria,Tessili,641568
+2023,2,Ordinaria,Abbigliamento,84732
+2023,2,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",1669942
+2023,2,Ordinaria,"Pelli, cuoio e calzature",680
+2023,2,Ordinaria,Lavorazione minerali non metalliferi,0
+2023,2,Ordinaria,"Carta, stampa ed editoria",194754
+2023,2,Ordinaria,Installazione impianti per l'edilizia,7568
+2023,2,Ordinaria,"Energia elettrica, gas e acqua",400
+2023,2,Ordinaria,Trasporti e comunicazioni,0
+2023,2,Ordinaria,Tabacchicoltura,0
+2023,2,Ordinaria,Servizi,0
+2023,2,Ordinaria,Varie,9060
+2023,2,Ordinaria,Industria edile,86492
+2023,2,Ordinaria,Artigianato edile,23634
+2023,2,Ordinaria,Industria lapidei,188
+2023,2,Ordinaria,Artigianato lapidei,0
+2023,2,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,2,Straordinaria,Estrazione minerali metalliferi e non,0
+2023,2,Straordinaria,Legno,0
+2023,2,Straordinaria,Alimentari,0
+2023,2,Straordinaria,Metallurgiche,0
+2023,2,Straordinaria,Meccaniche,599554
+2023,2,Straordinaria,Tessili,534808
+2023,2,Straordinaria,Abbigliamento,16640
+2023,2,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",0
+2023,2,Straordinaria,"Pelli, cuoio e calzature",0
+2023,2,Straordinaria,Lavorazione minerali non metalliferi,0
+2023,2,Straordinaria,"Carta, stampa ed editoria",0
+2023,2,Straordinaria,Installazione impianti per l'edilizia,0
+2023,2,Straordinaria,"Energia elettrica, gas e acqua",0
+2023,2,Straordinaria,Trasporti e comunicazioni,235300
+2023,2,Straordinaria,Tabacchicoltura,0
+2023,2,Straordinaria,Servizi,0
+2023,2,Straordinaria,Varie,0
+2023,2,Straordinaria,Commercio all'ingrosso,0
+2023,2,Straordinaria,Commercio al minuto,91866
+2023,2,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",414708
+2023,2,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,2,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,2,Straordinaria,Industria edile,0
+2023,2,Straordinaria,Industria lapidei,0
+2023,2,Straordinaria,Altro,0
+2023,2,Deroga,Alimentari,0
+2023,2,Deroga,Metallurgiche,0
+2023,2,Deroga,Meccaniche,0
+2023,2,Deroga,"Carta, stampa ed editoria",0
+2023,2,Deroga,Trasporti e comunicazioni,0
+2023,2,Deroga,Servizi,0
+2023,2,Deroga,Varie,0
+2023,2,Deroga,Commercio all'ingrosso,0
+2023,2,Deroga,Commercio al minuto,0
+2023,2,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2023,2,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,2,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,2,Deroga,Altro,0
+2023,3,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,3,Ordinaria,Estrazione minerali metalliferi e non,0
+2023,3,Ordinaria,Legno,8640
+2023,3,Ordinaria,Alimentari,77906
+2023,3,Ordinaria,Metallurgiche,738610
+2023,3,Ordinaria,Meccaniche,1359310
+2023,3,Ordinaria,Tessili,931428
+2023,3,Ordinaria,Abbigliamento,135126
+2023,3,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",2211300
+2023,3,Ordinaria,"Pelli, cuoio e calzature",6194
+2023,3,Ordinaria,Lavorazione minerali non metalliferi,840
+2023,3,Ordinaria,"Carta, stampa ed editoria",295124
+2023,3,Ordinaria,Installazione impianti per l'edilizia,10226
+2023,3,Ordinaria,"Energia elettrica, gas e acqua",830
+2023,3,Ordinaria,Trasporti e comunicazioni,0
+2023,3,Ordinaria,Tabacchicoltura,0
+2023,3,Ordinaria,Servizi,0
+2023,3,Ordinaria,Varie,9878
+2023,3,Ordinaria,Industria edile,115020
+2023,3,Ordinaria,Artigianato edile,29900
+2023,3,Ordinaria,Industria lapidei,268
+2023,3,Ordinaria,Artigianato lapidei,0
+2023,3,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,3,Straordinaria,Estrazione minerali metalliferi e non,0
+2023,3,Straordinaria,Legno,0
+2023,3,Straordinaria,Alimentari,0
+2023,3,Straordinaria,Metallurgiche,0
+2023,3,Straordinaria,Meccaniche,599554
+2023,3,Straordinaria,Tessili,534808
+2023,3,Straordinaria,Abbigliamento,21566
+2023,3,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",85298
+2023,3,Straordinaria,"Pelli, cuoio e calzature",0
+2023,3,Straordinaria,Lavorazione minerali non metalliferi,0
+2023,3,Straordinaria,"Carta, stampa ed editoria",0
+2023,3,Straordinaria,Installazione impianti per l'edilizia,0
+2023,3,Straordinaria,"Energia elettrica, gas e acqua",0
+2023,3,Straordinaria,Trasporti e comunicazioni,235300
+2023,3,Straordinaria,Tabacchicoltura,0
+2023,3,Straordinaria,Servizi,0
+2023,3,Straordinaria,Varie,0
+2023,3,Straordinaria,Commercio all'ingrosso,0
+2023,3,Straordinaria,Commercio al minuto,182376
+2023,3,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",458140
+2023,3,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,3,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,3,Straordinaria,Industria edile,0
+2023,3,Straordinaria,Industria lapidei,0
+2023,3,Straordinaria,Altro,0
+2023,3,Deroga,Alimentari,0
+2023,3,Deroga,Metallurgiche,0
+2023,3,Deroga,Meccaniche,0
+2023,3,Deroga,"Carta, stampa ed editoria",0
+2023,3,Deroga,Trasporti e comunicazioni,0
+2023,3,Deroga,Servizi,0
+2023,3,Deroga,Varie,0
+2023,3,Deroga,Commercio all'ingrosso,0
+2023,3,Deroga,Commercio al minuto,0
+2023,3,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2023,3,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,3,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,3,Deroga,Altro,0
+2023,4,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,4,Ordinaria,Estrazione minerali metalliferi e non,0
+2023,4,Ordinaria,Legno,18040
+2023,4,Ordinaria,Alimentari,120670
+2023,4,Ordinaria,Metallurgiche,983586
+2023,4,Ordinaria,Meccaniche,2122792
+2023,4,Ordinaria,Tessili,1304702
+2023,4,Ordinaria,Abbigliamento,155092
+2023,4,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",3083428
+2023,4,Ordinaria,"Pelli, cuoio e calzature",9194
+2023,4,Ordinaria,Lavorazione minerali non metalliferi,840
+2023,4,Ordinaria,"Carta, stampa ed editoria",465256
+2023,4,Ordinaria,Installazione impianti per l'edilizia,18426
+2023,4,Ordinaria,"Energia elettrica, gas e acqua",1434
+2023,4,Ordinaria,Trasporti e comunicazioni,0
+2023,4,Ordinaria,Tabacchicoltura,0
+2023,4,Ordinaria,Servizi,0
+2023,4,Ordinaria,Varie,9878
+2023,4,Ordinaria,Industria edile,155222
+2023,4,Ordinaria,Artigianato edile,45116
+2023,4,Ordinaria,Industria lapidei,426
+2023,4,Ordinaria,Artigianato lapidei,0
+2023,4,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2023,4,Straordinaria,Estrazione minerali metalliferi e non,0
+2023,4,Straordinaria,Legno,0
+2023,4,Straordinaria,Alimentari,0
+2023,4,Straordinaria,Metallurgiche,0
+2023,4,Straordinaria,Meccaniche,675714
+2023,4,Straordinaria,Tessili,534808
+2023,4,Straordinaria,Abbigliamento,21566
+2023,4,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",85298
+2023,4,Straordinaria,"Pelli, cuoio e calzature",0
+2023,4,Straordinaria,Lavorazione minerali non metalliferi,0
+2023,4,Straordinaria,"Carta, stampa ed editoria",0
+2023,4,Straordinaria,Installazione impianti per l'edilizia,0
+2023,4,Straordinaria,"Energia elettrica, gas e acqua",0
+2023,4,Straordinaria,Trasporti e comunicazioni,243160
+2023,4,Straordinaria,Tabacchicoltura,0
+2023,4,Straordinaria,Servizi,0
+2023,4,Straordinaria,Varie,0
+2023,4,Straordinaria,Commercio all'ingrosso,0
+2023,4,Straordinaria,Commercio al minuto,220886
+2023,4,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",458140
+2023,4,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,4,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,4,Straordinaria,Industria edile,0
+2023,4,Straordinaria,Industria lapidei,0
+2023,4,Straordinaria,Altro,0
+2023,4,Deroga,Alimentari,0
+2023,4,Deroga,Metallurgiche,0
+2023,4,Deroga,Meccaniche,0
+2023,4,Deroga,"Carta, stampa ed editoria",0
+2023,4,Deroga,Trasporti e comunicazioni,0
+2023,4,Deroga,Servizi,0
+2023,4,Deroga,Varie,0
+2023,4,Deroga,Commercio all'ingrosso,0
+2023,4,Deroga,Commercio al minuto,0
+2023,4,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2023,4,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2023,4,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2023,4,Deroga,Altro,0
+2024,1,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,1,Ordinaria,Estrazione minerali metalliferi e non,0
+2024,1,Ordinaria,Legno,0
+2024,1,Ordinaria,Alimentari,53740
+2024,1,Ordinaria,Metallurgiche,412742
+2024,1,Ordinaria,Meccaniche,1212030
+2024,1,Ordinaria,Tessili,476736
+2024,1,Ordinaria,Abbigliamento,40352
+2024,1,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",566086
+2024,1,Ordinaria,"Pelli, cuoio e calzature",34516
+2024,1,Ordinaria,Lavorazione minerali non metalliferi,160
+2024,1,Ordinaria,"Carta, stampa ed editoria",63484
+2024,1,Ordinaria,Installazione impianti per l'edilizia,4632
+2024,1,Ordinaria,"Energia elettrica, gas e acqua",226
+2024,1,Ordinaria,Trasporti e comunicazioni,464
+2024,1,Ordinaria,Tabacchicoltura,0
+2024,1,Ordinaria,Servizi,0
+2024,1,Ordinaria,Varie,0
+2024,1,Ordinaria,Industria edile,49308
+2024,1,Ordinaria,Artigianato edile,15120
+2024,1,Ordinaria,Industria lapidei,24
+2024,1,Ordinaria,Artigianato lapidei,0
+2024,1,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,1,Straordinaria,Estrazione minerali metalliferi e non,0
+2024,1,Straordinaria,Legno,0
+2024,1,Straordinaria,Alimentari,0
+2024,1,Straordinaria,Metallurgiche,0
+2024,1,Straordinaria,Meccaniche,128206
+2024,1,Straordinaria,Tessili,0
+2024,1,Straordinaria,Abbigliamento,0
+2024,1,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",0
+2024,1,Straordinaria,"Pelli, cuoio e calzature",0
+2024,1,Straordinaria,Lavorazione minerali non metalliferi,0
+2024,1,Straordinaria,"Carta, stampa ed editoria",576
+2024,1,Straordinaria,Installazione impianti per l'edilizia,0
+2024,1,Straordinaria,"Energia elettrica, gas e acqua",0
+2024,1,Straordinaria,Trasporti e comunicazioni,0
+2024,1,Straordinaria,Tabacchicoltura,0
+2024,1,Straordinaria,Servizi,0
+2024,1,Straordinaria,Varie,0
+2024,1,Straordinaria,Commercio all'ingrosso,0
+2024,1,Straordinaria,Commercio al minuto,0
+2024,1,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,1,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,1,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,1,Straordinaria,Industria edile,0
+2024,1,Straordinaria,Industria lapidei,0
+2024,1,Straordinaria,Altro,0
+2024,1,Deroga,Alimentari,0
+2024,1,Deroga,Metallurgiche,0
+2024,1,Deroga,Meccaniche,0
+2024,1,Deroga,"Carta, stampa ed editoria",0
+2024,1,Deroga,Trasporti e comunicazioni,0
+2024,1,Deroga,Servizi,0
+2024,1,Deroga,Varie,0
+2024,1,Deroga,Commercio all'ingrosso,0
+2024,1,Deroga,Commercio al minuto,0
+2024,1,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,1,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,1,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,1,Deroga,Altro,0
+2024,2,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,2,Ordinaria,Estrazione minerali metalliferi e non,0
+2024,2,Ordinaria,Legno,14560
+2024,2,Ordinaria,Alimentari,106470
+2024,2,Ordinaria,Metallurgiche,818584
+2024,2,Ordinaria,Meccaniche,2548852
+2024,2,Ordinaria,Tessili,961426
+2024,2,Ordinaria,Abbigliamento,115290
+2024,2,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",1365252
+2024,2,Ordinaria,"Pelli, cuoio e calzature",56524
+2024,2,Ordinaria,Lavorazione minerali non metalliferi,8310
+2024,2,Ordinaria,"Carta, stampa ed editoria",64072
+2024,2,Ordinaria,Installazione impianti per l'edilizia,23060
+2024,2,Ordinaria,"Energia elettrica, gas e acqua",1492
+2024,2,Ordinaria,Trasporti e comunicazioni,464
+2024,2,Ordinaria,Tabacchicoltura,0
+2024,2,Ordinaria,Servizi,0
+2024,2,Ordinaria,Varie,2340
+2024,2,Ordinaria,Industria edile,137692
+2024,2,Ordinaria,Artigianato edile,47706
+2024,2,Ordinaria,Industria lapidei,880
+2024,2,Ordinaria,Artigianato lapidei,0
+2024,2,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,2,Straordinaria,Estrazione minerali metalliferi e non,0
+2024,2,Straordinaria,Legno,0
+2024,2,Straordinaria,Alimentari,0
+2024,2,Straordinaria,Metallurgiche,0
+2024,2,Straordinaria,Meccaniche,882208
+2024,2,Straordinaria,Tessili,291956
+2024,2,Straordinaria,Abbigliamento,0
+2024,2,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",0
+2024,2,Straordinaria,"Pelli, cuoio e calzature",0
+2024,2,Straordinaria,Lavorazione minerali non metalliferi,0
+2024,2,Straordinaria,"Carta, stampa ed editoria",576
+2024,2,Straordinaria,Installazione impianti per l'edilizia,0
+2024,2,Straordinaria,"Energia elettrica, gas e acqua",0
+2024,2,Straordinaria,Trasporti e comunicazioni,0
+2024,2,Straordinaria,Tabacchicoltura,0
+2024,2,Straordinaria,Servizi,0
+2024,2,Straordinaria,Varie,0
+2024,2,Straordinaria,Commercio all'ingrosso,0
+2024,2,Straordinaria,Commercio al minuto,0
+2024,2,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,2,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,2,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,2,Straordinaria,Industria edile,0
+2024,2,Straordinaria,Industria lapidei,0
+2024,2,Straordinaria,Altro,0
+2024,2,Deroga,Alimentari,0
+2024,2,Deroga,Metallurgiche,0
+2024,2,Deroga,Meccaniche,0
+2024,2,Deroga,"Carta, stampa ed editoria",0
+2024,2,Deroga,Trasporti e comunicazioni,0
+2024,2,Deroga,Servizi,0
+2024,2,Deroga,Varie,0
+2024,2,Deroga,Commercio all'ingrosso,0
+2024,2,Deroga,Commercio al minuto,0
+2024,2,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,2,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,2,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,2,Deroga,Altro,0
+2024,3,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,3,Ordinaria,Estrazione minerali metalliferi e non,0
+2024,3,Ordinaria,Legno,22080
+2024,3,Ordinaria,Alimentari,109278
+2024,3,Ordinaria,Metallurgiche,1091748
+2024,3,Ordinaria,Meccaniche,3611090
+2024,3,Ordinaria,Tessili,1341830
+2024,3,Ordinaria,Abbigliamento,129100
+2024,3,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",1776344
+2024,3,Ordinaria,"Pelli, cuoio e calzature",62704
+2024,3,Ordinaria,Lavorazione minerali non metalliferi,12860
+2024,3,Ordinaria,"Carta, stampa ed editoria",103914
+2024,3,Ordinaria,Installazione impianti per l'edilizia,36600
+2024,3,Ordinaria,"Energia elettrica, gas e acqua",2232
+2024,3,Ordinaria,Trasporti e comunicazioni,1410
+2024,3,Ordinaria,Tabacchicoltura,0
+2024,3,Ordinaria,Servizi,0
+2024,3,Ordinaria,Varie,2924
+2024,3,Ordinaria,Industria edile,210536
+2024,3,Ordinaria,Artigianato edile,67904
+2024,3,Ordinaria,Industria lapidei,1422
+2024,3,Ordinaria,Artigianato lapidei,40
+2024,3,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,3,Straordinaria,Estrazione minerali metalliferi e non,0
+2024,3,Straordinaria,Legno,0
+2024,3,Straordinaria,Alimentari,0
+2024,3,Straordinaria,Metallurgiche,0
+2024,3,Straordinaria,Meccaniche,986212
+2024,3,Straordinaria,Tessili,411272
+2024,3,Straordinaria,Abbigliamento,28000
+2024,3,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",0
+2024,3,Straordinaria,"Pelli, cuoio e calzature",0
+2024,3,Straordinaria,Lavorazione minerali non metalliferi,0
+2024,3,Straordinaria,"Carta, stampa ed editoria",576
+2024,3,Straordinaria,Installazione impianti per l'edilizia,0
+2024,3,Straordinaria,"Energia elettrica, gas e acqua",0
+2024,3,Straordinaria,Trasporti e comunicazioni,0
+2024,3,Straordinaria,Tabacchicoltura,0
+2024,3,Straordinaria,Servizi,0
+2024,3,Straordinaria,Varie,0
+2024,3,Straordinaria,Commercio all'ingrosso,0
+2024,3,Straordinaria,Commercio al minuto,0
+2024,3,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,3,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,3,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,3,Straordinaria,Industria edile,0
+2024,3,Straordinaria,Industria lapidei,0
+2024,3,Straordinaria,Altro,0
+2024,3,Deroga,Alimentari,0
+2024,3,Deroga,Metallurgiche,0
+2024,3,Deroga,Meccaniche,0
+2024,3,Deroga,"Carta, stampa ed editoria",0
+2024,3,Deroga,Trasporti e comunicazioni,0
+2024,3,Deroga,Servizi,0
+2024,3,Deroga,Varie,0
+2024,3,Deroga,Commercio all'ingrosso,0
+2024,3,Deroga,Commercio al minuto,0
+2024,3,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,3,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,3,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,3,Deroga,Altro,0
+2024,4,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,4,Ordinaria,Estrazione minerali metalliferi e non,0
+2024,4,Ordinaria,Legno,33450
+2024,4,Ordinaria,Alimentari,125678
+2024,4,Ordinaria,Metallurgiche,1420658
+2024,4,Ordinaria,Meccaniche,4563088
+2024,4,Ordinaria,Tessili,1680468
+2024,4,Ordinaria,Abbigliamento,199336
+2024,4,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",2304240
+2024,4,Ordinaria,"Pelli, cuoio e calzature",64784
+2024,4,Ordinaria,Lavorazione minerali non metalliferi,17690
+2024,4,Ordinaria,"Carta, stampa ed editoria",152452
+2024,4,Ordinaria,Installazione impianti per l'edilizia,45652
+2024,4,Ordinaria,"Energia elettrica, gas e acqua",2360
+2024,4,Ordinaria,Trasporti e comunicazioni,2012
+2024,4,Ordinaria,Tabacchicoltura,0
+2024,4,Ordinaria,Servizi,0
+2024,4,Ordinaria,Varie,3392
+2024,4,Ordinaria,Industria edile,272330
+2024,4,Ordinaria,Artigianato edile,93982
+2024,4,Ordinaria,Industria lapidei,1728
+2024,4,Ordinaria,Artigianato lapidei,96
+2024,4,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2024,4,Straordinaria,Estrazione minerali metalliferi e non,0
+2024,4,Straordinaria,Legno,0
+2024,4,Straordinaria,Alimentari,0
+2024,4,Straordinaria,Metallurgiche,0
+2024,4,Straordinaria,Meccaniche,1365878
+2024,4,Straordinaria,Tessili,411272
+2024,4,Straordinaria,Abbigliamento,28000
+2024,4,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",264282
+2024,4,Straordinaria,"Pelli, cuoio e calzature",0
+2024,4,Straordinaria,Lavorazione minerali non metalliferi,0
+2024,4,Straordinaria,"Carta, stampa ed editoria",576
+2024,4,Straordinaria,Installazione impianti per l'edilizia,0
+2024,4,Straordinaria,"Energia elettrica, gas e acqua",0
+2024,4,Straordinaria,Trasporti e comunicazioni,1048
+2024,4,Straordinaria,Tabacchicoltura,0
+2024,4,Straordinaria,Servizi,0
+2024,4,Straordinaria,Varie,0
+2024,4,Straordinaria,Commercio all'ingrosso,0
+2024,4,Straordinaria,Commercio al minuto,89736
+2024,4,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",1532
+2024,4,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,4,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,4,Straordinaria,Industria edile,0
+2024,4,Straordinaria,Industria lapidei,0
+2024,4,Straordinaria,Altro,0
+2024,4,Deroga,Alimentari,0
+2024,4,Deroga,Metallurgiche,0
+2024,4,Deroga,Meccaniche,0
+2024,4,Deroga,"Carta, stampa ed editoria",0
+2024,4,Deroga,Trasporti e comunicazioni,0
+2024,4,Deroga,Servizi,0
+2024,4,Deroga,Varie,0
+2024,4,Deroga,Commercio all'ingrosso,0
+2024,4,Deroga,Commercio al minuto,0
+2024,4,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2024,4,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2024,4,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2024,4,Deroga,Altro,0
+2025,1,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,1,Ordinaria,Estrazione minerali metalliferi e non,0
+2025,1,Ordinaria,Legno,14456
+2025,1,Ordinaria,Alimentari,24210
+2025,1,Ordinaria,Metallurgiche,523860
+2025,1,Ordinaria,Meccaniche,1354452
+2025,1,Ordinaria,Tessili,491776
+2025,1,Ordinaria,Abbigliamento,30218
+2025,1,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",584090
+2025,1,Ordinaria,"Pelli, cuoio e calzature",10996
+2025,1,Ordinaria,Lavorazione minerali non metalliferi,3990
+2025,1,Ordinaria,"Carta, stampa ed editoria",19400
+2025,1,Ordinaria,Installazione impianti per l'edilizia,9446
+2025,1,Ordinaria,"Energia elettrica, gas e acqua",528
+2025,1,Ordinaria,Trasporti e comunicazioni,1038
+2025,1,Ordinaria,Tabacchicoltura,0
+2025,1,Ordinaria,Servizi,0
+2025,1,Ordinaria,Varie,350
+2025,1,Ordinaria,Industria edile,63624
+2025,1,Ordinaria,Artigianato edile,18178
+2025,1,Ordinaria,Industria lapidei,40
+2025,1,Ordinaria,Artigianato lapidei,0
+2025,1,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,1,Straordinaria,Estrazione minerali metalliferi e non,0
+2025,1,Straordinaria,Legno,0
+2025,1,Straordinaria,Alimentari,0
+2025,1,Straordinaria,Metallurgiche,0
+2025,1,Straordinaria,Meccaniche,503318
+2025,1,Straordinaria,Tessili,0
+2025,1,Straordinaria,Abbigliamento,9036
+2025,1,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",52232
+2025,1,Straordinaria,"Pelli, cuoio e calzature",0
+2025,1,Straordinaria,Lavorazione minerali non metalliferi,23320
+2025,1,Straordinaria,"Carta, stampa ed editoria",0
+2025,1,Straordinaria,Installazione impianti per l'edilizia,0
+2025,1,Straordinaria,"Energia elettrica, gas e acqua",0
+2025,1,Straordinaria,Trasporti e comunicazioni,24426
+2025,1,Straordinaria,Tabacchicoltura,0
+2025,1,Straordinaria,Servizi,0
+2025,1,Straordinaria,Varie,0
+2025,1,Straordinaria,Commercio all'ingrosso,0
+2025,1,Straordinaria,Commercio al minuto,31390
+2025,1,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",546
+2025,1,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,1,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,1,Straordinaria,Industria edile,0
+2025,1,Straordinaria,Industria lapidei,0
+2025,1,Straordinaria,Altro,0
+2025,1,Deroga,Alimentari,0
+2025,1,Deroga,Metallurgiche,0
+2025,1,Deroga,Meccaniche,0
+2025,1,Deroga,"Carta, stampa ed editoria",0
+2025,1,Deroga,Trasporti e comunicazioni,0
+2025,1,Deroga,Servizi,0
+2025,1,Deroga,Varie,0
+2025,1,Deroga,Commercio all'ingrosso,0
+2025,1,Deroga,Commercio al minuto,0
+2025,1,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2025,1,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,1,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,1,Deroga,Altro,0
+2025,2,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,2,Ordinaria,Estrazione minerali metalliferi e non,0
+2025,2,Ordinaria,Legno,18856
+2025,2,Ordinaria,Alimentari,83324
+2025,2,Ordinaria,Metallurgiche,861858
+2025,2,Ordinaria,Meccaniche,2120448
+2025,2,Ordinaria,Tessili,1128358
+2025,2,Ordinaria,Abbigliamento,95838
+2025,2,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",1179736
+2025,2,Ordinaria,"Pelli, cuoio e calzature",15880
+2025,2,Ordinaria,Lavorazione minerali non metalliferi,12148
+2025,2,Ordinaria,"Carta, stampa ed editoria",77730
+2025,2,Ordinaria,Installazione impianti per l'edilizia,16934
+2025,2,Ordinaria,"Energia elettrica, gas e acqua",578
+2025,2,Ordinaria,Trasporti e comunicazioni,1438
+2025,2,Ordinaria,Tabacchicoltura,0
+2025,2,Ordinaria,Servizi,0
+2025,2,Ordinaria,Varie,1544
+2025,2,Ordinaria,Industria edile,128430
+2025,2,Ordinaria,Artigianato edile,46012
+2025,2,Ordinaria,Industria lapidei,376
+2025,2,Ordinaria,Artigianato lapidei,24
+2025,2,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,2,Straordinaria,Estrazione minerali metalliferi e non,0
+2025,2,Straordinaria,Legno,0
+2025,2,Straordinaria,Alimentari,0
+2025,2,Straordinaria,Metallurgiche,0
+2025,2,Straordinaria,Meccaniche,573544
+2025,2,Straordinaria,Tessili,439262
+2025,2,Straordinaria,Abbigliamento,47436
+2025,2,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",52232
+2025,2,Straordinaria,"Pelli, cuoio e calzature",0
+2025,2,Straordinaria,Lavorazione minerali non metalliferi,23320
+2025,2,Straordinaria,"Carta, stampa ed editoria",0
+2025,2,Straordinaria,Installazione impianti per l'edilizia,0
+2025,2,Straordinaria,"Energia elettrica, gas e acqua",0
+2025,2,Straordinaria,Trasporti e comunicazioni,24426
+2025,2,Straordinaria,Tabacchicoltura,0
+2025,2,Straordinaria,Servizi,0
+2025,2,Straordinaria,Varie,0
+2025,2,Straordinaria,Commercio all'ingrosso,0
+2025,2,Straordinaria,Commercio al minuto,121870
+2025,2,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",546
+2025,2,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,2,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,2,Straordinaria,Industria edile,0
+2025,2,Straordinaria,Industria lapidei,0
+2025,2,Straordinaria,Altro,0
+2025,2,Deroga,Alimentari,0
+2025,2,Deroga,Metallurgiche,0
+2025,2,Deroga,Meccaniche,0
+2025,2,Deroga,"Carta, stampa ed editoria",0
+2025,2,Deroga,Trasporti e comunicazioni,0
+2025,2,Deroga,Servizi,0
+2025,2,Deroga,Varie,0
+2025,2,Deroga,Commercio all'ingrosso,0
+2025,2,Deroga,Commercio al minuto,0
+2025,2,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2025,2,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,2,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,2,Deroga,Altro,0
+2025,3,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,3,Ordinaria,Estrazione minerali metalliferi e non,0
+2025,3,Ordinaria,Legno,18856
+2025,3,Ordinaria,Alimentari,83324
+2025,3,Ordinaria,Metallurgiche,973972
+2025,3,Ordinaria,Meccaniche,2551744
+2025,3,Ordinaria,Tessili,1346634
+2025,3,Ordinaria,Abbigliamento,134322
+2025,3,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",1549712
+2025,3,Ordinaria,"Pelli, cuoio e calzature",31880
+2025,3,Ordinaria,Lavorazione minerali non metalliferi,37666
+2025,3,Ordinaria,"Carta, stampa ed editoria",141408
+2025,3,Ordinaria,Installazione impianti per l'edilizia,23430
+2025,3,Ordinaria,"Energia elettrica, gas e acqua",578
+2025,3,Ordinaria,Trasporti e comunicazioni,1992
+2025,3,Ordinaria,Tabacchicoltura,0
+2025,3,Ordinaria,Servizi,0
+2025,3,Ordinaria,Varie,3668
+2025,3,Ordinaria,Industria edile,169770
+2025,3,Ordinaria,Artigianato edile,56422
+2025,3,Ordinaria,Industria lapidei,412
+2025,3,Ordinaria,Artigianato lapidei,96
+2025,3,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,3,Straordinaria,Estrazione minerali metalliferi e non,0
+2025,3,Straordinaria,Legno,0
+2025,3,Straordinaria,Alimentari,0
+2025,3,Straordinaria,Metallurgiche,0
+2025,3,Straordinaria,Meccaniche,786182
+2025,3,Straordinaria,Tessili,546918
+2025,3,Straordinaria,Abbigliamento,128982
+2025,3,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",253760
+2025,3,Straordinaria,"Pelli, cuoio e calzature",0
+2025,3,Straordinaria,Lavorazione minerali non metalliferi,23320
+2025,3,Straordinaria,"Carta, stampa ed editoria",0
+2025,3,Straordinaria,Installazione impianti per l'edilizia,0
+2025,3,Straordinaria,"Energia elettrica, gas e acqua",0
+2025,3,Straordinaria,Trasporti e comunicazioni,35338
+2025,3,Straordinaria,Tabacchicoltura,0
+2025,3,Straordinaria,Servizi,0
+2025,3,Straordinaria,Varie,0
+2025,3,Straordinaria,Commercio all'ingrosso,0
+2025,3,Straordinaria,Commercio al minuto,142174
+2025,3,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",546
+2025,3,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,3,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,3,Straordinaria,Industria edile,0
+2025,3,Straordinaria,Industria lapidei,0
+2025,3,Straordinaria,Altro,0
+2025,3,Deroga,Alimentari,0
+2025,3,Deroga,Metallurgiche,0
+2025,3,Deroga,Meccaniche,0
+2025,3,Deroga,"Carta, stampa ed editoria",0
+2025,3,Deroga,Trasporti e comunicazioni,0
+2025,3,Deroga,Servizi,0
+2025,3,Deroga,Varie,0
+2025,3,Deroga,Commercio all'ingrosso,0
+2025,3,Deroga,Commercio al minuto,0
+2025,3,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2025,3,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,3,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,3,Deroga,Altro,0
+2025,4,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,4,Ordinaria,Estrazione minerali metalliferi e non,0
+2025,4,Ordinaria,Legno,20434
+2025,4,Ordinaria,Alimentari,135484
+2025,4,Ordinaria,Metallurgiche,1212938
+2025,4,Ordinaria,Meccaniche,3956820
+2025,4,Ordinaria,Tessili,1693942
+2025,4,Ordinaria,Abbigliamento,303322
+2025,4,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",2295078
+2025,4,Ordinaria,"Pelli, cuoio e calzature",47766
+2025,4,Ordinaria,Lavorazione minerali non metalliferi,51428
+2025,4,Ordinaria,"Carta, stampa ed editoria",218230
+2025,4,Ordinaria,Installazione impianti per l'edilizia,29444
+2025,4,Ordinaria,"Energia elettrica, gas e acqua",578
+2025,4,Ordinaria,Trasporti e comunicazioni,2146
+2025,4,Ordinaria,Tabacchicoltura,0
+2025,4,Ordinaria,Servizi,0
+2025,4,Ordinaria,Varie,3732
+2025,4,Ordinaria,Industria edile,211188
+2025,4,Ordinaria,Artigianato edile,70408
+2025,4,Ordinaria,Industria lapidei,632
+2025,4,Ordinaria,Artigianato lapidei,152
+2025,4,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2025,4,Straordinaria,Estrazione minerali metalliferi e non,0
+2025,4,Straordinaria,Legno,37152
+2025,4,Straordinaria,Alimentari,0
+2025,4,Straordinaria,Metallurgiche,12264
+2025,4,Straordinaria,Meccaniche,2536294
+2025,4,Straordinaria,Tessili,546918
+2025,4,Straordinaria,Abbigliamento,128982
+2025,4,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",271040
+2025,4,Straordinaria,"Pelli, cuoio e calzature",0
+2025,4,Straordinaria,Lavorazione minerali non metalliferi,23320
+2025,4,Straordinaria,"Carta, stampa ed editoria",0
+2025,4,Straordinaria,Installazione impianti per l'edilizia,0
+2025,4,Straordinaria,"Energia elettrica, gas e acqua",0
+2025,4,Straordinaria,Trasporti e comunicazioni,35338
+2025,4,Straordinaria,Tabacchicoltura,0
+2025,4,Straordinaria,Servizi,0
+2025,4,Straordinaria,Varie,82560
+2025,4,Straordinaria,Commercio all'ingrosso,0
+2025,4,Straordinaria,Commercio al minuto,142174
+2025,4,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",546
+2025,4,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,4,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,4,Straordinaria,Industria edile,0
+2025,4,Straordinaria,Industria lapidei,0
+2025,4,Straordinaria,Altro,0
+2025,4,Deroga,Alimentari,0
+2025,4,Deroga,Metallurgiche,0
+2025,4,Deroga,Meccaniche,0
+2025,4,Deroga,"Carta, stampa ed editoria",0
+2025,4,Deroga,Trasporti e comunicazioni,0
+2025,4,Deroga,Servizi,0
+2025,4,Deroga,Varie,0
+2025,4,Deroga,Commercio all'ingrosso,0
+2025,4,Deroga,Commercio al minuto,0
+2025,4,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2025,4,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2025,4,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2025,4,Deroga,Altro,0
+2026,1,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2026,1,Ordinaria,Estrazione minerali metalliferi e non,0
+2026,1,Ordinaria,Legno,6448
+2026,1,Ordinaria,Alimentari,16400
+2026,1,Ordinaria,Metallurgiche,153454
+2026,1,Ordinaria,Meccaniche,788244
+2026,1,Ordinaria,Tessili,336244
+2026,1,Ordinaria,Abbigliamento,24926
+2026,1,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",374594
+2026,1,Ordinaria,"Pelli, cuoio e calzature",42532
+2026,1,Ordinaria,Lavorazione minerali non metalliferi,0
+2026,1,Ordinaria,"Carta, stampa ed editoria",98954
+2026,1,Ordinaria,Installazione impianti per l'edilizia,10650
+2026,1,Ordinaria,"Energia elettrica, gas e acqua",0
+2026,1,Ordinaria,Trasporti e comunicazioni,136
+2026,1,Ordinaria,Tabacchicoltura,0
+2026,1,Ordinaria,Servizi,0
+2026,1,Ordinaria,Varie,0
+2026,1,Ordinaria,Industria edile,78660
+2026,1,Ordinaria,Artigianato edile,13386
+2026,1,Ordinaria,Industria lapidei,1044
+2026,1,Ordinaria,Artigianato lapidei,112
+2026,1,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2026,1,Straordinaria,Estrazione minerali metalliferi e non,0
+2026,1,Straordinaria,Legno,0
+2026,1,Straordinaria,Alimentari,0
+2026,1,Straordinaria,Metallurgiche,15336
+2026,1,Straordinaria,Meccaniche,6816472
+2026,1,Straordinaria,Tessili,8436
+2026,1,Straordinaria,Abbigliamento,0
+2026,1,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",149650
+2026,1,Straordinaria,"Pelli, cuoio e calzature",0
+2026,1,Straordinaria,Lavorazione minerali non metalliferi,0
+2026,1,Straordinaria,"Carta, stampa ed editoria",0
+2026,1,Straordinaria,Installazione impianti per l'edilizia,0
+2026,1,Straordinaria,"Energia elettrica, gas e acqua",0
+2026,1,Straordinaria,Trasporti e comunicazioni,0
+2026,1,Straordinaria,Tabacchicoltura,0
+2026,1,Straordinaria,Servizi,0
+2026,1,Straordinaria,Varie,0
+2026,1,Straordinaria,Commercio all'ingrosso,0
+2026,1,Straordinaria,Commercio al minuto,0
+2026,1,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2026,1,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2026,1,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2026,1,Straordinaria,Industria edile,0
+2026,1,Straordinaria,Industria lapidei,0
+2026,1,Straordinaria,Altro,0
+2026,1,Deroga,Alimentari,0
+2026,1,Deroga,Metallurgiche,0
+2026,1,Deroga,Meccaniche,0
+2026,1,Deroga,"Carta, stampa ed editoria",0
+2026,1,Deroga,Trasporti e comunicazioni,0
+2026,1,Deroga,Servizi,0
+2026,1,Deroga,Varie,0
+2026,1,Deroga,Commercio all'ingrosso,0
+2026,1,Deroga,Commercio al minuto,0
+2026,1,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2026,1,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2026,1,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2026,1,Deroga,Altro,0
+2026,2,Ordinaria,Attivita' economiche connesse con l'agricoltura,0
+2026,2,Ordinaria,Estrazione minerali metalliferi e non,3640
+2026,2,Ordinaria,Legno,12496
+2026,2,Ordinaria,Alimentari,94444
+2026,2,Ordinaria,Metallurgiche,336992
+2026,2,Ordinaria,Meccaniche,1367174
+2026,2,Ordinaria,Tessili,837210
+2026,2,Ordinaria,Abbigliamento,193344
+2026,2,Ordinaria,"Chimica, petrolchimica, gomma e materie plastiche",665184
+2026,2,Ordinaria,"Pelli, cuoio e calzature",85816
+2026,2,Ordinaria,Lavorazione minerali non metalliferi,16214
+2026,2,Ordinaria,"Carta, stampa ed editoria",130046
+2026,2,Ordinaria,Installazione impianti per l'edilizia,26078
+2026,2,Ordinaria,"Energia elettrica, gas e acqua",0
+2026,2,Ordinaria,Trasporti e comunicazioni,584
+2026,2,Ordinaria,Tabacchicoltura,0
+2026,2,Ordinaria,Servizi,0
+2026,2,Ordinaria,Varie,0
+2026,2,Ordinaria,Industria edile,119784
+2026,2,Ordinaria,Artigianato edile,25300
+2026,2,Ordinaria,Industria lapidei,2112
+2026,2,Ordinaria,Artigianato lapidei,144
+2026,2,Straordinaria,Attivita' economiche connesse con l'agricoltura,0
+2026,2,Straordinaria,Estrazione minerali metalliferi e non,0
+2026,2,Straordinaria,Legno,0
+2026,2,Straordinaria,Alimentari,0
+2026,2,Straordinaria,Metallurgiche,41624
+2026,2,Straordinaria,Meccaniche,7020546
+2026,2,Straordinaria,Tessili,8436
+2026,2,Straordinaria,Abbigliamento,0
+2026,2,Straordinaria,"Chimica, petrolchimica, gomma e materie plastiche",303348
+2026,2,Straordinaria,"Pelli, cuoio e calzature",0
+2026,2,Straordinaria,Lavorazione minerali non metalliferi,0
+2026,2,Straordinaria,"Carta, stampa ed editoria",1944
+2026,2,Straordinaria,Installazione impianti per l'edilizia,0
+2026,2,Straordinaria,"Energia elettrica, gas e acqua",0
+2026,2,Straordinaria,Trasporti e comunicazioni,0
+2026,2,Straordinaria,Tabacchicoltura,0
+2026,2,Straordinaria,Servizi,0
+2026,2,Straordinaria,Varie,0
+2026,2,Straordinaria,Commercio all'ingrosso,0
+2026,2,Straordinaria,Commercio al minuto,7250
+2026,2,Straordinaria,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2026,2,Straordinaria,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2026,2,Straordinaria,"Alberghi, pubblici esercizi e attivita' similari",0
+2026,2,Straordinaria,Industria edile,0
+2026,2,Straordinaria,Industria lapidei,0
+2026,2,Straordinaria,Altro,0
+2026,2,Deroga,Alimentari,0
+2026,2,Deroga,Metallurgiche,0
+2026,2,Deroga,Meccaniche,0
+2026,2,Deroga,"Carta, stampa ed editoria",0
+2026,2,Deroga,Trasporti e comunicazioni,0
+2026,2,Deroga,Servizi,0
+2026,2,Deroga,Varie,0
+2026,2,Deroga,Commercio all'ingrosso,0
+2026,2,Deroga,Commercio al minuto,0
+2026,2,Deroga,"Attivita' varie (Professionisti, artisti, scuole e istituti privati di istruzione, istituti di vigilanza, case di cura private",0
+2026,2,Deroga,"Intermediari (Agenzie viaggio, immobiliari, di brokeraggio, magazzini di custodia conto terzi)",0
+2026,2,Deroga,"Alberghi, pubblici esercizi e attivita' similari",0
+2026,2,Deroga,Altro,0

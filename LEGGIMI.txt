@@ -1,26 +1,29 @@
-REPORT LAVORO – ISTAT (Varese · Lombardia · Italia)
-====================================================
-Versione 1.3 – 05/10/2026. Sezioni pronte: DISOCCUPAZIONE, OCCUPAZIONE, ATTIVITÀ e INATTIVITÀ. (Altre sezioni del lavoro potranno essere aggiunte nella stessa pagina.)
+REPORT LAVORO – ISTAT e INPS (Varese · Lombardia · Italia)
+==========================================================
+Versione 1.4 – 05/10/2026. Sezioni pronte: DISOCCUPAZIONE, OCCUPAZIONE, ATTIVITÀ, INATTIVITÀ (dati ISTAT) e CASSA INTEGRAZIONE (dati INPS). (Altre sezioni del lavoro potranno essere aggiunte nella stessa pagina.)
 
 A COSA SERVE
 Crea le tabelle Excel per Osserva sul lavoro, con i dati ISTAT della Rilevazione sulle forze di lavoro (dati annuali, provinciali):
 - DISOCCUPAZIONE: 6 tabelle da «Tasso di disoccupazione» e «Disoccupati – dati provinciali» (IstatData);
 - OCCUPAZIONE: 8 tabelle da «Tasso di occupazione» e «Occupati» (per settore e posizione professionale) (IstatData);
 - ATTIVITÀ: 6 tabelle da «Forze di lavoro» e «Tasso di attività» (IstatData);
-- INATTIVITÀ: 6 tabelle da «Inattivi» e «Tasso di inattività» (IstatData).
+- INATTIVITÀ: 6 tabelle da «Inattivi» e «Tasso di inattività» (IstatData);
+- CASSA INTEGRAZIONE: 11 tabelle dall'Osservatorio INPS sulle ore autorizzate di cassa integrazione guadagni (classificazione per codice statistico contributivo).
 Non serve installare niente: è una pagina web che funziona nel browser (Chrome, Edge, Firefox, Safari).
 Per la disoccupazione fa le stesse tabelle del programma Python «Report Disoccupazione» / ReportISTAT.exe (verificato cella per
 cella), ma senza scaricare niente da ISTAT a mano.
 
 COME SI USA (una volta all'anno, quando ISTAT pubblica i dati)
-1. Apri la pagina (sito pubblicato oppure doppio clic su index.html) e scegli la sezione: Disoccupazione, Occupazione, Attività o Inattività.
+1. Apri la pagina (sito pubblicato oppure doppio clic su index.html) e scegli la sezione: Disoccupazione, Occupazione, Attività, Inattività o Cassa integrazione.
 2. Guarda il riquadro «2 · Dati ISTAT»:
    - se è VERDE («Dati automatici: … dal 2018 al 2025») i dati sono già caricati, non devi fare niente;
    - se è ARANCIONE, oppure l'ultimo anno indicato è vecchio (ISTAT ha pubblicato ma i dati automatici non sono ancora arrivati):
        a) clicca i due pulsanti «Scarica … da ISTAT»: il browser salva due file .csv nella cartella Download;
        b) trascina i due file nel riquadro tratteggiato (o clicca il riquadro e scegli i file). Non serve aprirli.
 3. Scegli l'anno (la pagina propone da sola l'ultimo disponibile). Gli anni che ISTAT non ha ancora pubblicato non compaiono.
-4. Nel riquadro «3 · Controllo e tabelle» controlla che le tabelle (6 o 8, secondo la sezione) siano «pronte» e premi «Genera tabelle».
+   Per la CASSA INTEGRAZIONE si sceglie anche il trimestre (propone da sola l'ultimo pubblicato dall'INPS) e i dati sono quelli dell'INPS (riquadro «2 · Dati INPS»);
+   se i dati automatici mancano, i pulsanti del punto 2 scaricano i tre file cig_*.csv da trascinare nel riquadro.
+4. Nel riquadro «3 · Controllo e tabelle» controlla che le tabelle (6, 8 o 11, secondo la sezione) siano «pronte» e premi «Genera tabelle».
 5. Scarica i file uno per uno oppure tutti insieme con «Scarica tutto (ZIP)».
 
 TABELLE PRODOTTE – DISOCCUPAZIONE (nomi, fogli, intestazioni e formati come i modelli di Osserva, in formato .xlsx)
@@ -71,22 +74,40 @@ La variazione % degli inattivi è calcolata sui valori già arrotondati alle mig
 Differenze volute rispetto al file di Osserva del 2025: nel grafico gli anni passati hanno i decimali (nel modello erano interi e solo
 il 2025 aveva i decimali); il file della sintesi ha solo il «Foglio1» (il modello aveva anche un «Foglio2» vuoto).
 
+TABELLE PRODOTTE – CASSA INTEGRAZIONE (nomi e struttura come le tabelle di Osserva, in formato .xlsx; foglio «Foglio1»)
+- CIG_sintesi.xlsx                    ore autorizzate di Varese, Lombardia, Italia: ordinaria, straordinaria, deroga, totale; dal 1° gennaio a fine trimestre, anno scelto e anno prima, con variazione %
+- CIG_territori_CIGO.xlsx, _CIGS, _CIGD, _CIG_TOTALE   ore delle 12 province lombarde, della Lombardia e dell'Italia, con peso % sul totale regionale e variazione %
+- CIG_settori_CIGO.xlsx, _CIGS, _DEROGA, _TOTALE        ore di Varese per classe di attività economica (codice statistico contributivo INPS), con peso % e variazione %
+- CIG_tempo_TRIMESTRE.xlsx            ore di Varese di ogni singolo trimestre dal I trimestre 2021 al trimestre scelto, con variazione % sullo stesso trimestre dell'anno prima
+- CIG_tempo_ANNO.xlsx                 ore di Varese di ogni anno dal 2009 all'ultimo anno completo, con variazione %
+Le ore autorizzate sono FLUSSI mensili. Sintesi, territori e settori sono CUMULATI da gennaio a fine trimestre (II trimestre = gennaio–giugno) e confrontati con lo stesso
+periodo dell'anno prima; le due tabelle nel tempo usano il trimestre singolo (non cumulato) e l'anno intero. Il totale è la somma dei tre tipi di intervento; la Lombardia
+è la somma delle 12 province. Nella riga ITALIA* dei territori il peso è quello della Lombardia sull'Italia (come sul sito di Osserva).
+Percentuali sempre con 2 decimali, ore come numeri interi, numeri veri (non testo). «n.d.» = variazione non calcolabile (il periodo di confronto vale zero).
+Differenze volute rispetto alle tabelle di Osserva: intestazioni corrette (periodo reale al posto di «I trim»; «Deroga» al posto di «CIGS» nel file Deroga), nome «CIG_territori_CIGS»
+senza il trattino basso finale, «Attività» con l'accento e parentesi chiusa nella voce «Attività varie (…)», variazioni sempre calcolate (Osserva ne lasciava alcune vuote o a 0 anche se
+calcolabili), e tutti i dati dell'INPS di oggi (anche per il 2009–2015, dove Osserva aveva numeri leggermente diversi). Il 2009 della tabella annuale ha «n.d.» (manca il 2008).
+L'INPS può rivedere i dati già pubblicati (ha riletto gli archivi il 9 aprile 2026): le tabelle vengono ricalcolate ogni volta sui numeri più recenti.
+
 QUANDO ESCONO I DATI
 ISTAT pubblica i dati annuali provinciali una volta l'anno, in genere tra marzo e aprile, per l'anno precedente (il 2025 è uscito
 nella primavera 2026), e può rivederli in autunno (l'ultimo aggiornamento delle tavole è dell'11/09/2026). Il calendario ufficiale
 non lo conosciamo: per questo i dati automatici vengono controllati OGNI LUNEDÌ. Se scegli un anno non ancora pubblicato la
 pagina lo dice («ISTAT non ha ancora pubblicato i dati annuali …»). Le tabelle vengono ricalcolate ogni volta sui dati più
 recenti: ISTAT può rivedere anche gli anni passati.
+CASSA INTEGRAZIONE: l'INPS pubblica i dati una volta al mese, di solito nei primi giorni del mese per il mese precedente (il 2 ottobre 2026 sono arrivati i dati fino a giugno
+2026, quindi il II trimestre 2026 è il più recente). I dati dell'INPS vengono controllati OGNI GIORNO DAL 2 AL 12 DEL MESE: se l'INPS non ha novità non si scarica niente.
+Se scegli un trimestre non ancora pubblicato la pagina lo dice («L'INPS non ha ancora pubblicato i dati del …»).
 
 COME FUNZIONA (per chi vuole saperlo)
-La pagina non può scaricare i dati da ISTAT da sola: il servizio ISTAT non permette la lettura da una pagina web. Per questo un
-programma automatico su GitHub (aggiorna_dati.py, ogni lunedì) scarica i dati di tutte le sezioni (8 tavole ISTAT) e li salva
-nella cartella dati/ del sito; la pagina li legge da lì. I file che carichi tu restano sul tuo computer e prevalgono sui
+La pagina non può scaricare i dati da ISTAT né dall'INPS da sola: i loro servizi non permettono la lettura da una pagina web. Per questo due
+programmi automatici su GitHub scaricano i dati e li salvano nella cartella dati/ del sito; la pagina li legge da lì:
+- aggiorna_dati.py (ogni lunedì): le 8 tavole ISTAT; - aggiorna_cig.py (ogni giorno dal 2 al 12 del mese): i 3 file dell'INPS (cig_territori.csv, cig_classi.csv, cig_varese_mensile.csv). I file che carichi tu restano sul tuo computer e prevalgono sui
 dati automatici.
-Se l'aggiornamento automatico si rompe (ISTAT non risponde, tavola cambiata…) arriva un'e-mail chiara all'indirizzo dell'account
-GitHub; se ISTAT non ha pubblicato dati nuovi non arriva niente. I dati già salvati non vengono mai cancellati.
+Se l'aggiornamento automatico si rompe (ISTAT o INPS non rispondono, tavola cambiata…) arriva un'e-mail chiara all'indirizzo dell'account
+GitHub (due avvisi separati: dati ISTAT e dati INPS); se non sono stati pubblicati dati nuovi non arriva niente. I dati già salvati non vengono mai cancellati.
 
 SITO E DATI
 Sito: https://statisticava.github.io/report-lavoro/   (repository StatisticaVA/report-lavoro)
-Controllo manuale dell'aggiornamento: scheda «Actions» del repository → «Aggiorna dati ISTAT» → «Run workflow».
-Documentazione tecnica: HANDOVER.md §20 (disoccupazione), §22 (occupazione), §23 (attività) e §24 (inattività) (nella cartella «finale» del computer, non pubblicata).
+Controllo manuale dell'aggiornamento: scheda «Actions» del repository → «Aggiorna dati ISTAT» oppure «Aggiorna dati INPS (cassa integrazione)» → «Run workflow».
+Documentazione tecnica: HANDOVER.md §20 (disoccupazione), §22 (occupazione), §23 (attività), §24 (inattività), §25 e §26 (cassa integrazione) (nella cartella «finale» del computer, non pubblicata).
