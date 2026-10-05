@@ -64,10 +64,10 @@
   "dati_modificati": "2026-10-05T07:03:32Z"
  },
  "controllato": "2026-10-05T07:13:43Z",
- "controllato_cig": "2026-10-05T08:50:00Z",
+ "controllato_cig": "2026-10-05T09:05:44Z",
  "cig_territori": {
   "nome": "Ore autorizzate di cassa integrazione per provincia lombarda, Lombardia e Italia (cumulate da inizio anno, INPS)",
-  "scaricato": "2026-10-05T08:50:00Z",
+  "scaricato": "2026-10-05T09:05:44Z",
   "ultimo_mese": "2026-06",
   "righe": 588,
   "ultimo_aggiornamento_inps": "2026-10-02",
@@ -76,7 +76,7 @@
  },
  "cig_classi": {
   "nome": "Ore autorizzate di cassa integrazione di Varese per classe di attività economica (cumulate da inizio anno, INPS)",
-  "scaricato": "2026-10-05T08:50:00Z",
+  "scaricato": "2026-10-05T09:05:44Z",
   "ultimo_mese": "2026-06",
   "righe": 854,
   "ultimo_aggiornamento_inps": "2026-10-02",
@@ -85,7 +85,7 @@
  },
  "cig_varese_mensile": {
   "nome": "Ore autorizzate di cassa integrazione di Varese per mese (INPS)",
-  "scaricato": "2026-10-05T08:50:00Z",
+  "scaricato": "2026-10-05T09:05:44Z",
   "ultimo_mese": "2026-06",
   "righe": 630,
   "ultimo_aggiornamento_inps": "2026-10-02",
