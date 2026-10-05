@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scarica da ISTAT i dati annuali di disoccupazione, occupazione e attività e salva in dati/ solo quello che serve alla pagina «Lavoro».
+"""Scarica da ISTAT i dati annuali di disoccupazione, occupazione, attività e inattività e salva in dati/ solo quello che serve alla pagina «Lavoro».
 
 Lo usa l'aggiornamento automatico su GitHub (.github/workflows/aggiorna-dati.yml, ogni lunedì), ma si può lanciare
 anche a mano:  python3 aggiorna_dati.py        Solo libreria standard di Python (niente da installare).
@@ -43,6 +43,9 @@ FASCE_OCC = ["Y15-24", "Y18-29", "Y15-29", "Y25-34", "Y35-44", "Y45-54", "Y55-64
 ATECO_OCC = ["0010", "A", "0020", "F", "0026", "0025"]
 # attività: tasso di attività (ACT_R) per queste fasce d'età; forze di lavoro (FOR) sui 15-89 anni
 FASCE_ATT = ["Y15-24", "Y18-29", "Y25-34", "Y35-44", "Y35-49", "Y45-54", "Y55-64", "Y15-64", "Y15-89"]
+# inattività: tasso di inattività (INAC_R) per queste fasce d'età (Y_GE15 = 15 anni e più); inattivi in migliaia (INAC) sui 15-64 anni,
+# condizione professionale «inattivo» (IN), motivo di inattività «tutti» (ALL)
+FASCE_INATT = ["Y15-24", "Y18-29", "Y25-34", "Y35-44", "Y35-49", "Y45-54", "Y55-64", "Y15-64", "Y_GE15"]
 COLONNE = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
 INDISPENSABILI = ["REF_AREA", "DATA_TYPE", "SEX", "AGE", "TIME_PERIOD", "OBS_VALUE"]
 COLONNE_OCC = ["REF_AREA", "SEX", "AGE", "ECON_ACTIVITY_NACE_2007", "POSIZ_PROF", "TIME_PERIOD", "OBS_VALUE", "OBS_STATUS"]
@@ -74,6 +77,15 @@ TAVOLE = [
      "dataflow": "IT1,150_916,1.0", "tipo": "ACT_R",
      "chiave": f"A.{'+'.join(AREE)}.ACT_R.{SESSI}.{'+'.join(FASCE_ATT)}.99.TOTAL",
      "filtri": {"AGE": set(FASCE_ATT), "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}}},
+    {"codice": "inattivita_inattivi", "nome": "Inattivi in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,152_928,1.0", "tipo": "INAC",
+     "chiave": f"A.{'+'.join(AREE)}.INAC.{SESSI}.Y15-64.99.TOTAL.IN.ALL.99",
+     "filtri": {"AGE": {"Y15-64"}, "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}, "LABPROF_STATUS_A": {"IN"},
+                "INACTIVITY_REASON": {"ALL"}, "DECLARED_LAB_STATUS": {"99"}}},
+    {"codice": "inattivita_tassi", "nome": "Tasso di inattività (Rilevazione sulle forze di lavoro, dati annuali)",
+     "dataflow": "IT1,152_913,1.0", "tipo": "INAC_R",
+     "chiave": f"A.{'+'.join(AREE)}.INAC_R.{SESSI}.{'+'.join(FASCE_INATT)}.99.TOTAL",
+     "filtri": {"AGE": set(FASCE_INATT), "EDU_LEV_HIGHEST": {"99"}, "CITIZENSHIP": {"TOTAL"}}},
 ]
 TERRITORI_ATTESI = {"IT", "ITC4", "ITC41"}
 ACCEPT_CSV = "application/vnd.sdmx.data+csv;version=1.0.0, text/csv"
@@ -178,7 +190,7 @@ def testo_csv(righe, colonne=COLONNE):
 
 
 def main():
-    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati di disoccupazione, occupazione e attività")
+    arg = argparse.ArgumentParser(description="Scarica da ISTAT i dati di disoccupazione, occupazione, attività e inattività")
     arg.add_argument("--esito", help="file JSON in cui scrivere l'esito (lo legge segnala_problemi.py)")
     esito_path = arg.parse_args().esito
     prova = os.environ.get("PROVA_ERRORE", "").lower() == "true"

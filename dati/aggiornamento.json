@@ -31,7 +31,6 @@
   "ultimo_aggiornamento_istat": "2026-09-11T08:43:00.884Z",
   "dati_modificati": "2026-09-30T09:11:00Z"
  },
- "controllato": "2026-10-05T06:10:34Z",
  "attivita_forze": {
   "nome": "Forze di lavoro in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
   "scaricato": "2026-10-05T06:10:34Z",
@@ -47,5 +46,22 @@
   "righe": 3024,
   "ultimo_aggiornamento_istat": "2026-09-11T08:48:36.536Z",
   "dati_modificati": "2026-09-30T10:49:08Z"
- }
+ },
+ "inattivita_inattivi": {
+  "nome": "Inattivi in migliaia (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-10-05T07:03:32Z",
+  "ultimo_anno": 2025,
+  "righe": 336,
+  "ultimo_aggiornamento_istat": "2026-09-11T08:38:49.539Z",
+  "dati_modificati": "2026-10-05T07:03:32Z"
+ },
+ "inattivita_tassi": {
+  "nome": "Tasso di inattività (Rilevazione sulle forze di lavoro, dati annuali)",
+  "scaricato": "2026-10-05T07:03:32Z",
+  "ultimo_anno": 2025,
+  "righe": 3023,
+  "ultimo_aggiornamento_istat": "2026-09-11T08:58:39.950Z",
+  "dati_modificati": "2026-10-05T07:03:32Z"
+ },
+ "controllato": "2026-10-05T06:10:34Z"
 }
